@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlinVersion = '1.2.51'
+    ext.kotlinVersion = '1.2.50'
 
     repositories {
         mavenLocal()
@@ -86,7 +86,6 @@ project(":android") {
 
 project(":core") {
     apply plugin: "kotlin"
-
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
