@@ -1,5 +1,7 @@
 package com.ascending.games.id1.model.board
 
-data class RoomElement(var x : Int, var y : Int) {
+import com.ascending.games.lib.model.geometry.Coord2
 
+data class RoomElement(var position : Coord2) {
+    lateinit var room : Room
 }

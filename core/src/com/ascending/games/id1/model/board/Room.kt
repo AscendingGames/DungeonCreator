@@ -1,5 +1,16 @@
 package com.ascending.games.id1.model.board
 
-data class Room(var x : Double, var y :Double, var roomElements : List<RoomElement>) {
+import com.badlogic.gdx.math.Vector
+import com.badlogic.gdx.math.Vector2
 
+data class Room(var roomElements : List<RoomElement> = emptyList(), var position : Vector2 = Vector2.Zero.cpy()) {
+
+    init {
+        roomElements.forEach { it.room = this }
+    }
+
+    fun rotate() : Room {
+        roomElements.forEach { it.position.rotate() }
+        return this
+    }
 }
