@@ -2,15 +2,20 @@ package com.ascending.games.id1.edit.board
 
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.id1.model.board.Room
+import kotlin.properties.Delegates
 
-class BoardDomain(val board: Board, val roomFactory : IRoomFactory) {
+class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
 
-    var waitingRooms : Array<Room> = Array(3, { i -> roomFactory.createRoom() });
-    var currentRoom: Room = spawnRoom()
+    var waitingRooms = List(3) { roomFactory.createRoom() }
+    var currentRoom : Room by Delegates.notNull<Room>()
 
-    fun spawnRoom() : Room{
-        val spawnedRoom = waitingRooms.get(0)
-        waitingRooms = waitingRooms.copyOfRange(1, waitingRooms.size - 1).plus(roomFactory.createRoom())
-        return spawnedRoom
+    init {
+        nextRoom()
+    }
+
+    fun nextRoom() {
+        currentRoom = waitingRooms[0]
+        waitingRooms = waitingRooms.drop(1) + roomFactory.createRoom()
+        board.rooms += currentRoom
     }
 }
