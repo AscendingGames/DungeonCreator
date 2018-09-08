@@ -1,7 +1,6 @@
 package com.ascending.games.id1.model.board
 
 import com.ascending.games.lib.model.geometry.Coord2
-import com.sun.org.apache.xpath.internal.operations.Bool
 
 class Board(val width : Int, val height : Int) {
     var rooms = emptyList<Room>()
@@ -22,15 +21,27 @@ class Board(val width : Int, val height : Int) {
         return true
     }
 
-    fun getRoomElementAt(position : Coord2) : RoomElement? {
+    fun getRoomElementsAt(position : Coord2) : List<RoomElement> {
+        var roomElements = emptyList<RoomElement>()
+
         for (room in rooms) {
             for (roomElement in room.roomElements) {
                 if (getBoardCoord(roomElement) == position) {
-                    return roomElement
+                    roomElements += roomElement
                 }
             }
         }
-        return null
+
+        return roomElements
+    }
+
+    fun getRoomElementAt(position : Coord2) : RoomElement? {
+        val roomElements = getRoomElementsAt(position)
+        if (roomElements.isEmpty()) {
+            return null
+        } else {
+            return roomElements.get(0)
+        }
     }
 
     fun getRoomAt(position : Coord2) : Room? {
@@ -38,6 +49,14 @@ class Board(val width : Int, val height : Int) {
         roomElement ?: return null
 
         return roomElement.room
+    }
+
+    fun isRoomOverlapping(room : Room) : Boolean {
+        return !room.roomElements.none { getRoomElementsAt(getBoardCoord(it)).size > 1 }
+    }
+
+    fun isRoomInBounds(room : Room) : Boolean {
+        return room.roomElements.none { getBoardX(it) < 0 || getBoardY(it) < 0 || getBoardX(it) >= width || getBoardY(it) >= height }
     }
 
     private fun getClearedElements(row : Int) : List<RoomElement> {
