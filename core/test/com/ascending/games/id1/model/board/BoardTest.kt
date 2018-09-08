@@ -6,7 +6,7 @@ import org.junit.Assert.*
 
 class BoardTest {
 
-    val board = Board(0, 10)
+    val board = Board(3, 10)
 
     @Test
     fun roomsHaveFallen() {
@@ -32,5 +32,14 @@ class BoardTest {
         assertEquals(room2, board.getRoomAt(1, 0))
         assertEquals(room2, board.getRoomAt(2, 0))
         assertNull(board.getRoomAt(3, 0))
+    }
+
+    @Test
+    fun testIsRowFull() {
+        assertFalse(board.isRowFull(0))
+        board.rooms += Room(0.0, 0.0,  listOf(RoomElement(0,0)))
+        assertFalse(board.isRowFull(0))
+        board.rooms += Room(1.0, 0.0,  listOf(RoomElement(0,0), RoomElement(1,0)))
+        assertTrue(board.isRowFull(0))
     }
 }
