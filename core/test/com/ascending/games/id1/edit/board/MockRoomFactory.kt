@@ -1,0 +1,11 @@
+package com.ascending.games.id1.edit.board
+
+import com.ascending.games.id1.model.board.Room
+import com.ascending.games.id1.model.board.RoomElement
+import com.ascending.games.lib.model.geometry.Coord2
+
+class MockRoomFactory : IRoomFactory {
+    override fun createRoom(): Room {
+        return Room(listOf(RoomElement(Coord2(0, 0))))
+    }
+}

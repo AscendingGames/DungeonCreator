@@ -7,7 +7,7 @@ import com.ascending.games.lib.model.geometry.Coord2
 class MoveAction(private val offset: Coord2) : IBoardAction {
 
     override fun execute(room : Room, boardDomain: BoardDomain) {
-        boardDomain.currentRoom.position.x += offset.x.toFloat()
-        boardDomain.currentRoom.position.y += offset.y.toFloat()
+        room.position.x += offset.x.toFloat()
+        room.position.y += offset.y.toFloat()
     }
 }

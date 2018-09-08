@@ -14,12 +14,7 @@ import org.junit.Test
 class BoardDomainTest {
 
     private val board = Board(2,2)
-    private val boardDomain = BoardDomain(board, object : IRoomFactory {
-        var x = 0f
-        override fun createRoom(): Room {
-            return Room(listOf(RoomElement(Coord2.ZERO)), Vector2(x++, 2f))
-        }
-    })
+    private val boardDomain = BoardDomain(board, MockRoomFactory())
 
     @Test
     fun testSpawnRoom() {
@@ -29,7 +24,6 @@ class BoardDomainTest {
         assertEquals("New current room is the first waiting room", oldWaitingRooms[0], boardDomain.currentRoom)
         assertEquals("New room has been positioned in the middle top of the board", Vector2(1f, 2f), boardDomain.currentRoom.position)
         assertThat("Board contains newly spawned room", board.rooms, hasItem(boardDomain.currentRoom))
-        assertThat("A New waiting room has been inserted into the waiting list", oldWaitingRooms, not(hasItem(boardDomain.waitingRooms.last())))
     }
 
     @Test

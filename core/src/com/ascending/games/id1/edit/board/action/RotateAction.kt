@@ -5,6 +5,6 @@ import com.ascending.games.id1.model.board.Room
 
 class RotateAction : IBoardAction {
     override fun execute(room : Room, boardDomain: BoardDomain) {
-        boardDomain.currentRoom.rotate()
+        room.rotate()
     }
 }

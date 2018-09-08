@@ -12,8 +12,8 @@ class Board(val width : Int, val height : Int) {
 
     fun hasRoomFallen(room : Room) : Boolean {
         for (roomElement in room.roomElements) {
-            if (getBoardY(room, roomElement) > 0) {
-                val roomCoord = getBoardCoord(room, roomElement)
+            if (getBoardY( roomElement) > 0) {
+                val roomCoord = getBoardCoord(roomElement)
                 val roomBelow = getRoomAt(Coord2(roomCoord.x, roomCoord.y - 1))
                 roomBelow ?: return false
             }
@@ -25,7 +25,7 @@ class Board(val width : Int, val height : Int) {
     fun getRoomElementAt(position : Coord2) : RoomElement? {
         for (room in rooms) {
             for (roomElement in room.roomElements) {
-                if (getBoardCoord(room, roomElement) == position) {
+                if (getBoardCoord(roomElement) == position) {
                     return roomElement
                 }
             }
@@ -70,14 +70,14 @@ class Board(val width : Int, val height : Int) {
         return !clearedElements.isEmpty()
     }
 
-    private fun getBoardCoord(room : Room, roomElement : RoomElement) : Coord2 {
-        return Coord2(getBoardX(room, roomElement), getBoardY(room, roomElement))
+    fun getBoardCoord(roomElement : RoomElement) : Coord2 {
+        return Coord2(getBoardX(roomElement), getBoardY(roomElement))
     }
 
-    private fun getBoardX(room : Room, roomElement : RoomElement) : Int {
-        return Math.ceil(room.position.x.toDouble() + roomElement.position.x).toInt()
+    fun getBoardX(roomElement : RoomElement) : Int {
+        return Math.ceil(roomElement.room.position.x.toDouble() + roomElement.position.x).toInt()
     }
-    private fun getBoardY(room : Room, roomElement : RoomElement) : Int {
-        return Math.ceil(room.position.y.toDouble() + roomElement.position.y).toInt()
+    fun getBoardY(roomElement : RoomElement) : Int {
+        return Math.ceil(roomElement.room.position.y.toDouble() + roomElement.position.y).toInt()
     }
 }
