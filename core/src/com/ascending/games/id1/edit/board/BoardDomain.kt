@@ -35,7 +35,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
             nextRoom()
         }
 
-        for (row in 0 until board.height - 1) {
+        for (row in 0 until board.height) {
             board.clearRowIfFull(row)
         }
     }
@@ -52,7 +52,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
 
     fun nextRoom() {
         currentRoom = waitingRooms[0]
-        currentRoom.position = Vector2((board.width / 2).toFloat(), board.height.toFloat())
+        currentRoom.position = Vector2(((board.width - 1) / 2).toFloat(), board.height.toFloat() - 1)
         waitingRooms = waitingRooms.drop(1) + roomFactory.createRoom()
         board.rooms += currentRoom
     }

@@ -13,13 +13,13 @@ class BoardTest {
     @Test
     fun roomsHaveFallen() {
         assertTrue("Initially no rooms are falling" , board.haveRoomsFallen())
-        board.rooms += Room(listOf(RoomElement(Coord2.ZERO)), Vector2(0f, 10f))
+        board.rooms += Room(listOf(RoomElement(Coord2.ZERO)), Vector2(0f, 9f))
         assertFalse("Room is currently falling", board.haveRoomsFallen())
         board.rooms.get(0).position.y = 5f
         assertFalse("Room is still falling", board.haveRoomsFallen())
         board.rooms.get(0).position.y = 0f
         assertTrue("Room has again fallen", board.haveRoomsFallen())
-        board.rooms += Room(listOf(RoomElement(Coord2.ZERO)), Vector2(0f, 10f))
+        board.rooms += Room(listOf(RoomElement(Coord2.ZERO)), Vector2(0f, 9f))
         assertFalse("Room is currently falling", board.haveRoomsFallen())
         board.rooms.get(1).position.y = 1f
         assertTrue("Room has again fallen", board.haveRoomsFallen())

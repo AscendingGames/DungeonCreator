@@ -15,7 +15,7 @@ class DropActionTest {
 
     @Test
     fun testExecute() {
-        val boardDomain = BoardDomain(Board(2,3), MockRoomFactory())
+        val boardDomain = BoardDomain(Board(3,3), MockRoomFactory())
         val dropAction = DropAction()
 
         assertNull(boardDomain.board.getRoomAt(Coord2(1, 0)))

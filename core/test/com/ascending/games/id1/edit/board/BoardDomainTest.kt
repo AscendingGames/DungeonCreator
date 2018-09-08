@@ -13,7 +13,7 @@ import org.junit.Test
 
 class BoardDomainTest {
 
-    private val board = Board(2,2)
+    private val board = Board(3,3)
     private val boardDomain = BoardDomain(board, MockRoomFactory())
 
     @Test
