@@ -44,21 +44,6 @@ class BoardDomainTest {
     }
 
     @Test
-    fun testRotateCurrentRoom() {
-
-    }
-
-    @Test
-    fun testMoveCurrentRoom() {
-
-    }
-
-    @Test
-    fun testDropCurrentRoom() {
-
-    }
-
-    @Test
     fun testGetProjectedRoom() {
 
     }

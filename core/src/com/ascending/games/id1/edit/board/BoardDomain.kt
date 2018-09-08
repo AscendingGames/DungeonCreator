@@ -1,5 +1,6 @@
 package com.ascending.games.id1.edit.board
 
+import com.ascending.games.id1.edit.board.action.IBoardAction
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.id1.model.board.Room
 import com.ascending.games.lib.model.geometry.Coord2
@@ -38,17 +39,8 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         }
     }
 
-    fun rotateCurrentRoom() {
-        currentRoom.rotate()
-    }
-
-    fun dropCurrentRoom() {
-        currentRoom.position.y = 0f
-    }
-
-    fun moveCurrentRoom(offset : Coord2) {
-        currentRoom.position.x += offset.x.toFloat()
-        currentRoom.position.y += offset.y.toFloat()
+    fun execute(action : IBoardAction) {
+        action.execute(this)
     }
 
     fun getProjectedRoom() : Room {
