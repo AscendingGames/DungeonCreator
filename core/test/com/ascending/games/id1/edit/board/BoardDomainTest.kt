@@ -42,9 +42,4 @@ class BoardDomainTest {
         boardDomain.update(1f)
         assertEquals("Next room has been created", 2, board.rooms.size)
     }
-
-    @Test
-    fun testGetProjectedRoom() {
-
-    }
 }

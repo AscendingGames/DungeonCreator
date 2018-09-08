@@ -1,7 +1,8 @@
 package com.ascending.games.id1.edit.board.action
 
 import com.ascending.games.id1.edit.board.BoardDomain
+import com.ascending.games.id1.model.board.Room
 
 interface IBoardAction {
-    fun execute(boardDomain : BoardDomain)
+    fun execute(room : Room, boardDomain : BoardDomain)
 }

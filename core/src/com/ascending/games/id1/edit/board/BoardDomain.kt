@@ -1,5 +1,6 @@
 package com.ascending.games.id1.edit.board
 
+import com.ascending.games.id1.edit.board.action.DropAction
 import com.ascending.games.id1.edit.board.action.IBoardAction
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.id1.model.board.Room
@@ -40,11 +41,13 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
     }
 
     fun execute(action : IBoardAction) {
-        action.execute(this)
+        action.execute(currentRoom,this)
     }
 
     fun getProjectedRoom() : Room {
-        return currentRoom.copy()
+        val projectedRoom = currentRoom.copy()
+        DropAction().execute(projectedRoom, this)
+        return projectedRoom
     }
 
     fun nextRoom() {
