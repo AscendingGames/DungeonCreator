@@ -14,4 +14,8 @@ data class Coord2(var x : Int, var y : Int) {
 
         return this
     }
+
+    fun add(other : Coord2) : Coord2 {
+        return Coord2(x + other.x, y + other.y)
+    }
 }

@@ -9,7 +9,7 @@ class Room(var roomElements : List<RoomElement> = emptyList(), var position : Ve
     }
 
     fun rotate() : Room {
-        roomElements.forEach { it.position.rotate() }
+        roomElements.forEach { it.rotate() }
         return this
     }
 }

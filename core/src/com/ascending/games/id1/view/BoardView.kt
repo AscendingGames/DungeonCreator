@@ -1,7 +1,9 @@
 package com.ascending.games.id1.view
 
 import com.ascending.games.id1.model.board.Board
+import com.ascending.games.id1.model.board.WallState
 import com.ascending.games.lib.model.geometry.Coord2
+import com.ascending.games.lib.model.geometry.Direction4
 import com.ascending.games.lib.view.AView2
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera
@@ -18,6 +20,7 @@ class BoardView(val board : Board) : AView2(0) {
         const val TILE_SIZE : Float = 50f
         val BOARD_COLOR : Color = Color.GRAY
         const val BOARD_LINE_SIZE = 10f
+        const val WALL_LINE_SIZE = 3f
     }
 
     private val shapeRenderer = ShapeRenderer()
@@ -27,12 +30,35 @@ class BoardView(val board : Board) : AView2(0) {
         shapeRenderer.projectionMatrix = camera.combined
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer.setColor(1.0f, 0f, 0f, 1.0f)
+        shapeRenderer.setColor(Color.BROWN)
         for (room in board.rooms) {
             for (roomElement in room.roomElements) {
                 val boardCoord = board.getBoardCoord(roomElement)
-                val position = Vector2((boardCoord.x + OFFSET.x) * TILE_SIZE, (boardCoord.y + OFFSET.y) * TILE_SIZE)
-                shapeRenderer.rect(position.x, position.y, TILE_SIZE, TILE_SIZE)
+                val roomElementPosition = Vector2((boardCoord.x + OFFSET.x) * TILE_SIZE, (boardCoord.y + OFFSET.y) * TILE_SIZE)
+                shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, TILE_SIZE,  TILE_SIZE)
+            }
+        }
+        shapeRenderer.end()
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+        Gdx.gl.glLineWidth(WALL_LINE_SIZE)
+        for (room in board.rooms) {
+            for (roomElement in room.roomElements) {
+                val boardCoord = board.getBoardCoord(roomElement)
+                val roomElementPosition = Vector2((boardCoord.x + OFFSET.x) * TILE_SIZE, (boardCoord.y + OFFSET.y) * TILE_SIZE)
+                for (wall in roomElement.walls) {
+                    when (wall.wallState) {
+                        WallState.CLOSED -> shapeRenderer.setColor(Color.GRAY)
+                        WallState.DOOR -> shapeRenderer.setColor(Color.RED)
+                    }
+
+                    when (wall.direction) {
+                        Direction4.LEFT -> shapeRenderer.line(roomElementPosition.x, roomElementPosition.y, roomElementPosition.x, roomElementPosition.y + TILE_SIZE)
+                        Direction4.RIGHT -> shapeRenderer.line(roomElementPosition.x + TILE_SIZE, roomElementPosition.y, roomElementPosition.x + TILE_SIZE, roomElementPosition.y + TILE_SIZE)
+                        Direction4.DOWN -> shapeRenderer.line(roomElementPosition.x, roomElementPosition.y, roomElementPosition.x + TILE_SIZE, roomElementPosition.y)
+                        Direction4.UP -> shapeRenderer.line(roomElementPosition.x, roomElementPosition.y + TILE_SIZE, roomElementPosition.x + TILE_SIZE, roomElementPosition.y + TILE_SIZE)
+                    }
+                }
             }
         }
         shapeRenderer.end()
