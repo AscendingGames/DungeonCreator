@@ -101,4 +101,28 @@ class Board(val width : Int, val height : Int) {
     fun getBoardY(roomElement : RoomElement) : Int {
         return Math.ceil(roomElement.room.position.y.toDouble() + roomElement.position.y).toInt()
     }
+
+    fun checkDoors(room: Room) {
+        for (roomElement in room.roomElements) {
+            val coord = getBoardCoord(roomElement)
+            val wallsToOpen = mutableListOf<Wall>()
+            for (wall in roomElement.walls) {
+                val coordOther = coord.add(wall.direction.toOffset())
+                val roomElementOther = getRoomElementAt(coordOther)
+                if (roomElementOther != null) {
+                    val wallOther = roomElementOther.walls.find { it.direction == wall.direction.opposite() }
+                    if (wallOther != null) {
+                        if (wall.wallState == WallState.DOOR || wallOther.wallState == WallState.DOOR) {
+                            wallsToOpen.add(wall)
+                            wallsToOpen.add(wallOther)
+                        }
+                    }
+                }
+            }
+
+            for (wall in wallsToOpen) {
+                wall.roomElement.walls -= wall
+            }
+        }
+    }
 }

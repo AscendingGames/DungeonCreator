@@ -29,4 +29,13 @@ enum class Direction4 {
             LEFT -> return Direction4.UP
         }
     }
+
+    fun opposite() : Direction4 {
+        when (this) {
+            UP -> return Direction4.DOWN
+            RIGHT -> return Direction4.LEFT
+            DOWN -> return Direction4.UP
+            LEFT -> return Direction4.RIGHT
+        }
+    }
 }

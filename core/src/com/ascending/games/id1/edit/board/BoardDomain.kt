@@ -30,6 +30,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
                 positionChanged = true
             } else {
                 room.position.y = room.position.y.roundToInt().toFloat()
+                board.checkDoors(room)
             }
         }
 
