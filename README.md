@@ -1,3 +1,3 @@
 # DungeonCreator
 
-# About this repository [![Build Status](https://travis-ci.org/travis-ci/docs-travis-ci-com.svg?branch=master)](https://travis-ci.org/travis-ci/docs-travis-ci-com)
+# About this repository [![Build Status](https://travis-ci.com/AscendingGames/DungeonCreator.svg?branch=development)](https://travis-ci.com/AscendingGames/DungeonCreator)
