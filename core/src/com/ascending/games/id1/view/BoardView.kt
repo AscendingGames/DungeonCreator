@@ -15,13 +15,13 @@ class BoardView(val board : Board) : AView2(0) {
 
     companion object  {
         val OFFSET : Coord2 = Coord2(2, 2)
-        val TILE_SIZE : Float = 50f
-        val BOARD_COLOR = Color.GRAY
-        val BOARD_LINE_SIZE = 10f
+        const val TILE_SIZE : Float = 50f
+        val BOARD_COLOR : Color = Color.GRAY
+        const val BOARD_LINE_SIZE = 10f
     }
 
-    val shapeRenderer = ShapeRenderer()
-    val boardArea = Rectangle(OFFSET.x * TILE_SIZE, OFFSET.y * TILE_SIZE, board.width * TILE_SIZE, board.height * TILE_SIZE)
+    private val shapeRenderer = ShapeRenderer()
+    private val boardArea = Rectangle(OFFSET.x * TILE_SIZE, OFFSET.y * TILE_SIZE, board.width * TILE_SIZE, board.height * TILE_SIZE)
 
     override fun render(batch: SpriteBatch, camera : Camera) {
         shapeRenderer.projectionMatrix = camera.combined

@@ -11,15 +11,15 @@ import com.badlogic.gdx.utils.Disposable
 class SceneManager2(viewportSize : Vector2) : Disposable {
 
     val views : List<IView2> = mutableListOf()
-    var batchMap : Map<Int, SpriteBatch>  = mutableMapOf()
-    val camera = OrthographicCamera(viewportSize.x, viewportSize.y)
+    private var batchMap : Map<Int, SpriteBatch>  = mutableMapOf()
+    private val camera = OrthographicCamera(viewportSize.x, viewportSize.y)
 
     init {
         camera.setToOrtho(false)
     }
 
-    fun getSpriteBatch(id : Int) : SpriteBatch {
-        var batch = batchMap.get(id)
+    private fun getSpriteBatch(id : Int) : SpriteBatch {
+        var batch = batchMap[id]
         if (batch == null) {
             batch = SpriteBatch()
             batchMap = batchMap.plus(Pair(id, batch))

@@ -3,11 +3,10 @@ package com.ascending.games.id1.edit.board.action
 import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.edit.board.MockRoomFactory
 import com.ascending.games.id1.model.board.Board
-import com.ascending.games.id1.model.board.RoomElement
 import com.ascending.games.lib.model.geometry.Coord2
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class SlideActionTest {
 

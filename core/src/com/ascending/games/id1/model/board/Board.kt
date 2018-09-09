@@ -40,7 +40,7 @@ class Board(val width : Int, val height : Int) {
         if (roomElements.isEmpty()) {
             return null
         } else {
-            return roomElements.get(0)
+            return roomElements[0]
         }
     }
 

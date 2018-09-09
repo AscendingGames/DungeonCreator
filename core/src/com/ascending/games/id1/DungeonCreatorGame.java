@@ -10,13 +10,11 @@ import com.ascending.games.lib.model.geometry.Coord2;
 import com.ascending.games.lib.view.SceneManager2;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 public class DungeonCreatorGame extends ApplicationAdapter {

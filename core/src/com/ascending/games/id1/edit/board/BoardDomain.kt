@@ -4,7 +4,6 @@ import com.ascending.games.id1.edit.board.action.DropAction
 import com.ascending.games.id1.edit.board.action.IBoardAction
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.id1.model.board.Room
-import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
 import kotlin.properties.Delegates
 
@@ -15,7 +14,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
     }
 
     var waitingRooms = List(COUNT_WAITING_ROOMS) { roomFactory.createRoom() }
-    var currentRoom : Room by Delegates.notNull<Room>()
+    var currentRoom by Delegates.notNull<Room>()
     var time = 0f
 
     init {
