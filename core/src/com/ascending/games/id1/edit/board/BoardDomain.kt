@@ -38,7 +38,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         }
 
         for (row in 0 until board.height) {
-            //board.clearRowIfFull(row)
+            board.clearRowIfFull(row)
         }
     }
 

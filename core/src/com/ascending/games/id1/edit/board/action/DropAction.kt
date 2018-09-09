@@ -13,8 +13,10 @@ class DropAction : IBoardAction {
     private fun getDropY(roomElement : RoomElement, boardDomain : BoardDomain) : Float {
         val coord = boardDomain.board.getBoardCoord(roomElement)
         for (row in 0 until coord.y) {
-            if (boardDomain.board.getRoomElementAt(Coord2(coord.x, row)) == null) {
-                return row.toFloat()
+            if (coord.y >= 0) {
+                if (boardDomain.board.getRoomElementAt(Coord2(coord.x, row)) == null) {
+                    return row.toFloat()
+                }
             }
         }
 
