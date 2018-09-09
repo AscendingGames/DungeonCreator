@@ -2,26 +2,24 @@ package com.ascending.games.id1.view
 
 import com.ascending.games.id1.DungeonCreatorGame
 import com.ascending.games.id1.edit.board.BoardDomain
-import com.ascending.games.id1.edit.board.IRoomFactory
+import com.ascending.games.id1.edit.board.DefaultRoomFactory
 import com.ascending.games.id1.model.board.Board
-import com.ascending.games.id1.model.board.Room
-import com.ascending.games.id1.model.board.RoomElement
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.Screen
-import com.badlogic.gdx.math.Vector2
 
 class DungeonScreen(private val game : DungeonCreatorGame) : Screen{
 
-    private val board = Board(10, 20)
-    private val boardDomain = BoardDomain(board, object : IRoomFactory {
-        override fun createRoom(): Room {
-            return Room(listOf(RoomElement(Coord2(0, 0))), Vector2(0f, 0f))
-        }
-    })
+    companion object {
+        val BOARD_SIZE = Coord2(10, 20)
+        val THRESHOLD = 1f
+    }
+
+    private val board = Board(BOARD_SIZE.x, BOARD_SIZE.y)
+    private val boardDomain = BoardDomain(board, DefaultRoomFactory.createDefaultRoomFactory())
     private val boardView = BoardView(board)
 
     override fun dispose() {
-
+        boardView.dispose()
     }
 
     override fun resize(width: Int, height: Int) {
@@ -37,6 +35,8 @@ class DungeonScreen(private val game : DungeonCreatorGame) : Screen{
     }
 
     override fun render(delta: Float) {
+        if (delta > THRESHOLD) return
+
         boardDomain.update(delta)
     }
 

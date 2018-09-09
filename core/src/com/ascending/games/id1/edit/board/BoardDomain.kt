@@ -5,6 +5,7 @@ import com.ascending.games.id1.edit.board.action.IBoardAction
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.id1.model.board.Room
 import com.badlogic.gdx.math.Vector2
+import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
@@ -27,6 +28,8 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
             if (!board.hasRoomFallen(room)) {
                 room.position.y -= time
                 positionChanged = true
+            } else {
+                room.position.y = room.position.y.roundToInt().toFloat()
             }
         }
 
@@ -35,7 +38,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         }
 
         for (row in 0 until board.height) {
-            board.clearRowIfFull(row)
+            //board.clearRowIfFull(row)
         }
     }
 
@@ -44,7 +47,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
     }
 
     fun getProjectedRoom() : Room {
-        val projectedRoom = currentRoom.copy()
+        val projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() })
         DropAction().execute(projectedRoom, this)
         return projectedRoom
     }

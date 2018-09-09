@@ -11,14 +11,16 @@ class Board(val width : Int, val height : Int) {
 
     fun hasRoomFallen(room : Room) : Boolean {
         for (roomElement in room.roomElements) {
-            if (getBoardY( roomElement) > 0) {
+            if (getBoardY( roomElement) <= 0) {
+                return true
+            } else {
                 val roomCoord = getBoardCoord(roomElement)
                 val roomBelow = getRoomAt(Coord2(roomCoord.x, roomCoord.y - 1))
-                roomBelow ?: return false
+                if (roomBelow != null && roomBelow != room) return true
             }
         }
 
-        return true
+        return false
     }
 
     fun getRoomElementsAt(position : Coord2) : List<RoomElement> {
