@@ -16,7 +16,7 @@ class Board(val width : Int, val height : Int) {
             } else {
                 val roomCoord = roomElement.getBoardCoord()
                 val roomBelow = getRoomAt(Coord2(roomCoord.x, roomCoord.y - 1))
-                if (roomBelow != null && roomBelow != room) return true
+                if (roomBelow != null && roomBelow != room && roomBelow.position.y.toDouble() == Math.ceil(roomBelow.position.y.toDouble())) return true
             }
         }
 
