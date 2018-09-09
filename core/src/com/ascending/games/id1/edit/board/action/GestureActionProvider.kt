@@ -6,22 +6,25 @@ import com.badlogic.gdx.math.Vector2
 class GestureActionProvider : GestureDetector.GestureListener {
 
     companion object {
-        const val PAN_THRESHOLD_X = 5f
+        const val PAN_THRESHOLD_X = 2f
         const val PAN_THRESHOLD_Y = 20f
     }
 
     val actionBuffer = mutableListOf<IBoardAction>()
-    var canDrop = true
+    private var canDrop = true
 
     override fun zoom(initialDistance: Float, distance: Float): Boolean {
         return false
     }
 
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
-        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > PAN_THRESHOLD_X) {
+        val absDeltaX = Math.abs(deltaX)
+        val absDeltaY = Math.abs(deltaY)
+
+        if (absDeltaX > absDeltaY && absDeltaX > PAN_THRESHOLD_X) {
             actionBuffer.add(SlideAction(Math.signum(deltaX).toInt()))
             return true
-        } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > PAN_THRESHOLD_Y && deltaY > 0 && canDrop) {
+        } else if (absDeltaY > absDeltaX && absDeltaY > PAN_THRESHOLD_Y && deltaY > 0 && canDrop) {
             actionBuffer.add(DropAction())
             canDrop = false
             return true

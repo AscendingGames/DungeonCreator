@@ -7,19 +7,15 @@ import com.ascending.games.lib.model.geometry.Coord2
 
 class DropAction : IBoardAction {
     override fun execute(room : Room, boardDomain: BoardDomain) {
-        room.position.y = room.roomElements.map { getDropY(it, boardDomain) }.min() ?: 0f
-    }
+        while (room.position.y > 0) {
+            room.position.y--
 
-    private fun getDropY(roomElement : RoomElement, boardDomain : BoardDomain) : Float {
-        val coord = boardDomain.board.getBoardCoord(roomElement)
-        for (row in 0 until coord.y) {
-            if (coord.y >= 0) {
-                if (boardDomain.board.getRoomElementAt(Coord2(coord.x, row)) == null) {
-                    return row.toFloat()
-                }
+            if(boardDomain.board.isRoomOverlapping(room) || !boardDomain.board.isRoomInBounds(room)) {
+                room.position.y++
+                break
             }
         }
 
-        return coord.y.toFloat()
+        room.position.y  = Math.ceil(room.position.y.toDouble()).toFloat()
     }
 }
