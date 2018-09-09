@@ -33,7 +33,7 @@ class BoardView(val board : Board) : AView2(0) {
         shapeRenderer.setColor(Color.BROWN)
         for (room in board.rooms) {
             for (roomElement in room.roomElements) {
-                val boardCoord = board.getBoardCoord(roomElement)
+                val boardCoord = roomElement.getBoardCoord()
                 val roomElementPosition = Vector2((boardCoord.x + OFFSET.x) * TILE_SIZE, (boardCoord.y + OFFSET.y) * TILE_SIZE)
                 shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, TILE_SIZE,  TILE_SIZE)
             }
@@ -44,7 +44,7 @@ class BoardView(val board : Board) : AView2(0) {
         Gdx.gl.glLineWidth(WALL_LINE_SIZE)
         for (room in board.rooms) {
             for (roomElement in room.roomElements) {
-                val boardCoord = board.getBoardCoord(roomElement)
+                val boardCoord = roomElement.getBoardCoord()
                 val roomElementPosition = Vector2((boardCoord.x + OFFSET.x) * TILE_SIZE, (boardCoord.y + OFFSET.y) * TILE_SIZE)
                 for (wall in roomElement.walls) {
                     when (wall.wallState) {

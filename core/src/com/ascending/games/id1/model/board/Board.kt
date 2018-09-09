@@ -11,10 +11,10 @@ class Board(val width : Int, val height : Int) {
 
     fun hasRoomFallen(room : Room) : Boolean {
         for (roomElement in room.roomElements) {
-            if (getBoardY( roomElement) <= 0) {
+            if (roomElement.getBoardY() <= 0) {
                 return true
             } else {
-                val roomCoord = getBoardCoord(roomElement)
+                val roomCoord = roomElement.getBoardCoord()
                 val roomBelow = getRoomAt(Coord2(roomCoord.x, roomCoord.y - 1))
                 if (roomBelow != null && roomBelow != room) return true
             }
@@ -24,26 +24,11 @@ class Board(val width : Int, val height : Int) {
     }
 
     fun getRoomElementsAt(position : Coord2) : List<RoomElement> {
-        var roomElements = emptyList<RoomElement>()
-
-        for (room in rooms) {
-            for (roomElement in room.roomElements) {
-                if (getBoardCoord(roomElement) == position) {
-                    roomElements += roomElement
-                }
-            }
-        }
-
-        return roomElements
+        return rooms.flatMap { it.roomElements.filter { it.getBoardCoord() == position } }
     }
 
     fun getRoomElementAt(position : Coord2) : RoomElement? {
-        val roomElements = getRoomElementsAt(position)
-        if (roomElements.isEmpty()) {
-            return null
-        } else {
-            return roomElements[0]
-        }
+        return getRoomElementsAt(position).getOrNull(0)
     }
 
     fun getRoomAt(position : Coord2) : Room? {
@@ -54,11 +39,11 @@ class Board(val width : Int, val height : Int) {
     }
 
     fun isRoomOverlapping(room : Room) : Boolean {
-        return !room.roomElements.none { getRoomElementsAt(getBoardCoord(it)).size > 1 }
+        return !room.roomElements.none { getRoomElementsAt(it.getBoardCoord()).size > 1 }
     }
 
     fun isRoomInBounds(room : Room) : Boolean {
-        return room.roomElements.none { getBoardX(it) < 0 || getBoardY(it) < 0 || getBoardX(it) >= width || getBoardY(it) >= height }
+        return room.roomElements.none { it.getBoardX() < 0 || it.getBoardY() < 0 || it.getBoardX() >= width || it.getBoardY() >= height }
     }
 
     private fun getClearedElements(row : Int) : List<RoomElement> {
@@ -91,20 +76,9 @@ class Board(val width : Int, val height : Int) {
         return !clearedElements.isEmpty()
     }
 
-    fun getBoardCoord(roomElement : RoomElement) : Coord2 {
-        return Coord2(getBoardX(roomElement), getBoardY(roomElement))
-    }
-
-    fun getBoardX(roomElement : RoomElement) : Int {
-        return Math.ceil(roomElement.room.position.x.toDouble() + roomElement.position.x).toInt()
-    }
-    fun getBoardY(roomElement : RoomElement) : Int {
-        return Math.ceil(roomElement.room.position.y.toDouble() + roomElement.position.y).toInt()
-    }
-
     fun checkDoors(room: Room) {
         for (roomElement in room.roomElements) {
-            val coord = getBoardCoord(roomElement)
+            val coord = roomElement.getBoardCoord()
             val wallsToOpen = mutableListOf<Wall>()
             for (wall in roomElement.walls) {
                 val coordOther = coord.add(wall.direction.toOffset())

@@ -3,6 +3,7 @@ package com.ascending.games.id1.edit.board
 import com.ascending.games.id1.edit.board.action.DropAction
 import com.ascending.games.id1.edit.board.action.IBoardAction
 import com.ascending.games.id1.model.board.Board
+import com.ascending.games.id1.model.board.Hero
 import com.ascending.games.id1.model.board.Room
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
@@ -17,6 +18,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
     var waitingRooms = List(COUNT_WAITING_ROOMS) { roomFactory.createRoom() }
     var currentRoom by Delegates.notNull<Room>()
     var time = 0f
+    val hero : Hero = Hero()
 
     init {
         nextRoom()
@@ -35,6 +37,11 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         }
 
         if (!positionChanged) {
+
+            if (!hero.spawned) {
+                hero.spawn(board)
+            }
+
             nextRoom()
         }
 
