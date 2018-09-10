@@ -15,10 +15,11 @@ class DefaultRoomFactory(private val roomShapes : List<RoomShape>, val minDoors 
 
         fun createDefaultRoomFactory() : DefaultRoomFactory {
             val roomShapes = listOf<RoomShape>(
-                    RoomShape(listOf(RoomElement(Coord2(0,0)), RoomElement(Coord2(0,-1)), RoomElement(Coord2(0,-2)))),
+                    RoomShape(listOf(RoomElement(Coord2(1,0)), RoomElement(Coord2(0,0)), RoomElement(Coord2(-1,0)))),
+                    RoomShape(listOf(RoomElement(Coord2(0,0)), RoomElement(Coord2(-1,0)), RoomElement(Coord2(1,0)), RoomElement(Coord2(0,-1)))),
                     RoomShape(listOf(RoomElement(Coord2(0,0)), RoomElement(Coord2(0,-1)), RoomElement(Coord2(-1,-1)), RoomElement(Coord2(1,0)))),
-                    RoomShape(listOf(RoomElement(Coord2(0,0)), RoomElement(Coord2(0,-1)), RoomElement(Coord2(0,-2)), RoomElement(Coord2(1,0)))),
-                    RoomShape(listOf(RoomElement(Coord2(0,0)), RoomElement(Coord2(0,-1)), RoomElement(Coord2(1,0)), RoomElement(Coord2(1,-1)), RoomElement(Coord2(2,0))))
+                    RoomShape(listOf(RoomElement(Coord2(1,0)), RoomElement(Coord2(0,0)), RoomElement(Coord2(-1,0)), RoomElement(Coord2(1,-1)))),
+                    RoomShape(listOf(RoomElement(Coord2(1,0)), RoomElement(Coord2(0,0)), RoomElement(Coord2(-1,0)), RoomElement(Coord2(1,-1)), RoomElement(Coord2(0,-1))))
             )
             return DefaultRoomFactory(roomShapes, 2, 4)
         }
