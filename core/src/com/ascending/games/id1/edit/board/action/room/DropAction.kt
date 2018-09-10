@@ -1,9 +1,7 @@
-package com.ascending.games.id1.edit.board.action
+package com.ascending.games.id1.edit.board.action.room
 
 import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.model.board.Room
-import com.ascending.games.id1.model.board.RoomElement
-import com.ascending.games.lib.model.geometry.Coord2
 
 class DropAction : IBoardAction {
     override fun execute(room : Room, boardDomain: BoardDomain) {

@@ -1,7 +1,10 @@
 package com.ascending.games.id1.edit.board
 
-import com.ascending.games.id1.edit.board.action.DropAction
-import com.ascending.games.id1.edit.board.action.IBoardAction
+import com.ascending.games.id1.edit.board.action.content.HeroActionProvider
+import com.ascending.games.id1.edit.board.action.content.IRoomContentAction
+import com.ascending.games.id1.edit.board.action.room.DropAction
+import com.ascending.games.id1.edit.board.action.room.IBoardAction
+import com.ascending.games.id1.model.board.ARoomContent
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.id1.model.board.Hero
 import com.ascending.games.id1.model.board.Room
@@ -19,6 +22,9 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
     var currentRoom by Delegates.notNull<Room>()
     var time = 0f
     val hero : Hero = Hero()
+    val heroActionProvider = HeroActionProvider(hero)
+
+    val mapRoomContentToActionList = mutableMapOf<ARoomContent, List<IRoomContentAction>>()
 
     init {
         nextRoom()
@@ -47,6 +53,16 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
 
         for (row in 0 until board.height) {
             board.clearRowIfFull(row)
+        }
+
+        val heroActionList = mapRoomContentToActionList.getOrDefault(hero, emptyList())
+        if (heroActionList.isEmpty()) {
+            mapRoomContentToActionList.put(hero, heroActionProvider.getNextActions())
+        } else {
+            val action = heroActionList[0]
+            if (action.execute(this, time)) {
+                mapRoomContentToActionList.put(hero, heroActionList.minus(action))
+            }
         }
     }
 

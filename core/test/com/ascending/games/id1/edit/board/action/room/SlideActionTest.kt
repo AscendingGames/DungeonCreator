@@ -1,7 +1,8 @@
-package com.ascending.games.id1.edit.board.action
+package com.ascending.games.id1.edit.board.action.room
 
 import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.edit.board.MockRoomFactory
+import com.ascending.games.id1.edit.board.action.room.SlideAction
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.lib.model.geometry.Coord2
 import org.junit.Assert.assertEquals

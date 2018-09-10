@@ -1,6 +1,5 @@
-package com.ascending.games.id1.edit.board.action
+package com.ascending.games.id1.edit.board.action.room
 
-import com.ascending.games.id1.view.BoardView
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
 

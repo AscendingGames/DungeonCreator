@@ -3,8 +3,7 @@ package com.ascending.games.id1.view
 import com.ascending.games.id1.DungeonCreatorGame
 import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.edit.board.DefaultRoomFactory
-import com.ascending.games.id1.edit.board.action.GestureActionProvider
-import com.ascending.games.id1.edit.board.action.RotateAction
+import com.ascending.games.id1.edit.board.action.room.GestureActionProvider
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.Gdx
