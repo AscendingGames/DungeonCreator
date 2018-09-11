@@ -1,6 +1,7 @@
 package com.ascending.games.id1.model.board
 
 import com.ascending.games.lib.model.geometry.Coord2
+import com.ascending.games.lib.model.geometry.Direction4
 
 class Board(val width : Int, val height : Int) {
     var rooms = emptyList<Room>()
@@ -76,7 +77,7 @@ class Board(val width : Int, val height : Int) {
         return !clearedElements.isEmpty()
     }
 
-    fun checkDoors(room: Room) {
+    fun openWallsNeighbouringDoors(room: Room) {
         for (roomElement in room.roomElements) {
             val coord = roomElement.getBoardCoord()
             val wallsToOpen = mutableListOf<Wall>()
@@ -98,5 +99,23 @@ class Board(val width : Int, val height : Int) {
                 wall.roomElement.walls -= wall
             }
         }
+    }
+
+    fun getNeighbouringRooms(room : Room) : Set<Room> {
+        val neighbouringRooms = mutableSetOf<Room>()
+        for (roomElement in room.roomElements) {
+            for (direction in Direction4.values()) {
+                if (roomElement.isOpen(direction)) {
+                    val offset = direction.toOffset()
+                    val coord = roomElement.getBoardCoord().add(offset)
+
+                    val roomElementOther = getRoomElementAt(coord)
+                    if (roomElementOther != null && roomElementOther.isOpen(direction.opposite()) && roomElementOther.room != room) {
+                        neighbouringRooms.add(roomElementOther.room)
+                    }
+                }
+            }
+        }
+        return neighbouringRooms
     }
 }

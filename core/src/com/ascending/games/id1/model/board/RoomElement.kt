@@ -17,6 +17,10 @@ class RoomElement(var position : Coord2) {
         walls = walls.map { Wall(this, it.direction.rotateRight(), it.wallState)}
     }
 
+    fun isOpen(direction : Direction4) : Boolean {
+        return walls.none { it.direction == direction }
+    }
+
     fun getClosedWalls() : List<Wall> {
         return walls.filter { it.wallState == WallState.CLOSED }
     }

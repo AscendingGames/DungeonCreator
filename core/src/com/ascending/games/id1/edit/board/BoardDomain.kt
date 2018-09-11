@@ -38,7 +38,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
                 positionChanged = true
             } else {
                 room.position.y = room.position.y.roundToInt().toFloat()
-                board.checkDoors(room)
+                board.openWallsNeighbouringDoors(room)
             }
         }
 
@@ -55,10 +55,13 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
             board.clearRowIfFull(row)
         }
 
-        val heroActionList = mapRoomContentToActionList.getOrDefault(hero, emptyList())
+        var heroActionList = mapRoomContentToActionList.getOrDefault(hero, emptyList())
         if (heroActionList.isEmpty()) {
-            mapRoomContentToActionList.put(hero, heroActionProvider.getNextActions())
-        } else {
+            heroActionList = heroActionProvider.getNextActions(this)
+            mapRoomContentToActionList.put(hero, heroActionList)
+        }
+
+        if (!heroActionList.isEmpty()) {
             val action = heroActionList[0]
             if (action.execute(this, time)) {
                 mapRoomContentToActionList.put(hero, heroActionList.minus(action))
