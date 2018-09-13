@@ -18,4 +18,8 @@ data class Coord2(var x : Int, var y : Int) {
     fun add(other : Coord2) : Coord2 {
         return Coord2(x + other.x, y + other.y)
     }
+
+    fun distance(other : Coord2) : Float {
+        return Math.sqrt(((x - other.x) * (x - other.x) + (y - other.y) * (y - other.y)).toDouble()).toFloat()
+    }
 }

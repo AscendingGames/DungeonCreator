@@ -79,26 +79,35 @@ class Board(val width : Int, val height : Int) {
 
     fun openWallsNeighbouringDoors(room: Room) {
         for (roomElement in room.roomElements) {
-            val coord = roomElement.getBoardCoord()
-            val wallsToOpen = mutableListOf<Wall>()
-            for (wall in roomElement.walls) {
-                val coordOther = coord.add(wall.direction.toOffset())
-                val roomElementOther = getRoomElementAt(coordOther)
-                if (roomElementOther != null) {
-                    val wallOther = roomElementOther.walls.find { it.direction == wall.direction.opposite() }
-                    if (wallOther != null) {
-                        if (wall.wallState == WallState.DOOR || wallOther.wallState == WallState.DOOR) {
-                            wallsToOpen.add(wall)
-                            wallsToOpen.add(wallOther)
-                        }
-                    }
-                }
-            }
+            val wallsToOpen = getWallsToOpen(roomElement)
 
             for (wall in wallsToOpen) {
                 wall.roomElement.walls -= wall
             }
         }
+    }
+
+    private fun getWallsToOpen(roomElement : RoomElement) : List<Wall> {
+        val wallsToOpen = mutableListOf<Wall>()
+        for (wall in roomElement.walls) {
+            val coordOther = roomElement.getBoardCoord().add(wall.direction.toOffset())
+            val roomElementOther = getRoomElementAt(coordOther)
+            if (roomElementOther != null) {
+                val wallOther = roomElementOther.walls.find { it.direction == wall.direction.opposite() }
+                if (wallOther != null) {
+                    wallsToOpen.addAll(getWallsToOpen(wall, wallOther))
+                }
+            }
+        }
+        return wallsToOpen
+    }
+
+    private fun getWallsToOpen(wall : Wall, wallOther : Wall) : List<Wall> {
+        if (wall.wallState == WallState.DOOR || wallOther.wallState == WallState.DOOR) {
+            return listOf(wall, wallOther)
+        }
+
+        return emptyList<Wall>()
     }
 
     fun getNeighbouringRooms(room : Room) : Set<Room> {

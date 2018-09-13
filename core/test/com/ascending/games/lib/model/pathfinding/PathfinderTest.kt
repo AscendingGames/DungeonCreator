@@ -1,0 +1,35 @@
+package com.ascending.games.lib.model.pathfinding
+
+import org.junit.Test
+
+import org.junit.Assert.*
+
+class PathfinderTest {
+
+    private val graph = object : IGraph<Int> {
+        override fun getNodes(): List<Int> {
+            return listOf(1,2,3)
+        }
+
+        override fun getNeighbours(node: Int): List<Int> {
+            when (node) {
+                1 -> return listOf(2)
+                2 -> return listOf(3)
+                else -> return listOf()
+            }
+        }
+    }
+
+    private val distanceEstimator = object : IDistanceEstimator<Int> {
+        override fun estimateDistance(node1: Int, node2: Int): Float {
+            return Math.abs(node1 - node2).toFloat()
+        }
+    }
+
+    @Test
+    fun testGetPath() {
+        val pathfinder = Pathfinder<Int>(graph, distanceEstimator)
+        val path = pathfinder.getPath(1, 3)
+        assertEquals(listOf(2, 3), path)
+    }
+}
