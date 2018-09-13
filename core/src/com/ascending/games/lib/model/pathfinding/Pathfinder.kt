@@ -9,7 +9,7 @@ class Pathfinder<Node>(val graph : IGraph<Node>, val distanceEstimator : IDistan
         while (!closedList.contains(targetNode) && !openList.isEmpty()) {
             val rankedNode = openList.removeAt(0)
             closedList.add(rankedNode.first)
-            
+
             val neighbours = graph.getNeighbours(rankedNode.first)
                     .filter { !closedList.contains(it) }
                     .map { Pair(it, distanceEstimator.estimateDistance(rankedNode.first, it) + distanceEstimator.estimateDistance(it, targetNode)) }

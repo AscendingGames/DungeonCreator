@@ -80,17 +80,17 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
             val roomElementOther = getRoomElementAt(coordOther)
             if (roomElementOther != null) {
                 val wallOther = roomElementOther.walls.find { it.direction == wall.direction.opposite() }
-                if (wallOther != null) {
-                    wallsToOpen.addAll(getWallsToOpen(wall, wallOther))
-                }
+                wallsToOpen.addAll(getWallsToOpen(wall, wallOther))
             }
         }
         return wallsToOpen
     }
 
-    private fun getWallsToOpen(wall : Wall, wallOther : Wall) : List<Wall> {
-        if (wall.wallState == WallState.DOOR || wallOther.wallState == WallState.DOOR) {
-            return listOf(wall, wallOther)
+    private fun getWallsToOpen(wall : Wall?, wallOther : Wall?) : List<Wall> {
+        if (wall != null && wallOther != null) {
+            if (wall.wallState == WallState.DOOR || wallOther.wallState == WallState.DOOR) {
+                return listOf(wall, wallOther)
+            }
         }
 
         return emptyList<Wall>()
