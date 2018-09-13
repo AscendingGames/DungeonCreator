@@ -37,17 +37,13 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
     }
 
     fun hasRoomFallen(room : Room) : Boolean {
-        for (roomElement in room.roomElements) {
-            if (roomElement.getBoardY() <= 0) {
-                return true
-            } else {
-                val roomCoord = roomElement.getBoardCoord()
-                val roomBelow = getRoomAt(Coord2(roomCoord.x, roomCoord.y - 1))
-                if (roomBelow != null && roomBelow != room && roomBelow.position.y.toDouble() == Math.ceil(roomBelow.position.y.toDouble())) return true
-            }
-        }
+        return room.roomElements.any { it.getBoardY() <= 0 || existsRoomBelow(it) }
+    }
 
-        return false
+    fun existsRoomBelow(roomElement : RoomElement) : Boolean {
+        val roomCoord = roomElement.getBoardCoord()
+        val roomBelow = getRoomAt(Coord2(roomCoord.x, roomCoord.y - 1))
+        return roomBelow != null && roomBelow != roomElement.room && roomBelow.position.y.toDouble() == Math.ceil(roomBelow.position.y.toDouble())
     }
 
     fun getRoomElementsAt(position : Coord2) : List<RoomElement> {
