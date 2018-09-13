@@ -35,14 +35,4 @@ class BoardTest {
         assertEquals(room2, board.getRoomAt(Coord2(2, 0)))
         assertNull(board.getRoomAt(Coord2(3, 0)))
     }
-
-    @Test
-    fun testClearRowIfFull() {
-        assertFalse(board.clearRowIfFull(0))
-        board.rooms += Room(listOf(RoomElement(Coord2.ZERO)))
-        assertFalse(board.clearRowIfFull(0))
-        board.rooms += Room(listOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f))
-        assertTrue(board.clearRowIfFull(0))
-        assertTrue(board.rooms.isEmpty())
-    }
 }

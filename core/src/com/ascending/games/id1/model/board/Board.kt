@@ -73,47 +73,7 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
         return room.roomElements.none { it.getBoardX() < 0 || it.getBoardY() < 0 || it.getBoardX() >= width || it.getBoardY() >= height }
     }
 
-    private fun getClearedElements(row : Int) : List<RoomElement> {
-        var clearedElements = emptyList<RoomElement>()
-
-        for (x in 0 until width) {
-            val roomElement = getRoomElementAt(Coord2(x, row))
-            roomElement ?: return emptyList()
-
-            if (!hasRoomFallen(roomElement.room)) {
-                return emptyList()
-            }
-
-            clearedElements += roomElement
-        }
-
-        return clearedElements
-    }
-
-    fun clearRowIfFull(row : Int) : Boolean {
-        val clearedElements = getClearedElements(row)
-        for (roomElement in clearedElements) {
-            val room = roomElement.room
-            room.roomElements -= roomElement
-            if (room.roomElements.isEmpty()) {
-                rooms -= room
-            }
-        }
-
-        return !clearedElements.isEmpty()
-    }
-
-    fun openWallsNeighbouringDoors(room: Room) {
-        for (roomElement in room.roomElements) {
-            val wallsToOpen = getWallsToOpen(roomElement)
-
-            for (wall in wallsToOpen) {
-                wall.roomElement.walls -= wall
-            }
-        }
-    }
-
-    private fun getWallsToOpen(roomElement : RoomElement) : List<Wall> {
+    fun getWallsToOpen(roomElement : RoomElement) : List<Wall> {
         val wallsToOpen = mutableListOf<Wall>()
         for (wall in roomElement.walls) {
             val coordOther = roomElement.getBoardCoord().add(wall.direction.toOffset())

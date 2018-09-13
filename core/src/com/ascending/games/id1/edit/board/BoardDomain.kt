@@ -4,10 +4,8 @@ import com.ascending.games.id1.edit.board.action.content.HeroActionProvider
 import com.ascending.games.id1.edit.board.action.content.IRoomContentAction
 import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.edit.board.action.room.IBoardAction
-import com.ascending.games.id1.model.board.ARoomContent
-import com.ascending.games.id1.model.board.Board
-import com.ascending.games.id1.model.board.Hero
-import com.ascending.games.id1.model.board.Room
+import com.ascending.games.id1.model.board.*
+import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
@@ -38,7 +36,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
                 positionChanged = true
             } else {
                 room.position.y = room.position.y.roundToInt().toFloat()
-                board.openWallsNeighbouringDoors(room)
+                openWallsNeighbouringDoors(room)
             }
         }
 
@@ -52,7 +50,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         }
 
         for (row in 0 until board.height) {
-            board.clearRowIfFull(row)
+            clearRowIfFull(row)
         }
 
         var heroActionList = mapRoomContentToActionList.get(hero) ?: emptyList()
@@ -77,6 +75,43 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         val projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() })
         DropAction().execute(projectedRoom, this)
         return projectedRoom
+    }
+
+    private fun getClearedElements(row : Int) : List<RoomElement> {
+        var clearedElements = emptyList<RoomElement>()
+
+        for (x in 0 until board.width) {
+            val roomElement = board.getRoomElementAt(Coord2(x, row))
+            roomElement ?: return emptyList()
+
+            if (!board.hasRoomFallen(roomElement.room)) {
+                return emptyList()
+            }
+
+            clearedElements += roomElement
+        }
+
+        return clearedElements
+    }
+
+    fun clearRowIfFull(row : Int) : Boolean {
+        val clearedElements = getClearedElements(row)
+        for (roomElement in clearedElements) {
+            val room = roomElement.room
+            room.roomElements -= roomElement
+            if (room.roomElements.isEmpty()) {
+                board.rooms -= room
+            }
+        }
+
+        return !clearedElements.isEmpty()
+    }
+
+    fun openWallsNeighbouringDoors(room : Room) {
+        for (roomElement in room.roomElements) {
+            val wallsToOpen = board.getWallsToOpen(roomElement)
+            wallsToOpen.forEach { it.roomElement.walls -= it }
+        }
     }
 
     fun nextRoom() {

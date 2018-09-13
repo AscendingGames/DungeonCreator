@@ -1,9 +1,8 @@
 package com.ascending.games.id1.edit.board
 
 import com.ascending.games.id1.edit.board.action.room.DropAction
-import com.ascending.games.id1.model.board.Board
-import com.ascending.games.id1.model.board.Wall
-import com.ascending.games.id1.model.board.WallState
+import com.ascending.games.id1.model.board.*
+import com.ascending.games.lib.model.geometry.Coord2
 import com.ascending.games.lib.model.geometry.Direction4
 import com.badlogic.gdx.math.Vector2
 import org.hamcrest.CoreMatchers.hasItem
@@ -42,5 +41,16 @@ class BoardDomainTest {
         boardDomain.update(1f)
 
         assertEquals("Hero has moved to top room element", boardDomain.board.rooms[1].roomElements[0], boardDomain.hero.roomElement)
+    }
+
+    @Test
+    fun testClearRowIfFull() {
+        boardDomain.board.rooms = emptyList()
+        assertFalse(boardDomain.clearRowIfFull(0))
+        board.rooms += Room(listOf(RoomElement(Coord2.ZERO)))
+        assertFalse(boardDomain.clearRowIfFull(0))
+        board.rooms += Room(listOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f))
+        assertTrue(boardDomain.clearRowIfFull(0))
+        assertTrue(boardDomain.board.rooms.isEmpty())
     }
 }
