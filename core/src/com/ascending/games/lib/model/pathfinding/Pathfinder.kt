@@ -8,23 +8,22 @@ class Pathfinder<Node>(val graph : IGraph<Node>, val distanceEstimator : IDistan
 
         while (!closedList.contains(targetNode) && !openList.isEmpty()) {
             val rankedNode = openList.removeAt(0)
-            expandNode(rankedNode, targetNode, openList, closedList, mapNodeToPredecessor)
+            closedList.add(rankedNode.first)
+            
+            val neighbours = graph.getNeighbours(rankedNode.first)
+                    .filter { !closedList.contains(it) }
+                    .map { Pair(it, distanceEstimator.estimateDistance(rankedNode.first, it) + distanceEstimator.estimateDistance(it, targetNode)) }
+            expandNeighbours(neighbours, openList)
+            neighbours.forEach { mapNodeToPredecessor[it.first] = rankedNode.first }
         }
 
         return extractPath(startNode, targetNode, mapNodeToPredecessor)
     }
 
-    private fun expandNode(rankedNode : Pair<Node, Float>, targetNode : Node, openList : MutableList<Pair<Node, Float>>, closedList : MutableSet<Node>, mapNodeToPredecessor : MutableMap<Node, Node>) {
-        closedList.add(rankedNode.first)
-        val neighbours = graph.getNeighbours(rankedNode.first)
+    private fun expandNeighbours(neighbours : List<Pair<Node, Float>>, openList : MutableList<Pair<Node, Float>>) {
         for (neighbour in neighbours) {
-            if (!closedList.contains(neighbour)) {
-                val estimatedDistance = distanceEstimator.estimateDistance(rankedNode.first, neighbour) + distanceEstimator.estimateDistance(neighbour, targetNode)
-                val unrankedNode = Pair(neighbour, estimatedDistance)
-                val nodeRanking = getOpenListRanking(unrankedNode, openList)
-                mapNodeToPredecessor[neighbour] = rankedNode.first
-                openList.add(nodeRanking, unrankedNode)
-            }
+            val nodeRanking = getOpenListRanking(neighbour, openList)
+            openList.add(nodeRanking, neighbour)
         }
     }
 
