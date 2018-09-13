@@ -55,7 +55,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
             board.clearRowIfFull(row)
         }
 
-        var heroActionList = mapRoomContentToActionList.getOrDefault(hero, emptyList())
+        var heroActionList = mapRoomContentToActionList.get(hero) ?: emptyList()
         if (heroActionList.isEmpty()) {
             heroActionList = heroActionProvider.getNextActions(this)
             mapRoomContentToActionList.put(hero, heroActionList)
