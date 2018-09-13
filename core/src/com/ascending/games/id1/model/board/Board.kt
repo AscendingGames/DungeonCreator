@@ -2,8 +2,34 @@ package com.ascending.games.id1.model.board
 
 import com.ascending.games.lib.model.geometry.Coord2
 import com.ascending.games.lib.model.geometry.Direction4
+import com.ascending.games.lib.model.pathfinding.IGraph
 
-class Board(val width : Int, val height : Int) {
+class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
+    override fun getNodes(): List<RoomElement> {
+       return rooms.flatMap { it.roomElements }
+    }
+
+    override fun getNeighbours(node  : RoomElement): List<RoomElement> {
+        val neighbouringRoomElements = mutableListOf<RoomElement>()
+        for (direction in Direction4.values()) {
+            if (node.isOpen(direction)) {
+                val offset = direction.toOffset()
+                val coord = node.getBoardCoord().add(offset)
+
+                val roomElementOther = getRoomElementAt(coord)
+                if (roomElementOther != null && roomElementOther.isOpen(direction.opposite())) {
+                    neighbouringRoomElements.add(roomElementOther)
+                }
+            }
+        }
+
+        return neighbouringRoomElements
+    }
+
+    fun getNeighbours(room : Room) : Set<Room> {
+        return room.roomElements.flatMap { roomElement -> getNeighbours(roomElement).map { it.room }.filter { it != room } }.toSet()
+    }
+
     var rooms = emptyList<Room>()
 
     fun haveRoomsFallen() : Boolean {
@@ -25,7 +51,7 @@ class Board(val width : Int, val height : Int) {
     }
 
     fun getRoomElementsAt(position : Coord2) : List<RoomElement> {
-        return rooms.flatMap { it.roomElements.filter { it.getBoardCoord() == position } }
+        return rooms.flatMap { room -> room.roomElements.filter { it.getBoardCoord() == position } }
     }
 
     fun getRoomElementAt(position : Coord2) : RoomElement? {
@@ -108,23 +134,5 @@ class Board(val width : Int, val height : Int) {
         }
 
         return emptyList<Wall>()
-    }
-
-    fun getNeighbouringRooms(room : Room) : Set<Room> {
-        val neighbouringRooms = mutableSetOf<Room>()
-        for (roomElement in room.roomElements) {
-            for (direction in Direction4.values()) {
-                if (roomElement.isOpen(direction)) {
-                    val offset = direction.toOffset()
-                    val coord = roomElement.getBoardCoord().add(offset)
-
-                    val roomElementOther = getRoomElementAt(coord)
-                    if (roomElementOther != null && roomElementOther.isOpen(direction.opposite()) && roomElementOther.room != room) {
-                        neighbouringRooms.add(roomElementOther.room)
-                    }
-                }
-            }
-        }
-        return neighbouringRooms
     }
 }

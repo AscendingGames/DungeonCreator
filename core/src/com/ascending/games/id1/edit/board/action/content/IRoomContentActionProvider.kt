@@ -5,5 +5,5 @@ import com.ascending.games.id1.edit.board.action.content.IRoomContentAction
 import com.ascending.games.id1.model.board.ARoomContent
 
 interface IRoomContentActionProvider {
-    fun getNextActions(board : BoardDomain) : List<IRoomContentAction>
+    fun getNextActions(boardDomain : BoardDomain) : List<IRoomContentAction>
 }
