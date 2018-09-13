@@ -11,15 +11,13 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
 
     override fun getNeighbours(node  : RoomElement): List<RoomElement> {
         val neighbouringRoomElements = mutableListOf<RoomElement>()
-        for (direction in Direction4.values()) {
-            if (node.isOpen(direction)) {
-                val offset = direction.toOffset()
-                val coord = node.getBoardCoord().add(offset)
+        for (direction in Direction4.values().filter { node.isOpen(it) }) {
+            val offset = direction.toOffset()
+            val coord = node.getBoardCoord().add(offset)
 
-                val roomElementOther = getRoomElementAt(coord)
-                if (roomElementOther != null && roomElementOther.isOpen(direction.opposite())) {
-                    neighbouringRoomElements.add(roomElementOther)
-                }
+            val roomElementOther = getRoomElementAt(coord)
+            if (roomElementOther != null && roomElementOther.isOpen(direction.opposite())) {
+                neighbouringRoomElements.add(roomElementOther)
             }
         }
 
