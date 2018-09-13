@@ -11,16 +11,18 @@ import com.ascending.games.lib.model.pathfinding.Pathfinder
 class HeroActionProvider(val hero : Hero) : IRoomContentActionProvider {
     override fun getNextActions(boardDomain : BoardDomain) : List<IRoomContentAction> {
         if (hero.spawned) {
-            val neighbouringRooms = boardDomain.board.getNeighbours(hero.roomElement.room)
-            if (neighbouringRooms.isEmpty()) {
-                return listOf()
-            } else {
-                val targetRoomElement = neighbouringRooms.shuffled().last().roomElements.shuffled().last()
-                val path = Pathfinder<RoomElement>(boardDomain.board, RoomElementDistanceEstimator()).getPath(hero.roomElement, targetRoomElement)
-                return path.map { MoveContentAction(hero, it) }
-            }
-        } else {
-            return listOf()
+            return moveToRandomNeighbourRoom(boardDomain)
         }
+
+        return listOf()
+    }
+
+    private fun moveToRandomNeighbourRoom(boardDomain: BoardDomain) : List<IRoomContentAction> {
+        val neighbouringRooms = boardDomain.board.getNeighbours(hero.roomElement.room)
+        if (neighbouringRooms.isEmpty()) return listOf()
+
+        val targetRoomElement = neighbouringRooms.shuffled().last().roomElements.shuffled().last()
+        val path = Pathfinder<RoomElement>(boardDomain.board, RoomElementDistanceEstimator()).getPath(hero.roomElement, targetRoomElement)
+        return path.map { MoveContentAction(hero, it) }
     }
 }
