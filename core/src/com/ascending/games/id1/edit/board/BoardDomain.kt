@@ -87,7 +87,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
             roomElement ?: return emptyList()
 
             if (board.hero.roomElement == roomElement) return emptyList()
-            
+
             if (!board.hasRoomFallen(roomElement.room)) {
                 return emptyList()
             }
