@@ -60,6 +60,14 @@ class ObservableList<E>(private val mutableList: MutableList<E>) : IObservableLi
         return element
     }
 
+    override fun set(index: Int, element: E): E {
+        val oldElement = this[index]
+        onRemove.forEach { it.invoke(oldElement) }
+        mutableList[index] = element
+        onAdd.forEach { it.invoke(index, element) }
+        return oldElement
+    }
+
     override fun subList(fromIndex: Int, toIndex: Int): MutableList<E> {
         return ObservableList(mutableList.subList(fromIndex, toIndex))
     }

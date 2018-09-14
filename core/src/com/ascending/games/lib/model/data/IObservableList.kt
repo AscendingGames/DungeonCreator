@@ -5,23 +5,18 @@ interface IObservableList<E> : MutableList<E> {
     val onRemove : MutableCollection<(E) -> Unit>
 
     override fun add(element: E): Boolean {
-        val index = size - 1
-        add(index, element)
+        add(size, element)
         return true
     }
 
     override fun addAll(index: Int, elements: Collection<E>): Boolean {
         var currentIndex = index
-        for (element in elements) {
-            add(currentIndex++, element)
-        }
+        elements.forEach { add(currentIndex++, it) }
         return true
     }
 
     override fun addAll(elements: Collection<E>): Boolean {
-        for (element in elements) {
-            add(element)
-        }
+        elements.forEach { add(it) }
         return true
     }
 
@@ -46,13 +41,5 @@ interface IObservableList<E> : MutableList<E> {
             }
         }
         return changed
-    }
-
-    override fun set(index: Int, element: E): E {
-        val oldElement = this[index]
-        onRemove.forEach { it.invoke(oldElement) }
-        this[index] = element
-        onAdd.forEach { it.invoke(index, element) }
-        return oldElement
     }
 }
