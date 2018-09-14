@@ -1,8 +1,8 @@
 package com.ascending.games.lib.model.data
 
-class ObservableList<E>(private val mutableList: MutableList<E>) : MutableList<E> {
-    val onAdd = HashSet<(Int, E) -> Unit>()
-    val onRemove = HashSet<(E) -> Unit>()
+class ObservableList<E>(private val mutableList: MutableList<E>) : IObservableList<E> {
+    override val onAdd = HashSet<(Int, E) -> Unit>()
+    override val onRemove = HashSet<(E) -> Unit>()
 
     override val size: Int get() = mutableList.size
 
@@ -34,33 +34,10 @@ class ObservableList<E>(private val mutableList: MutableList<E>) : MutableList<E
         return mutableList.lastIndexOf(element)
     }
 
-    override fun add(element: E): Boolean {
-        mutableList.add(element)
-        val index = mutableList.size - 1
-        onAdd.forEach { it.invoke(index, element) }
-        return true
-    }
-
     override fun add(index: Int, element: E) {
         mutableList.add(element)
         onAdd.forEach { it.invoke(index, element) }
     }
-
-    override fun addAll(index: Int, elements: Collection<E>): Boolean {
-        var currentIndex = index
-        for (element in elements) {
-            add(currentIndex++, element)
-        }
-        return true
-    }
-
-    override fun addAll(elements: Collection<E>): Boolean {
-        for (element in elements) {
-            add(element)
-        }
-        return true
-    }
-
     override fun clear() {
         for (element in mutableList) {
             onRemove.forEach { it.invoke(element) }
@@ -76,44 +53,11 @@ class ObservableList<E>(private val mutableList: MutableList<E>) : MutableList<E
         return mutableList.listIterator(index)
     }
 
-    override fun remove(element: E): Boolean {
-        if (mutableList.remove(element)) {
-            onRemove.forEach { it.invoke(element) }
-            return true
-        } else {
-            return false
-        }
-    }
-
-    override fun removeAll(elements: Collection<E>): Boolean {
-        return elements.any { remove(it) }
-    }
-
     override fun removeAt(index: Int): E {
-        val element = mutableList[index]
+        val element = this[index]
         onRemove.forEach { it.invoke(element) }
         mutableList.removeAt(index)
         return element
-    }
-
-    override fun retainAll(elements: Collection<E>): Boolean {
-        var changed = false
-        for (i in mutableList.size - 1 downTo 0) {
-            val element = mutableList[i]
-            if (!elements.contains(element)) {
-                removeAt(i)
-                changed = true
-            }
-        }
-        return changed
-    }
-
-    override fun set(index: Int, element: E): E {
-        val oldElement = mutableList[index]
-        onRemove.forEach { it.invoke(oldElement) }
-        mutableList[index] = element
-        onAdd.forEach { it.invoke(index, element) }
-        return oldElement
     }
 
     override fun subList(fromIndex: Int, toIndex: Int): MutableList<E> {
