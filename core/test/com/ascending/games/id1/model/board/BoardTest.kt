@@ -29,7 +29,8 @@ class BoardTest {
     fun testGetRoomAt() {
         val room1 = Room(listOf(RoomElement(Coord2.ZERO)))
         val room2 = Room(listOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f))
-        board.rooms = board.rooms + room1 + room2
+        board.rooms.add(room1)
+        board.rooms.add(room2)
         assertEquals(room1, board.getRoomAt(Coord2(0, 0)))
         assertEquals(room2, board.getRoomAt(Coord2(1, 0)))
         assertEquals(room2, board.getRoomAt(Coord2(2, 0)))

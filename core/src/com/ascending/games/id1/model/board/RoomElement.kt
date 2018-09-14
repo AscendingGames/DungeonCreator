@@ -7,6 +7,14 @@ class RoomElement(var position : Coord2) {
     lateinit var room : Room
 
     var walls  = emptyList<Wall>()
+    val boardX  : Int
+        get() = Math.ceil(room.position.x.toDouble() + position.x).toInt()
+    val boardY  : Int
+        get() = Math.ceil(room.position.y.toDouble() + position.y).toInt()
+    val boardCoord : Coord2
+        get() = Coord2(boardX, boardY)
+    val closedWalls : List<Wall>
+        get() =  walls.filter { it.wallState == WallState.CLOSED }
 
     fun copy() : RoomElement {
         return RoomElement(position.copy())
@@ -19,19 +27,5 @@ class RoomElement(var position : Coord2) {
 
     fun isOpen(direction : Direction4) : Boolean {
         return walls.none { it.direction == direction }
-    }
-
-    fun getClosedWalls() : List<Wall> {
-        return walls.filter { it.wallState == WallState.CLOSED }
-    }
-    fun getBoardCoord() : Coord2 {
-        return Coord2(this.getBoardX(), this.getBoardY())
-    }
-
-    fun getBoardX() : Int {
-        return Math.ceil(room.position.x.toDouble() + position.x).toInt()
-    }
-    fun getBoardY() : Int {
-        return Math.ceil(room.position.y.toDouble() + position.y).toInt()
     }
 }

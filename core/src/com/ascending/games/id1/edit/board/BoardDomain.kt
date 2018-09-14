@@ -19,8 +19,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
     var waitingRooms = List(COUNT_WAITING_ROOMS) { roomFactory.createRoom() }
     var currentRoom by Delegates.notNull<Room>()
     var time = 0f
-    val hero : Hero = Hero()
-    val heroActionProvider = HeroActionProvider(hero)
+    val heroActionProvider = HeroActionProvider(board.hero)
 
     val mapRoomContentToActionList = mutableMapOf<ARoomContent, List<IRoomContentAction>>()
 
@@ -41,9 +40,8 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         }
 
         if (!positionChanged) {
-
-            if (!hero.spawned) {
-                hero.spawn(board)
+            if (!board.hero.spawned) {
+                board.hero.spawn(board)
             }
 
             nextRoom()
@@ -53,16 +51,20 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
             clearRowIfFull(row)
         }
 
-        var heroActionList = mapRoomContentToActionList.get(hero) ?: emptyList()
+        var heroActionList = mapRoomContentToActionList.get(board.hero) ?: emptyList()
         if (heroActionList.isEmpty()) {
             heroActionList = heroActionProvider.getNextActions(this)
-            mapRoomContentToActionList.put(hero, heroActionList)
+            mapRoomContentToActionList.put(board.hero, heroActionList)
         }
 
         if (!heroActionList.isEmpty()) {
             val action = heroActionList[0]
-            if (action.execute(this, time)) {
-                mapRoomContentToActionList.put(hero, heroActionList.minus(action))
+            if (action.canExecute(this)) {
+                if (action.execute(this, time)) {
+                    mapRoomContentToActionList.put(board.hero, heroActionList.minus(action))
+                }
+            } else {
+                mapRoomContentToActionList.put(board.hero, emptyList())
             }
         }
     }
@@ -84,6 +86,8 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
             val roomElement = board.getRoomElementAt(Coord2(x, row))
             roomElement ?: return emptyList()
 
+            if (board.hero.roomElement == roomElement) return emptyList()
+            
             if (!board.hasRoomFallen(roomElement.room)) {
                 return emptyList()
             }
@@ -100,7 +104,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
             val room = roomElement.room
             room.roomElements -= roomElement
             if (room.roomElements.isEmpty()) {
-                board.rooms -= room
+                board.rooms.remove(room)
             }
         }
 
@@ -118,6 +122,6 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         currentRoom = waitingRooms[0]
         currentRoom.position = Vector2(((board.width - 1) / 2).toFloat(), board.height.toFloat() - 1)
         waitingRooms = waitingRooms.drop(1) + roomFactory.createRoom()
-        board.rooms += currentRoom
+        board.rooms.add(currentRoom)
     }
 }

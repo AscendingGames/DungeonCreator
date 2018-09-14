@@ -13,13 +13,15 @@ class DefaultRoomFactory(private val roomShapes : List<RoomShape>, val minDoors 
         const val DEFAULT_MIN_DOORS = 2
         const val DEFAULT_MAX_DOORS = 4
 
+        val SHAPE_LINE = RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0)))
+        val SHAPE_L = RoomShape(listOf(Coord2(0,0), Coord2(-1,0), Coord2(1,0), Coord2(0,-1)))
+        val SHAPE_Z = RoomShape(listOf(Coord2(0,0), Coord2(0,-1), Coord2(-1,-1), Coord2(1,0)))
+        val SHAPE_THUMB = RoomShape(listOf(Coord2(0,0), Coord2(0,-1), Coord2(-1,-1), Coord2(1,0)))
+        val SHAPE_HALF_CROSS = RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0), Coord2(1,-1), Coord2(0,-1)))
+
         fun createDefaultRoomFactory() : DefaultRoomFactory {
             val roomShapes = listOf<RoomShape>(
-                    RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0))),
-                    RoomShape(listOf(Coord2(0,0), Coord2(-1,0), Coord2(1,0), Coord2(0,-1))),
-                    RoomShape(listOf(Coord2(0,0), Coord2(0,-1), Coord2(-1,-1), Coord2(1,0))),
-                    RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0), Coord2(1,-1))),
-                    RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0), Coord2(1,-1), Coord2(0,-1)))
+                    SHAPE_LINE, SHAPE_L, SHAPE_Z, SHAPE_THUMB, SHAPE_HALF_CROSS
             )
             return DefaultRoomFactory(roomShapes, DEFAULT_MIN_DOORS, DEFAULT_MAX_DOORS)
         }
@@ -29,7 +31,7 @@ class DefaultRoomFactory(private val roomShapes : List<RoomShape>, val minDoors 
         val room = roomShapes.shuffled().last().createRoom()
         val doors = (Math.random() * (maxDoors - minDoors)).toInt() + minDoors
 
-        val closedWalls = room.roomElements.flatMap { it.getClosedWalls() }
+        val closedWalls = room.roomElements.flatMap { it.closedWalls }
         val wallsToOpen = closedWalls.shuffled().takeLast(doors)
         wallsToOpen.forEach { it.wallState = WallState.DOOR }
 

@@ -32,24 +32,24 @@ class BoardDomainTest {
         assertFalse("Room has not moved to the bottom yet", board.haveRoomsFallen())
         boardDomain.update(1f)
         assertTrue("Room has reached the bottom", board.hasRoomFallen(board.rooms[0]))
-        assertFalse("Hero has not yet spawned", boardDomain.hero.spawned)
+        assertFalse("Hero has not yet spawned", boardDomain.board.hero.spawned)
         boardDomain.update(1f)
         assertEquals("Next room has been created", 2, board.rooms.size)
-        assertTrue("Hero has spawned", boardDomain.hero.spawned)
+        assertTrue("Hero has spawned", boardDomain.board.hero.spawned)
 
         boardDomain.execute(DropAction())
         boardDomain.update(1f)
 
-        assertEquals("Hero has moved to top room element", boardDomain.board.rooms[1].roomElements[0], boardDomain.hero.roomElement)
+        assertEquals("Hero has moved to top room element", boardDomain.board.rooms[1].roomElements[0], boardDomain.board.hero.roomElement)
     }
 
     @Test
     fun testClearRowIfFull() {
-        boardDomain.board.rooms = emptyList()
+        boardDomain.board.rooms.clear()
         assertFalse(boardDomain.clearRowIfFull(0))
         board.rooms += Room(listOf(RoomElement(Coord2.ZERO)))
         assertFalse(boardDomain.clearRowIfFull(0))
-        board.rooms += Room(listOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f))
+        board.rooms.add(Room(listOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f)))
         assertTrue(boardDomain.clearRowIfFull(0))
         assertTrue(boardDomain.board.rooms.isEmpty())
     }

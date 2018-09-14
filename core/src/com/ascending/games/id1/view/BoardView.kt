@@ -25,46 +25,22 @@ class BoardView(val board : Board) : AView2(0) {
 
     private val shapeRenderer = ShapeRenderer()
     private val boardArea = Rectangle(OFFSET.x * TILE_SIZE, OFFSET.y * TILE_SIZE, board.width * TILE_SIZE, board.height * TILE_SIZE)
+    private val heroView = HeroView(board.hero, shapeRenderer)
+    private val roomViews = board.rooms.map { RoomView(it, shapeRenderer) }.toMutableList()
+
+    init {
+        board.rooms.onAdd += { index, room -> roomViews.add(RoomView(room, shapeRenderer)) }
+        board.rooms.onRemove += { room -> roomViews.removeAt(roomViews.indexOfFirst { it.room == room }) }
+    }
 
     override fun render(batch: SpriteBatch, camera : Camera) {
         shapeRenderer.projectionMatrix = camera.combined
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer.setColor(Color.BROWN)
-        for (room in board.rooms) {
-            for (roomElement in room.roomElements) {
-                val boardCoord = roomElement.getBoardCoord()
-                val roomElementPosition = Vector2((boardCoord.x + OFFSET.x) * TILE_SIZE, (boardCoord.y + OFFSET.y) * TILE_SIZE)
-                shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, TILE_SIZE,  TILE_SIZE)
-            }
-        }
-        shapeRenderer.end()
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
-        Gdx.gl.glLineWidth(WALL_LINE_SIZE)
-        for (room in board.rooms) {
-            for (roomElement in room.roomElements) {
-                val boardCoord = roomElement.getBoardCoord()
-                val roomElementPosition = Vector2((boardCoord.x + OFFSET.x) * TILE_SIZE, (boardCoord.y + OFFSET.y) * TILE_SIZE)
-                for (wall in roomElement.walls) {
-                    when (wall.wallState) {
-                        WallState.CLOSED -> shapeRenderer.setColor(Color.GRAY)
-                        WallState.DOOR -> shapeRenderer.setColor(Color.RED)
-                    }
-
-                    when (wall.direction) {
-                        Direction4.LEFT -> shapeRenderer.line(roomElementPosition.x, roomElementPosition.y, roomElementPosition.x, roomElementPosition.y + TILE_SIZE)
-                        Direction4.RIGHT -> shapeRenderer.line(roomElementPosition.x + TILE_SIZE, roomElementPosition.y, roomElementPosition.x + TILE_SIZE, roomElementPosition.y + TILE_SIZE)
-                        Direction4.DOWN -> shapeRenderer.line(roomElementPosition.x, roomElementPosition.y, roomElementPosition.x + TILE_SIZE, roomElementPosition.y)
-                        Direction4.UP -> shapeRenderer.line(roomElementPosition.x, roomElementPosition.y + TILE_SIZE, roomElementPosition.x + TILE_SIZE, roomElementPosition.y + TILE_SIZE)
-                    }
-                }
-            }
-        }
-        shapeRenderer.end()
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         Gdx.gl.glLineWidth(BOARD_LINE_SIZE)
+
+        roomViews.forEach { it.render(batch, camera) }
+        heroView.render(batch, camera)
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         shapeRenderer.setColor(BOARD_COLOR.r, BOARD_COLOR.g, BOARD_COLOR.b, BOARD_COLOR.a)
         shapeRenderer.rect(boardArea.x, boardArea.y, boardArea.width, boardArea.height)
         shapeRenderer.end()

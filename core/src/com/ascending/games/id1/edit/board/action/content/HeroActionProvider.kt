@@ -23,6 +23,6 @@ class HeroActionProvider(val hero : Hero) : IRoomContentActionProvider {
 
         val targetRoomElement = neighbouringRooms.shuffled().last().roomElements.shuffled().last()
         val path = Pathfinder<RoomElement>(boardDomain.board, RoomElementDistanceEstimator()).getPath(hero.roomElement, targetRoomElement)
-        return path.map { MoveContentAction(hero, it) }
+        return listOf(ComposedRoomContentAction(path.map { MoveContentAction(hero, it) }))
     }
 }
