@@ -1,6 +1,7 @@
 package com.ascending.games.id1.view
 
 import com.ascending.games.id1.model.board.Room
+import com.ascending.games.id1.model.board.RoomElement
 import com.ascending.games.id1.model.board.WallState
 import com.ascending.games.lib.model.geometry.Direction4
 import com.ascending.games.lib.view.AView2
@@ -15,16 +16,14 @@ class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.setColor(Color.BROWN)
         for (roomElement in room.roomElements) {
-            val boardCoord = roomElement.boardCoord
-            val roomElementPosition = Vector2((boardCoord.x + BoardView.OFFSET.x) * BoardView.TILE_SIZE, (boardCoord.y + BoardView.OFFSET.y) * BoardView.TILE_SIZE)
+            val roomElementPosition = getRoomElementPosition(roomElement)
             shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
         }
         shapeRenderer.end()
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         for (roomElement in room.roomElements) {
-            val boardCoord = roomElement.boardCoord
-            val roomElementPosition = Vector2((boardCoord.x + BoardView.OFFSET.x) * BoardView.TILE_SIZE, (boardCoord.y + BoardView.OFFSET.y) * BoardView.TILE_SIZE)
+            val roomElementPosition = getRoomElementPosition(roomElement)
             for (wall in roomElement.walls) {
                 when (wall.wallState) {
                     WallState.CLOSED -> shapeRenderer.setColor(Color.GRAY)
@@ -40,6 +39,10 @@ class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
             }
         }
         shapeRenderer.end()
+    }
+
+    fun getRoomElementPosition(roomElement : RoomElement) : Vector2 {
+        return Vector2((roomElement.boardCoord.x + BoardView.OFFSET.x) * BoardView.TILE_SIZE, (roomElement.boardCoord.y + BoardView.OFFSET.y) * BoardView.TILE_SIZE)
     }
 
     override fun dispose() = Unit
