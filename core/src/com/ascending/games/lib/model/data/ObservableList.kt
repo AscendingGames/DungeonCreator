@@ -77,8 +77,12 @@ class ObservableList<E>(private val mutableList: MutableList<E>) : MutableList<E
     }
 
     override fun remove(element: E): Boolean {
-        onRemove.forEach { it.invoke(element) }
-        return mutableList.remove(element)
+        if (mutableList.remove(element)) {
+            onRemove.forEach { it.invoke(element) }
+            return true
+        } else {
+            return false
+        }
     }
 
     override fun removeAll(elements: Collection<E>): Boolean {
