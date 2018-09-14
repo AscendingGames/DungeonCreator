@@ -65,7 +65,7 @@ class ObservableList<E>(private val mutableList: MutableList<E>) : MutableList<E
         for (element in mutableList) {
             onRemove.forEach { it.invoke(element) }
         }
-        onRemove.clear()
+        mutableList.clear()
     }
 
     override fun listIterator(): MutableListIterator<E> {
