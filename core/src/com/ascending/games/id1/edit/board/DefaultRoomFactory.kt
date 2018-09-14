@@ -14,14 +14,14 @@ class DefaultRoomFactory(private val roomShapes : List<RoomShape>, val minDoors 
         const val DEFAULT_MAX_DOORS = 4
 
         val SHAPE_LINE = RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0)))
-        val SHAPE_L = RoomShape(listOf(Coord2(0,0), Coord2(-1,0), Coord2(1,0), Coord2(0,-1)))
+        val SHAPE_L = RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0), Coord2(1,-1)))
         val SHAPE_Z = RoomShape(listOf(Coord2(0,0), Coord2(0,-1), Coord2(-1,-1), Coord2(1,0)))
-        val SHAPE_THUMB = RoomShape(listOf(Coord2(0,0), Coord2(0,-1), Coord2(-1,-1), Coord2(1,0)))
-        val SHAPE_HALF_CROSS = RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0), Coord2(1,-1), Coord2(0,-1)))
+        val SHAPE_HALF_CROSS = RoomShape(listOf(Coord2(0,0), Coord2(0,-1), Coord2(-1,0), Coord2(1,0)))
+        val SHAPE_THUMB = RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0), Coord2(1,-1), Coord2(0,-1)))
 
         fun createDefaultRoomFactory() : DefaultRoomFactory {
             val roomShapes = listOf<RoomShape>(
-                    SHAPE_LINE, SHAPE_L, SHAPE_Z, SHAPE_THUMB, SHAPE_HALF_CROSS
+                    SHAPE_LINE, SHAPE_L, SHAPE_Z, SHAPE_HALF_CROSS, SHAPE_THUMB
             )
             return DefaultRoomFactory(roomShapes, DEFAULT_MIN_DOORS, DEFAULT_MAX_DOORS)
         }
