@@ -10,6 +10,22 @@ eclipse.project {
     name = appName + "-core"
 }
 
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.7.7.201606060606"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.enabled true
+    }
+}
+
 dependencies {
-    implementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
