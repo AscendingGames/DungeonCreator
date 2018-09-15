@@ -48,8 +48,10 @@ class BoardDomainTest {
         boardDomain.board.rooms.clear()
         assertFalse(boardDomain.clearRowIfFull(0))
         board.rooms += Room(mutableListOf(RoomElement(Coord2.ZERO)))
+        board.rooms[0].isVisited = true
         assertFalse(boardDomain.clearRowIfFull(0))
         board.rooms.add(Room(mutableListOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f)))
+        board.rooms[1].isVisited = true
         assertTrue(boardDomain.clearRowIfFull(0))
         assertTrue(boardDomain.board.rooms.isEmpty())
     }
