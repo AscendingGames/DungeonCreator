@@ -86,11 +86,9 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
             val roomElement = board.getRoomElementAt(Coord2(x, row))
             roomElement ?: return emptyList()
 
+            if (!roomElement.room.isCleared) return emptyList()
             if (board.hero.spawned && board.hero.roomElement == roomElement) return emptyList()
-
-            if (!board.hasRoomFallen(roomElement.room)) {
-                return emptyList()
-            }
+            if (!board.hasRoomFallen(roomElement.room)) return emptyList()
 
             clearedElements += roomElement
         }

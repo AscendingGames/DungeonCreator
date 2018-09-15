@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2
 class GestureActionProvider : GestureDetector.GestureListener {
 
     companion object {
-        const val PAN_THRESHOLD_X = 25f
+        const val PAN_THRESHOLD_X = 20f
         const val PAN_THRESHOLD_Y = 20f
     }
 
