@@ -27,7 +27,7 @@ class BoardView(val board : Board) : AView2(0) {
         }
     }
 
-    private val shapeRenderer = ShapeRenderer()
+    val shapeRenderer = ShapeRenderer()
     private val boardArea = Rectangle(OFFSET.x * TILE_SIZE, OFFSET.y * TILE_SIZE, board.width * TILE_SIZE, board.height * TILE_SIZE)
     private val heroView = HeroView(board.hero, shapeRenderer)
     private val roomViews = board.rooms.map { RoomView(it, shapeRenderer) }.toMutableList()

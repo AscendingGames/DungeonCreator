@@ -14,13 +14,22 @@ class DungeonScreen(private val game : DungeonCreatorGame) : Screen{
 
     companion object {
         val BOARD_SIZE = Coord2(10, 20)
-        val THRESHOLD = 1f
+        const val THRESHOLD = 1f
     }
 
     private val board = Board(BOARD_SIZE.x, BOARD_SIZE.y)
     private val boardDomain = BoardDomain(board, DefaultRoomFactory.createDefaultRoomFactory())
     private val boardView = BoardView(board)
     private val gestureActionProvider = GestureActionProvider()
+    private var currentRoomView = RoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
+
+    init {
+        boardDomain.onProjectedRoomChanged += { ->
+            game.sceneManager.views.remove(currentRoomView)
+            currentRoomView = RoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
+            game.sceneManager.views.add(currentRoomView)
+        }
+    }
 
     override fun dispose() {
         boardView.dispose()

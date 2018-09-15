@@ -12,12 +12,15 @@ import kotlin.properties.Delegates
 
 class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
 
+    val onProjectedRoomChanged = HashSet<() -> Unit>()
+
     companion object {
         const val COUNT_WAITING_ROOMS = 3
     }
 
     var waitingRooms = List(COUNT_WAITING_ROOMS) { roomFactory.createRoom() }
     var currentRoom by Delegates.notNull<Room>()
+    var projectedRoom by Delegates.notNull<Room>()
     var time = 0f
     val heroActionProvider = HeroActionProvider(board.hero)
 
@@ -71,12 +74,10 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
 
     fun execute(action : IBoardAction) {
         action.execute(currentRoom,this)
-    }
 
-    fun getProjectedRoom() : Room {
-        val projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() }.toMutableList())
+        projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() }.toMutableList(), currentRoom.position.cpy())
         DropAction().execute(projectedRoom, this)
-        return projectedRoom
+        onProjectedRoomChanged.forEach { it.invoke() }
     }
 
     private fun getClearedElements(row : Int) : List<RoomElement> {
@@ -121,5 +122,10 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         currentRoom.position = Vector2(((board.width - 1) / 2).toFloat(), board.height.toFloat() - 1)
         waitingRooms = waitingRooms.drop(1) + roomFactory.createRoom()
         board.rooms.add(currentRoom)
+
+        projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() }.toMutableList())
+        DropAction().execute(projectedRoom, this)
+
+        onProjectedRoomChanged.forEach { it.invoke() }
     }
 }
