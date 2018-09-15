@@ -27,8 +27,13 @@ class HeroActionProvider(val hero : Hero) : IRoomContentActionProvider {
     }
 
     private fun moveToRandomNeighbourRoom(boardDomain: BoardDomain) : List<IRoomContentAction> {
-        val neighbouringRooms = boardDomain.board.getNeighbours(hero.roomElement.room)
+        var neighbouringRooms = boardDomain.board.getNeighbours(hero.roomElement.room)
         if (neighbouringRooms.isEmpty()) return listOf()
+
+        val unclearedNeighbouringRooms = neighbouringRooms.filter { !it.isCleared }
+        if (!unclearedNeighbouringRooms.isEmpty()) {
+            neighbouringRooms = unclearedNeighbouringRooms.toSet()
+        }
 
         val targetRoomElement = neighbouringRooms.shuffled().last().roomElements.shuffled().last()
         return moveToRoomElement(boardDomain, targetRoomElement)

@@ -18,6 +18,7 @@ class MoveContentAction(val aRoomContent: ARoomContent, val targetRoomElement : 
         if (distance <= delta) {
             aRoomContent.roomElement = targetRoomElement
             aRoomContent.relativePosition = Vector2()
+            targetRoomElement.room.isVisited = true
             return true
         } else {
             val direction = movementVector.nor()
