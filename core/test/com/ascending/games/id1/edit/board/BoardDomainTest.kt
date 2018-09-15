@@ -44,6 +44,14 @@ class BoardDomainTest {
     }
 
     @Test
+    fun testProjectedRoom() {
+        assertEquals(Vector2(1f,0f), boardDomain.projectedRoom.position)
+        boardDomain.execute(DropAction())
+        boardDomain.update(0f)
+        assertEquals(Vector2(1f,1f), boardDomain.projectedRoom.position)
+    }
+
+    @Test
     fun testClearRowIfFull() {
         boardDomain.board.rooms.clear()
         assertFalse(boardDomain.clearRowIfFull(0))

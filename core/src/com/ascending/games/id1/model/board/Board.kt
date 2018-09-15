@@ -62,11 +62,18 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
     }
 
     fun isRoomOverlapping(room : Room) : Boolean {
-        return !room.roomElements.none { getRoomElementsAt(it.boardCoord).size > 1 }
+        return room.roomElements.any { roomElement -> getRoomElementsAt(roomElement.boardCoord).filter { it != roomElement }.isNotEmpty() }
     }
 
     fun isRoomInBounds(room : Room) : Boolean {
         return room.roomElements.none { it.boardX < 0 || it.boardY < 0 || it.boardX >= width || it.boardY >= height }
+    }
+
+    fun openWallsNeighbouringDoors(room : Room) {
+        for (roomElement in room.roomElements) {
+            val wallsToOpen = getWallsToOpen(roomElement)
+            wallsToOpen.forEach { it.roomElement.walls -= it }
+        }
     }
 
     fun getWallsToOpen(roomElement : RoomElement) : List<Wall> {

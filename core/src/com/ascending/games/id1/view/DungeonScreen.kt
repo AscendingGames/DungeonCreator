@@ -21,12 +21,13 @@ class DungeonScreen(private val game : DungeonCreatorGame) : Screen{
     private val boardDomain = BoardDomain(board, DefaultRoomFactory.createDefaultRoomFactory())
     private val boardView = BoardView(board)
     private val gestureActionProvider = GestureActionProvider()
-    private var currentRoomView = RoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
+    private var currentRoomView = ProjectedRoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
 
     init {
+        game.sceneManager.views.add(currentRoomView)
         boardDomain.onProjectedRoomChanged += { ->
             game.sceneManager.views.remove(currentRoomView)
-            currentRoomView = RoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
+            currentRoomView = ProjectedRoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
             game.sceneManager.views.add(currentRoomView)
         }
     }

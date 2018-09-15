@@ -38,7 +38,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
                 positionChanged = true
             } else {
                 room.position.y = room.position.y.roundToInt().toFloat()
-                openWallsNeighbouringDoors(room)
+                board.openWallsNeighbouringDoors(room)
             }
         }
 
@@ -73,11 +73,8 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
     }
 
     fun execute(action : IBoardAction) {
-        action.execute(currentRoom,this)
-
-        projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() }.toMutableList(), currentRoom.position.cpy())
-        DropAction().execute(projectedRoom, this)
-        onProjectedRoomChanged.forEach { it.invoke() }
+        action.execute(currentRoom,board)
+        updateProjectedRoom()
     }
 
     private fun getClearedElements(row : Int) : List<RoomElement> {
@@ -110,22 +107,19 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         return !clearedElements.isEmpty()
     }
 
-    fun openWallsNeighbouringDoors(room : Room) {
-        for (roomElement in room.roomElements) {
-            val wallsToOpen = board.getWallsToOpen(roomElement)
-            wallsToOpen.forEach { it.roomElement.walls -= it }
-        }
-    }
-
     fun nextRoom() {
         currentRoom = waitingRooms[0]
         currentRoom.position = Vector2(((board.width - 1) / 2).toFloat(), board.height.toFloat() - 1)
         waitingRooms = waitingRooms.drop(1) + roomFactory.createRoom()
         board.rooms.add(currentRoom)
+        updateProjectedRoom()
+    }
 
-        projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() }.toMutableList())
-        DropAction().execute(projectedRoom, this)
-
+    private fun updateProjectedRoom() {
+        val positionY = currentRoom.position.y
+        DropAction().execute(currentRoom, board)
+        projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() }.toMutableList(), currentRoom.position.cpy())
+        currentRoom.position.y = positionY
         onProjectedRoomChanged.forEach { it.invoke() }
     }
 }
