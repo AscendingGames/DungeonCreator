@@ -38,7 +38,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         }
 
         if (board.hero.spawned) {
-            updateRoomContentActions()
+            updateRoomContentActions(time)
         }
     }
 
@@ -64,7 +64,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         }
     }
 
-    private fun updateRoomContentActions()  {
+    private fun updateRoomContentActions(time : Float)  {
         var heroActionList = mapRoomContentToActionList.get(board.hero) ?: emptyList()
         if (heroActionList.isEmpty()) {
             heroActionList = heroActionProvider.getNextActions(this)
