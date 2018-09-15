@@ -1,15 +1,17 @@
 package com.ascending.games.id1.edit.board
 
-data class DefaultRoomFactoryConfig(val minDoors : Int, val maxDoors : Int, val minMonsters : Int, val maxMonsters : Int) {
-    companion object {
-        const val DEFAULT_MIN_DOORS = 2
-        const val DEFAULT_MAX_DOORS = 4
+data class DefaultRoomFactoryConfig(
+        val numberDoors : IntRange,
+        val numberMonsters : IntRange,
+        val probHealingCrystal : Float) {
 
-        const val DEFAULT_MIN_MONSTERS = 0
-        const val DEFAULT_MAX_MONSTERS = 3
+    companion object {
+        val DEFAULT_NUMBER_DOORS = 2..4
+        val DEFAULT_NUMBER_MONSTERS = 0..3
+        const val DEFAULT_PROB_CRYSTAL = 0.1f
 
         fun createDefaultRoomFactoryConfig() : DefaultRoomFactoryConfig {
-            return DefaultRoomFactoryConfig(DEFAULT_MIN_DOORS, DEFAULT_MAX_DOORS, DEFAULT_MIN_MONSTERS, DEFAULT_MAX_MONSTERS)
+            return DefaultRoomFactoryConfig(DEFAULT_NUMBER_DOORS, DEFAULT_NUMBER_MONSTERS, DEFAULT_PROB_CRYSTAL)
         }
     }
 }

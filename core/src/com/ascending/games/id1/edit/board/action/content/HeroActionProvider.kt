@@ -8,7 +8,7 @@ import kotlin.properties.Delegates
 
 class HeroActionProvider(val hero : Hero) : IRoomContentActionProvider {
 
-    var lastRoom by Delegates.notNull<Room>()
+    lateinit var lastRoom : Room
 
     override fun getNextActions(boardDomain : BoardDomain) : List<IRoomContentAction> {
         if (hero.spawned) {

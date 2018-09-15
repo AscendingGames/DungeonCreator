@@ -1,9 +1,6 @@
 package com.ascending.games.id1.view
 
-import com.ascending.games.id1.model.board.Board
-import com.ascending.games.id1.model.board.Room
-import com.ascending.games.id1.model.board.RoomElement
-import com.ascending.games.id1.model.board.WallState
+import com.ascending.games.id1.model.board.*
 import com.ascending.games.lib.model.geometry.Direction4
 import com.ascending.games.lib.view.AView2
 import com.badlogic.gdx.graphics.Camera
@@ -23,7 +20,11 @@ class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
             shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
 
             for (aRoomContent in roomElement.roomContents) {
-                shapeRenderer.setColor(Color.RED)
+                if (aRoomContent is Monster) {
+                    shapeRenderer.setColor(Color.RED)
+                }  else {
+                    shapeRenderer.setColor(Color.VIOLET)
+                }
                 shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
             }
         }

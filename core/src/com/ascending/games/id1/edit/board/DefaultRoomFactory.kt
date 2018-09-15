@@ -22,11 +22,15 @@ class DefaultRoomFactory(private val roomShapes : List<RoomShape>, val factoryCo
     }
 
     private fun getNumberDoors() : Int {
-        return (Math.random() * (factoryConfig.maxDoors - factoryConfig.minDoors)).toInt() + factoryConfig.minDoors
+        return factoryConfig.numberDoors.shuffled().last()
     }
 
     private fun getNumberMonsters() : Int {
-        return (Math.random() * (factoryConfig.maxMonsters - factoryConfig.minMonsters)).toInt() + factoryConfig.minMonsters
+        return factoryConfig.numberMonsters.shuffled().last()
+    }
+
+    private fun hasCrystal() : Boolean {
+        return Math.random() <= factoryConfig.probHealingCrystal
     }
 
     override fun createRoom(): Room {
@@ -38,7 +42,13 @@ class DefaultRoomFactory(private val roomShapes : List<RoomShape>, val factoryCo
         wallsToOpen.forEach { it.wallState = WallState.DOOR }
 
         val numberMonsters  = getNumberMonsters()
-        room.roomElements.shuffled().takeLast(numberMonsters).forEach { Monster(it) }
+        val shuffledElements = room.roomElements.shuffled()
+        shuffledElements.take(numberMonsters).forEach { Monster(it) }
+        val remainingElements = shuffledElements.drop(numberMonsters)
+
+        if (remainingElements.isNotEmpty()  && hasCrystal()) {
+            Crystal(Crystal.Type.HEALING, remainingElements[0])
+        }
 
         return room
     }

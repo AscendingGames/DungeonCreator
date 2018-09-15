@@ -31,6 +31,18 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
     }
 
     fun update(time : Float) {
+        updateFallingRooms(time)
+
+        for (row in 0 until board.height) {
+            clearRowIfFull(row)
+        }
+
+        if (board.hero.spawned) {
+            updateRoomContentActions()
+        }
+    }
+
+    private fun updateFallingRooms(time : Float) {
         var positionChanged = false
         for (room in board.rooms) {
             if (!board.hasRoomFallen(room)) {
@@ -45,15 +57,14 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
         if (!positionChanged) {
             if (!board.hero.spawned) {
                 board.hero.spawn(board)
+                heroActionProvider.lastRoom = board.hero.roomElement.room
             }
 
             nextRoom()
         }
+    }
 
-        for (row in 0 until board.height) {
-            clearRowIfFull(row)
-        }
-
+    private fun updateRoomContentActions()  {
         var heroActionList = mapRoomContentToActionList.get(board.hero) ?: emptyList()
         if (heroActionList.isEmpty()) {
             heroActionList = heroActionProvider.getNextActions(this)
