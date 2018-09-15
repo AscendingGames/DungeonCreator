@@ -21,6 +21,10 @@ class BoardView(val board : Board) : AView2(0) {
         val BOARD_COLOR : Color = Color.GRAY
         const val BOARD_LINE_SIZE = 10f
         const val WALL_LINE_SIZE = 3f
+
+        fun convertToScreenCoordinates(coord : Coord2) : Vector2 {
+            return Vector2((OFFSET.x + coord.x) * TILE_SIZE, (OFFSET.y + coord.y) * TILE_SIZE)
+        }
     }
 
     private val shapeRenderer = ShapeRenderer()
@@ -29,7 +33,7 @@ class BoardView(val board : Board) : AView2(0) {
     private val roomViews = board.rooms.map { RoomView(it, shapeRenderer) }.toMutableList()
 
     init {
-        board.rooms.onAdd += { index, room -> roomViews.add(RoomView(room, shapeRenderer)) }
+        board.rooms.onAdd += { _, room -> roomViews.add(RoomView(room, shapeRenderer)) }
         board.rooms.onRemove += { room -> roomViews.removeAt(roomViews.indexOfFirst { it.room == room }) }
     }
 
@@ -38,7 +42,9 @@ class BoardView(val board : Board) : AView2(0) {
         Gdx.gl.glLineWidth(BOARD_LINE_SIZE)
 
         roomViews.forEach { it.render(batch, camera) }
-        heroView.render(batch, camera)
+        if (board.hero.spawned) {
+            heroView.render(batch, camera)
+        }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         shapeRenderer.setColor(BOARD_COLOR.r, BOARD_COLOR.g, BOARD_COLOR.b, BOARD_COLOR.a)
