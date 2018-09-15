@@ -1,4 +1,4 @@
-package com.ascending.games.lib.model
+package com.ascending.games.lib.model.game
 
 import com.badlogic.gdx.math.Vector2
 

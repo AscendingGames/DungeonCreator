@@ -1,12 +1,10 @@
 package com.ascending.games.id1.model.board
 
-import com.ascending.games.lib.model.IPosition2
-import com.badlogic.gdx.math.Vector2
+import com.ascending.games.lib.model.game.AGameObject
 
-abstract class ARoomContent : IPosition2{
+abstract class ARoomContent : AGameObject() {
+    override val parent: Any?
+        get() = roomElement
+
     lateinit var roomElement : RoomElement
-
-    override var relativePosition = Vector2()
-    override val absolutePosition: Vector2
-        get() = Vector2(relativePosition.x + roomElement.boardX.toFloat(), relativePosition.y + roomElement.boardY.toFloat())
 }

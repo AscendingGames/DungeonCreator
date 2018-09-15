@@ -5,7 +5,7 @@ import com.ascending.games.lib.model.geometry.Direction4
 
 data class RoomShape(val roomElements : List<Coord2>) {
     fun createRoom() : Room {
-        val copiedRoomElements = roomElements.map { RoomElement(it.copy()) }
+        val copiedRoomElements = roomElements.map { RoomElement(it.copy()) }.toMutableList()
         val createdRoom = Room(copiedRoomElements)
         for (roomElement in createdRoom.roomElements) {
             roomElement.walls += createWalls(roomElement, createdRoom)

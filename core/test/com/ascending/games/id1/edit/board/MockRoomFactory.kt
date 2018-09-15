@@ -6,6 +6,6 @@ import com.ascending.games.lib.model.geometry.Coord2
 
 class MockRoomFactory : IRoomFactory {
     override fun createRoom(): Room {
-        return Room(listOf(RoomElement(Coord2(0, 0))))
+        return Room(mutableListOf(RoomElement(Coord2(0, 0))))
     }
 }

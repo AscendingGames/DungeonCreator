@@ -13,13 +13,13 @@ class BoardTest {
     @Test
     fun roomsHaveFallen() {
         assertTrue("Initially no rooms are falling" , board.haveRoomsFallen())
-        board.rooms += Room(listOf(RoomElement(Coord2.ZERO)), Vector2(0f, 9f))
+        board.rooms += Room(mutableListOf(RoomElement(Coord2.ZERO)), Vector2(0f, 9f))
         assertFalse("Room is currently falling", board.haveRoomsFallen())
         board.rooms[0].position.y = 5f
         assertFalse("Room is still falling", board.haveRoomsFallen())
         board.rooms[0].position.y = 0f
         assertTrue("Room has again fallen", board.haveRoomsFallen())
-        board.rooms += Room(listOf(RoomElement(Coord2.ZERO)), Vector2(0f, 9f))
+        board.rooms += Room(mutableListOf(RoomElement(Coord2.ZERO)), Vector2(0f, 9f))
         assertFalse("Room is currently falling", board.haveRoomsFallen())
         board.rooms[1].position.y = 1f
         assertTrue("Room has again fallen", board.haveRoomsFallen())
@@ -27,8 +27,8 @@ class BoardTest {
 
     @Test
     fun testGetRoomAt() {
-        val room1 = Room(listOf(RoomElement(Coord2.ZERO)))
-        val room2 = Room(listOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f))
+        val room1 = Room(mutableListOf(RoomElement(Coord2.ZERO)))
+        val room2 = Room(mutableListOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f))
         board.rooms.add(room1)
         board.rooms.add(room2)
         assertEquals(room1, board.getRoomAt(Coord2(0, 0)))

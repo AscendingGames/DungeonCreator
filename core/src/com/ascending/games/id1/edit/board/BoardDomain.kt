@@ -74,7 +74,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
     }
 
     fun getProjectedRoom() : Room {
-        val projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() })
+        val projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() }.toMutableList())
         DropAction().execute(projectedRoom, this)
         return projectedRoom
     }

@@ -47,9 +47,9 @@ class BoardDomainTest {
     fun testClearRowIfFull() {
         boardDomain.board.rooms.clear()
         assertFalse(boardDomain.clearRowIfFull(0))
-        board.rooms += Room(listOf(RoomElement(Coord2.ZERO)))
+        board.rooms += Room(mutableListOf(RoomElement(Coord2.ZERO)))
         assertFalse(boardDomain.clearRowIfFull(0))
-        board.rooms.add(Room(listOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f)))
+        board.rooms.add(Room(mutableListOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f)))
         assertTrue(boardDomain.clearRowIfFull(0))
         assertTrue(boardDomain.board.rooms.isEmpty())
     }

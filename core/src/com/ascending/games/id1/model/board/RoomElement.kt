@@ -6,6 +6,7 @@ import com.ascending.games.lib.model.geometry.Direction4
 class RoomElement(var position : Coord2) {
     lateinit var room : Room
 
+    val roomContents = mutableListOf<ARoomContent>()
     var walls  = emptyList<Wall>()
     val boardX  : Int
         get() = Math.ceil(room.position.x.toDouble() + position.x).toInt()

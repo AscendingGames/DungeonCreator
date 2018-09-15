@@ -1,7 +1,5 @@
 package com.ascending.games.id1.model.board
 
-import com.badlogic.gdx.math.Vector2
-
 class Hero() : ARoomContent() {
     var spawned = false
 
