@@ -74,7 +74,7 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
         for (wall in roomElement.walls) {
             val coordOther = roomElement.boardCoord.add(wall.direction.toOffset())
             val roomElementOther = getRoomElementAt(coordOther)
-            if (roomElementOther != null) {
+            if (roomElementOther != null && hasRoomFallen(roomElementOther.room)) {
                 val wallOther = roomElementOther.walls.find { it.direction == wall.direction.opposite() }
                 wallsToOpen.addAll(getWallsToOpen(wall, wallOther))
             }
