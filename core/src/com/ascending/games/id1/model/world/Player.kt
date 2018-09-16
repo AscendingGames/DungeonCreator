@@ -1,7 +1,8 @@
 package com.ascending.games.id1.model.world
 
-import com.ascending.games.id1.model.mechanics.StatType
+import com.ascending.games.lib.model.data.ObservableMap
+import com.ascending.games.lib.model.game.IStatType
 
 class Player {
-    val stats = HashMap<StatType, Float>()
+    val stats = ObservableMap(HashMap<IStatType, Float>())
 }

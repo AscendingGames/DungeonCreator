@@ -2,6 +2,8 @@ package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.DungeonCreatorGame
 import com.ascending.games.id1.view.board.BoardScreen
+import com.ascending.games.id1.view.mechanics.StatsView
+import com.ascending.games.lib.model.data.ObservableMap
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
@@ -16,9 +18,11 @@ import com.badlogic.gdx.utils.Align
 
 
 class WorldScreen(private val game : DungeonCreatorGame) : Screen {
-    private val stage = Stage()
-    private val table = Table()
-    private val skin = Skin()
+    private val skin = game.skin
+    private val uiStage = Stage()
+    private val dungeonTable = Table()
+    private val statsView = StatsView(game.player.stats, uiStage, skin)
+
     private var nameLabel : Label
     private var buttonCurrentLevel : Button
     private var buttonNextLevel : Button
@@ -30,39 +34,16 @@ class WorldScreen(private val game : DungeonCreatorGame) : Screen {
     }
 
     init {
-        Gdx.input.inputProcessor = stage
-        table.setFillParent(true)
-        table.debug()
-        table.align(Align.top)
-        stage.addActor(table)
-
-        // Generate a 1x1 white texture and store it in the skin named "white".
-        val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
-        pixmap.setColor(Color.WHITE)
-        pixmap.fill()
-        skin.add("white", Texture(pixmap))
-
-        // Store the default libgdx font under the name "default".
-        skin.add("default", BitmapFont())
-        skin.add("default", Color.WHITE)
-
-        val labelStyle = Label.LabelStyle()
-        labelStyle.font = skin.getFont("default")
-        labelStyle.fontColor = skin.getColor("default")
-        skin.add("default", labelStyle)
-
-        val buttonStyle = TextButtonStyle()
-        buttonStyle.down = skin.newDrawable("white", Color.RED)
-        buttonStyle.up = skin.newDrawable("white", Color.WHITE)
-        buttonStyle.disabled = skin.newDrawable("white", Color.GRAY)
-        buttonStyle.font = skin.getFont("default")
-        skin.add("default", buttonStyle)
+        dungeonTable.setFillParent(true)
+        dungeonTable.align(Align.top)
+        dungeonTable.pad(100f)
+        uiStage.addActor(dungeonTable)
 
         nameLabel = Label(ENTRANCE_TEXT, skin)
         nameLabel.setWrap(true)
         nameLabel.setAlignment(Align.center or Align.top)
-        table.add(nameLabel)
-        table.row().pad(100f)
+        dungeonTable.add(nameLabel)
+        dungeonTable.row().pad(100f)
 
         buttonCurrentLevel = TextButton("Enter known depths (Level 1)", skin)
         buttonCurrentLevel.listeners.add(object : ChangeListener() {
@@ -73,14 +54,12 @@ class WorldScreen(private val game : DungeonCreatorGame) : Screen {
                 }
             }
         })
-        table.add(buttonCurrentLevel)
-        table.row()
+        dungeonTable.add(buttonCurrentLevel)
+        dungeonTable.row()
 
         buttonNextLevel = TextButton("Explore new depths (Level 2)", skin)
         buttonNextLevel.isDisabled = true
-        table.add(buttonNextLevel)
-
-        table.pack()
+        dungeonTable.add(buttonNextLevel)
     }
 
     private fun startLevel(level : Int) {
@@ -93,12 +72,12 @@ class WorldScreen(private val game : DungeonCreatorGame) : Screen {
     }
 
     override fun show() {
-
+        Gdx.input.inputProcessor = uiStage
     }
 
     override fun render(delta: Float) {
-        stage.act(delta)
-        stage.draw()
+        uiStage.act(delta)
+        uiStage.draw()
     }
 
     override fun pause() {
@@ -110,10 +89,10 @@ class WorldScreen(private val game : DungeonCreatorGame) : Screen {
     }
 
     override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
+        uiStage.viewport.update(width, height, true)
     }
 
     override fun dispose() {
-        stage.dispose()
+        uiStage.dispose()
     }
 }
