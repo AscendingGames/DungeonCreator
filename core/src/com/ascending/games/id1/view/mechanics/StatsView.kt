@@ -20,6 +20,7 @@ class StatsView(private val stats : ObservableMap<IStatType, Float>, stage : Sta
     private var defenseLabel : Label
     private var levelLabel : Label
     private var expLabel : Label
+    private var goldLabel : Label
 
     init {
         statsTable.setFillParent(true)
@@ -31,12 +32,14 @@ class StatsView(private val stats : ObservableMap<IStatType, Float>, stage : Sta
         defenseLabel = Label("", skin)
         levelLabel = Label("", skin)
         expLabel = Label("", skin)
+        goldLabel = Label("", skin)
 
         statsTable.add(hpLabel).pad(50f)
         statsTable.add(attackLabel).pad(50f)
         statsTable.add(defenseLabel).pad(50f)
         statsTable.add(levelLabel).pad(50f)
         statsTable.add(expLabel).pad(50f)
+        statsTable.add(goldLabel).pad(50f)
 
         updateLabels()
 
@@ -48,6 +51,7 @@ class StatsView(private val stats : ObservableMap<IStatType, Float>, stage : Sta
         attackLabel.setText((stats[StatType.ATTACK] ?: 0f).toInt().toString())
         defenseLabel.setText((stats[StatType.DEFENSE] ?: 0f).toInt().toString())
         levelLabel.setText("Lvl. " + (stats[StatType.LEVEL] ?: 0f).toInt().toString())
-        expLabel.setText((stats[StatType.EXP] ?: 0f).toInt().toString() + "/" + (StatService().getNextExp(stats).toInt().toString()))
+        expLabel.setText("Exp. " + (stats[StatType.EXP] ?: 0f).toInt().toString() + "/" + (StatService().getNextExp(stats).toInt().toString()))
+        goldLabel.setText((stats[StatType.GOLD] ?: 0f).toInt().toString())
     }
 }

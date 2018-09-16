@@ -1,9 +1,15 @@
 package com.ascending.games.id1.model.mechanics
 
+import com.ascending.games.id1.model.board.RoomElement
 import com.ascending.games.lib.model.game.IStatType
 import com.ascending.games.lib.model.game.IStats
 
 class StatService {
+
+    companion object {
+        const val BASED_GOLD_PER_ROOM_ELEMENT = 1
+    }
+
     fun isDead(stats : IStats) : Boolean {
         return (stats.stats.get(StatType.CURRENT_HP) ?: 0f) <= 0f
     }
@@ -21,6 +27,10 @@ class StatService {
         if (hasLevelUp(killer)) {
             levelUp(killer)
         }
+    }
+
+    fun rewardRoomElementClear(stats : IStats) {
+        stats.stats[StatType.GOLD] = (stats.stats[StatType.GOLD] ?: 0f) + BASED_GOLD_PER_ROOM_ELEMENT
     }
 
     fun levelUp(stats : IStats) {
