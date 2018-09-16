@@ -7,6 +7,7 @@ import com.ascending.games.id1.edit.board.action.room.IBoardAction
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.id1.model.mechanics.StatService
 import com.ascending.games.id1.model.world.Player
+import com.ascending.games.lib.edit.action.ITimedActionProvider
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
@@ -27,7 +28,7 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
 
     private var time = 0f
     private val heroActionProvider = HeroActionProvider(board)
-    private val mapRoomContentToActionList = mutableMapOf<ARoomContent, List<ITimedAction>>()
+    private val mapRoomContentToActionList = mutableMapOf<ARoomContent, ITimedAction>()
     private val statService = StatService()
 
     init {
@@ -69,21 +70,10 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
 
     private fun updateRoomContentActions(time : Float)  {
         if (board.hero.spawned) {
-            var heroActionList = mapRoomContentToActionList.get(board.hero) ?: emptyList()
-            if (heroActionList.isEmpty()) {
-                heroActionList = heroActionProvider.getNextActions()
-                mapRoomContentToActionList.put(board.hero, heroActionList)
-            }
+            val heroAction = getAction(board.hero, heroActionProvider)
 
-            if (!heroActionList.isEmpty()) {
-                val action = heroActionList[0]
-                if (action.canExecute) {
-                    if (action.execute(time)) {
-                        mapRoomContentToActionList.put(board.hero, heroActionList.minus(action))
-                    }
-                } else {
-                    mapRoomContentToActionList.put(board.hero, emptyList())
-                }
+            if (heroAction != null && (!heroAction.canExecute || heroAction.execute(time))) {
+                mapRoomContentToActionList.remove(board.hero)
             }
 
             if (statService.isDead(board.hero)) {
@@ -92,6 +82,15 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
                 onBoardFinished.forEach { it.invoke(true) }
             }
         }
+    }
+
+    private fun getAction(aRoomContent: ARoomContent, timedActionProvider : ITimedActionProvider) : ITimedAction? {
+        val existingAction = mapRoomContentToActionList[aRoomContent]
+        if (existingAction != null)  return existingAction
+
+        val newAction = timedActionProvider.getNextActions()
+        if (newAction != null) mapRoomContentToActionList.put(board.hero, newAction)
+        return newAction
     }
 
     fun execute(action : IBoardAction) {

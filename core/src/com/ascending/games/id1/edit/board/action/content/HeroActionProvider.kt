@@ -13,7 +13,7 @@ class HeroActionProvider(val board : Board) : ITimedActionProvider {
 
     private val hero = board.hero
 
-    override fun getNextActions() : List<ITimedAction> {
+    override fun getNextActions() : ITimedAction? {
         if (hero.spawned) {
             if (hero.roomElement.room.isCleared) {
                 return moveToRandomNeighbourRoom()
@@ -27,12 +27,12 @@ class HeroActionProvider(val board : Board) : ITimedActionProvider {
             }
         }
 
-        return listOf()
+        return null
     }
 
-    private fun moveToRandomNeighbourRoom() : List<ITimedAction> {
+    private fun moveToRandomNeighbourRoom() : ITimedAction? {
         var neighbouringRooms = board.getNeighbours(hero.roomElement.room)
-        if (neighbouringRooms.isEmpty()) return listOf()
+        if (neighbouringRooms.isEmpty()) return null
 
         if (neighbouringRooms.size > 1) neighbouringRooms -= lastRoom
 
@@ -46,19 +46,19 @@ class HeroActionProvider(val board : Board) : ITimedActionProvider {
         return moveToRoomElement(targetRoomElement)
     }
 
-    private fun moveToRoomElement(roomElement: RoomElement) : List<ITimedAction> {
+    private fun moveToRoomElement(roomElement: RoomElement) : ITimedAction {
         val path = Pathfinder<RoomElement>(board, RoomElementDistanceEstimator()).getPath(hero.roomElement, roomElement)
-        return listOf(ComposedTimedAction(path.map { MoveContentAction(hero, it) }))
+        return ComposedTimedAction(path.map { MoveContentAction(hero, it) })
     }
 
-    private fun clearRoom() : List<ITimedAction> {
+    private fun clearRoom() : ITimedAction? {
         val roomContent = hero.roomElement.roomContents[0]
         if (roomContent is Monster) {
-            return listOf(BattleAction(Battle(hero, roomContent)))
+            return BattleAction(Battle(hero, roomContent))
         } else if (roomContent is Crystal){
-            return listOf(ConsumeCrystalAction(hero, roomContent))
+            return ConsumeCrystalAction(hero, roomContent)
         } else {
-            return listOf()
+            return null
         }
     }
 }

@@ -4,5 +4,5 @@ import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.lib.edit.action.ITimedAction
 
 interface ITimedActionProvider {
-    fun getNextActions() : List<ITimedAction>
+    fun getNextActions() : ITimedAction?
 }
