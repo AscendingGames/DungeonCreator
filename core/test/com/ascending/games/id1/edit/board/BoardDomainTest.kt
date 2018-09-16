@@ -2,6 +2,7 @@ package com.ascending.games.id1.edit.board
 
 import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.model.board.*
+import com.ascending.games.id1.model.world.Player
 import com.ascending.games.lib.model.geometry.Coord2
 import com.ascending.games.lib.model.geometry.Direction4
 import com.badlogic.gdx.math.Vector2
@@ -13,10 +14,10 @@ import org.junit.Test
 class BoardDomainTest {
 
     private val board = Board(3,3)
-    private val boardDomain = BoardDomain(board, MockRoomFactory())
+    private val boardDomain = BoardDomain(board, Player(), MockRoomFactory())
 
     @Test
-    fun testSpawnRoom() {
+    fun spawnRoom() {
         val oldWaitingRooms = boardDomain.waitingRooms
         boardDomain.nextRoom()
 
@@ -26,7 +27,7 @@ class BoardDomainTest {
     }
 
     @Test
-    fun testUpdate() {
+    fun update() {
         assertFalse("Room has not moved to the bottom yet", board.haveRoomsFallen())
         boardDomain.update(1f)
         assertFalse("Room has not moved to the bottom yet", board.haveRoomsFallen())
@@ -44,7 +45,7 @@ class BoardDomainTest {
     }
 
     @Test
-    fun testProjectedRoom() {
+    fun projectedRoom() {
         assertEquals(Vector2(1f,0f), boardDomain.projectedRoom.position)
         boardDomain.execute(DropAction())
         boardDomain.update(0f)
@@ -52,7 +53,7 @@ class BoardDomainTest {
     }
 
     @Test
-    fun testClearRowIfFull() {
+    fun clearRowIfFull() {
         boardDomain.board.rooms.clear()
         assertFalse(boardDomain.clearRowIfFull(0))
         board.rooms += Room(mutableListOf(RoomElement(Coord2.ZERO)))

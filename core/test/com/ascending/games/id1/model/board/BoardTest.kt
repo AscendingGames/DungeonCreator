@@ -26,7 +26,7 @@ class BoardTest {
     }
 
     @Test
-    fun testGetRoomAt() {
+    fun getRoomAt() {
         val room1 = Room(mutableListOf(RoomElement(Coord2.ZERO)))
         val room2 = Room(mutableListOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f))
         board.rooms.add(room1)

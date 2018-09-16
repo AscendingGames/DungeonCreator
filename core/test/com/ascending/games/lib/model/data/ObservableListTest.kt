@@ -9,7 +9,7 @@ class ObservableListTest {
     private val list = ObservableList(mutableListOf(1,2,3))
 
     @Test
-    fun testAdd() {
+    fun add() {
         list.onAdd += { index, element ->
             assertEquals(3, index)
             assertEquals(4, element)
@@ -19,7 +19,7 @@ class ObservableListTest {
 
 
     @Test
-    fun testAddAll() {
+    fun addAll() {
         val callbacks = mutableListOf<Pair<Int, Int>>()
         list.onAdd += { index, element ->
             callbacks.add(Pair(index, element))
@@ -29,7 +29,7 @@ class ObservableListTest {
     }
 
     @Test
-    fun testClear() {
+    fun clear() {
         val callbacks = mutableListOf<Int>()
         list.onRemove += { element ->
             callbacks.add(element)
@@ -39,7 +39,7 @@ class ObservableListTest {
     }
 
     @Test
-    fun testRemove() {
+    fun remove() {
         list.onRemove += { element ->
             assertEquals(2, element)
         }
@@ -57,7 +57,7 @@ class ObservableListTest {
     }
 
     @Test
-    fun testRemoveAt() {
+    fun removeAt() {
         val callbacks = mutableListOf<Int>()
         list.onRemove += { element ->
             callbacks.add(element)
@@ -67,7 +67,7 @@ class ObservableListTest {
     }
 
     @Test
-    fun testRetainAll() {
+    fun retainAll() {
         val callbacks = mutableListOf<Int>()
         list.onRemove += { element ->
             callbacks.add(element)
@@ -77,7 +77,7 @@ class ObservableListTest {
     }
 
     @Test
-    fun testSet() {
+    fun set() {
         list.onAdd += { index, element ->
             assertEquals(1, index)
             assertEquals(3, element)

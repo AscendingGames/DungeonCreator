@@ -27,7 +27,7 @@ class PathfinderTest {
     }
 
     @Test
-    fun testGetPath() {
+    fun getPath() {
         val pathfinder = Pathfinder<Int>(graph, distanceEstimator)
         val path = pathfinder.getPath(1, 3)
         assertEquals(listOf(2, 3), path)
