@@ -8,7 +8,7 @@ class PlayerService {
         const val INIT_HP = 10f
         const val INIT_ATTACK = 1f
         const val INIT_DEFENSE = 0f
-        const val INIT_SPEED = 1f
+        const val INIT_SPEED = 2f
     }
 
     fun createInitialPlayer() : Player {

@@ -1,9 +1,7 @@
-package com.ascending.games.id1.view
+package com.ascending.games.id1.view.board
 
 import com.ascending.games.id1.model.board.Board
-import com.ascending.games.id1.model.board.WallState
 import com.ascending.games.lib.model.geometry.Coord2
-import com.ascending.games.lib.model.geometry.Direction4
 import com.ascending.games.lib.view.AView2
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera

@@ -1,4 +1,4 @@
-package com.ascending.games.id1.view
+package com.ascending.games.id1.view.board
 
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.lib.model.geometry.Direction4
@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.math.Vector2
 
 class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
     override fun render(batch: SpriteBatch, camera: Camera) {

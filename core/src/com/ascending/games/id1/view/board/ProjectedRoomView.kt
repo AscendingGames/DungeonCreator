@@ -1,4 +1,4 @@
-package com.ascending.games.id1.view
+package com.ascending.games.id1.view.board
 
 import com.ascending.games.id1.model.board.Room
 import com.ascending.games.lib.view.AView2

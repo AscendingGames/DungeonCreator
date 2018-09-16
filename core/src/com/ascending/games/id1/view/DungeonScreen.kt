@@ -6,12 +6,14 @@ import com.ascending.games.id1.edit.board.DefaultRoomFactory
 import com.ascending.games.id1.edit.board.action.room.GestureActionProvider
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.id1.model.world.PlayerService
+import com.ascending.games.id1.view.board.BoardView
+import com.ascending.games.id1.view.board.ProjectedRoomView
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.input.GestureDetector
 
-class DungeonScreen(private val game : DungeonCreatorGame) : Screen{
+class DungeonScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
 
     companion object {
         val BOARD_SIZE = Coord2(10, 20)
@@ -20,7 +22,7 @@ class DungeonScreen(private val game : DungeonCreatorGame) : Screen{
 
     private val board = Board(BOARD_SIZE.x, BOARD_SIZE.y)
     private val player = PlayerService().createInitialPlayer()
-    private val boardDomain = BoardDomain(board, player, DefaultRoomFactory.createDefaultRoomFactory(1))
+    private val boardDomain = BoardDomain(board, player, DefaultRoomFactory.createDefaultRoomFactory(level))
     private val boardView = BoardView(board)
     private val gestureActionProvider = GestureActionProvider()
     private var currentRoomView = ProjectedRoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
