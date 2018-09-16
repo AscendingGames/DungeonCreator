@@ -41,8 +41,9 @@ class BoardDomainTest {
         assertTrue("Hero has spawned", boardDomain.board.hero.spawned)
 
         boardDomain.execute(DropAction())
-        boardDomain.update(1f)
-
+        boardDomain.update(0.5f)
+        assertEquals("Hero has not yet reached the top room element", boardDomain.board.rooms[0].roomElements[0], boardDomain.board.hero.roomElement)
+        boardDomain.update(0.5f)
         assertEquals("Hero has moved to top room element", boardDomain.board.rooms[1].roomElements[0], boardDomain.board.hero.roomElement)
 
         Monster(1).spawn(boardDomain.board.rooms[1].roomElements[0])
