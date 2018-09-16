@@ -4,3 +4,4 @@ codecov:
 
 ignore:
   - "**/view/*"         # Ignore View level code
+  - "**/*.java"         # Ignore Java code, all application code is written in Kotlin
