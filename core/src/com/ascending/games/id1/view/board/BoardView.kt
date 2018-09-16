@@ -48,6 +48,8 @@ class BoardView(val board : Board) : AView2(0) {
         shapeRenderer.setColor(BOARD_COLOR.r, BOARD_COLOR.g, BOARD_COLOR.b, BOARD_COLOR.a)
         shapeRenderer.rect(boardArea.x, boardArea.y, boardArea.width, boardArea.height)
         shapeRenderer.end()
+
+        Gdx.gl.glLineWidth(1f)
     }
 
     override fun dispose() {

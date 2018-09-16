@@ -1,8 +1,8 @@
-package com.ascending.games.id1.view
+package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.DungeonCreatorGame
+import com.ascending.games.id1.view.board.BoardScreen
 import com.badlogic.gdx.Screen
-import com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 
 
-class LevelSelectionScreen(private val game : DungeonCreatorGame) : Screen {
+class WorldScreen(private val game : DungeonCreatorGame) : Screen {
     private val stage = Stage()
     private val table = Table()
     private val skin = Skin()
@@ -84,7 +84,7 @@ class LevelSelectionScreen(private val game : DungeonCreatorGame) : Screen {
     }
 
     private fun startLevel(level : Int) {
-        game.screen = DungeonScreen(game, level)
+        game.screen = BoardScreen(game, level)
         hide()
     }
 

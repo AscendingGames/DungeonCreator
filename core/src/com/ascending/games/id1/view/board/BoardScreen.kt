@@ -1,4 +1,4 @@
-package com.ascending.games.id1.view
+package com.ascending.games.id1.view.board
 
 import com.ascending.games.id1.DungeonCreatorGame
 import com.ascending.games.id1.edit.board.BoardDomain
@@ -6,14 +6,13 @@ import com.ascending.games.id1.edit.board.DefaultRoomFactory
 import com.ascending.games.id1.edit.board.action.room.GestureActionProvider
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.id1.model.world.PlayerService
-import com.ascending.games.id1.view.board.BoardView
-import com.ascending.games.id1.view.board.ProjectedRoomView
+import com.ascending.games.id1.view.world.WorldScreen
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.input.GestureDetector
 
-class DungeonScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
+class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
 
     companion object {
         val BOARD_SIZE = Coord2(10, 20)
@@ -29,10 +28,16 @@ class DungeonScreen(private val game : DungeonCreatorGame, level : Int) : Screen
 
     init {
         game.sceneManager.views.add(currentRoomView)
+
         boardDomain.onProjectedRoomChanged += { ->
             game.sceneManager.views.remove(currentRoomView)
             currentRoomView = ProjectedRoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
             game.sceneManager.views.add(currentRoomView)
+        }
+
+        boardDomain.onBoardFinished += {
+            game.screen = WorldScreen(game)
+            hide()
         }
     }
 
@@ -69,5 +74,6 @@ class DungeonScreen(private val game : DungeonCreatorGame, level : Int) : Screen
     override fun hide() {
         System.out.println("Hiding Dungeon Screen")
         game.sceneManager.views.remove(boardView)
+        game.sceneManager.views.remove(currentRoomView)
     }
 }

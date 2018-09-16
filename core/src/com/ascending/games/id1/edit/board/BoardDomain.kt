@@ -5,6 +5,7 @@ import com.ascending.games.lib.edit.action.ITimedAction
 import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.edit.board.action.room.IBoardAction
 import com.ascending.games.id1.model.board.*
+import com.ascending.games.id1.model.mechanics.StatService
 import com.ascending.games.id1.model.world.Player
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
@@ -14,6 +15,7 @@ import kotlin.properties.Delegates
 class BoardDomain(val board: Board, player : Player, private val roomFactory : IRoomFactory) {
 
     val onProjectedRoomChanged = HashSet<() -> Unit>()
+    val onBoardFinished = HashSet<(Boolean) -> Unit>()
 
     companion object {
         const val COUNT_WAITING_ROOMS = 3
@@ -22,10 +24,11 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
     var waitingRooms = List(COUNT_WAITING_ROOMS) { roomFactory.createRoom() }
     var currentRoom by Delegates.notNull<Room>()
     var projectedRoom by Delegates.notNull<Room>()
-    var time = 0f
-    val heroActionProvider = HeroActionProvider(board)
 
-    val mapRoomContentToActionList = mutableMapOf<ARoomContent, List<ITimedAction>>()
+    private var time = 0f
+    private val heroActionProvider = HeroActionProvider(board)
+    private val mapRoomContentToActionList = mutableMapOf<ARoomContent, List<ITimedAction>>()
+    private val statService = StatService()
 
     init {
         player.stats.forEach { statType, value -> board.hero.stats.put(statType, value) }
@@ -39,9 +42,7 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
             clearRowIfFull(row)
         }
 
-        if (board.hero.spawned) {
-            updateRoomContentActions(time)
-        }
+        updateRoomContentActions(time)
     }
 
     private fun updateFallingRooms(time : Float) {
@@ -67,20 +68,26 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
     }
 
     private fun updateRoomContentActions(time : Float)  {
-        var heroActionList = mapRoomContentToActionList.get(board.hero) ?: emptyList()
-        if (heroActionList.isEmpty()) {
-            heroActionList = heroActionProvider.getNextActions()
-            mapRoomContentToActionList.put(board.hero, heroActionList)
-        }
+        if (board.hero.spawned) {
+            var heroActionList = mapRoomContentToActionList.get(board.hero) ?: emptyList()
+            if (heroActionList.isEmpty()) {
+                heroActionList = heroActionProvider.getNextActions()
+                mapRoomContentToActionList.put(board.hero, heroActionList)
+            }
 
-        if (!heroActionList.isEmpty()) {
-            val action = heroActionList[0]
-            if (action.canExecute) {
-                if (action.execute(time)) {
-                    mapRoomContentToActionList.put(board.hero, heroActionList.minus(action))
+            if (!heroActionList.isEmpty()) {
+                val action = heroActionList[0]
+                if (action.canExecute) {
+                    if (action.execute(time)) {
+                        mapRoomContentToActionList.put(board.hero, heroActionList.minus(action))
+                    }
+                } else {
+                    mapRoomContentToActionList.put(board.hero, emptyList())
                 }
-            } else {
-                mapRoomContentToActionList.put(board.hero, emptyList())
+            }
+
+            if (statService.isDead(board.hero)) {
+                onBoardFinished.forEach { it.invoke(false) }
             }
         }
     }
@@ -126,6 +133,10 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
         waitingRooms = waitingRooms.drop(1) + roomFactory.createRoom()
         board.rooms.add(currentRoom)
         updateProjectedRoom()
+
+        if (board.isRoomOverlapping(currentRoom)) {
+            onBoardFinished.forEach { it.invoke(false) }
+        }
     }
 
     private fun updateProjectedRoom() {

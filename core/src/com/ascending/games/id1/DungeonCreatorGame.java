@@ -1,7 +1,6 @@
 package com.ascending.games.id1;
 
-import com.ascending.games.id1.view.DungeonScreen;
-import com.ascending.games.id1.view.LevelSelectionScreen;
+import com.ascending.games.id1.view.world.WorldScreen;
 import com.ascending.games.lib.view.SceneManager2;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -19,7 +18,7 @@ public class DungeonCreatorGame extends Game {
 		sceneManager = new SceneManager2(new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		img = new Texture("badlogic.jpg");
 
-		setScreen(new LevelSelectionScreen(this));
+		setScreen(new WorldScreen(this));
 	}
 
 	@Override
