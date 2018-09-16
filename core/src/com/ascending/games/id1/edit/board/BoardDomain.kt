@@ -88,6 +88,8 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
 
             if (statService.isDead(board.hero)) {
                 onBoardFinished.forEach { it.invoke(false) }
+            } else if (board.hero.roomElement.roomContents.filter { it is StairsDown }.isNotEmpty()) {
+                onBoardFinished.forEach { it.invoke(true) }
             }
         }
     }

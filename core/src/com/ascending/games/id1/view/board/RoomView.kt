@@ -21,8 +21,10 @@ class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
             for (aRoomContent in roomElement.roomContents) {
                 if (aRoomContent is Monster) {
                     shapeRenderer.setColor(Color.RED)
-                }  else {
+                }  else if (aRoomContent is Crystal) {
                     shapeRenderer.setColor(Color.VIOLET)
+                } else if (aRoomContent is StairsDown) {
+                    shapeRenderer.setColor(Color.WHITE)
                 }
                 shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
             }
