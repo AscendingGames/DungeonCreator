@@ -24,11 +24,12 @@ class GestureActionProvider : GestureDetector.GestureListener {
         val absDeltaX = Math.abs(deltaX)
         val absDeltaY = Math.abs(deltaY)
 
-        if (absDeltaX > absDeltaY && Math.abs(accDeltaX) > PAN_THRESHOLD_X) {
+        if (absDeltaX > absDeltaY && Math.abs(accDeltaX) >= PAN_THRESHOLD_X) {
             accDeltaX -= PAN_THRESHOLD_X * Math.signum(accDeltaX)
             actionBuffer.add(SlideAction(Math.signum(deltaX).toInt()))
+            canDrop = false
             return true
-        } else if (absDeltaY > absDeltaX && absDeltaY > PAN_THRESHOLD_Y && deltaY > 0 && canDrop) {
+        } else if (absDeltaY > absDeltaX && absDeltaY >= PAN_THRESHOLD_Y && deltaY > 0 && canDrop) {
             actionBuffer.add(DropAction())
             canDrop = false
             return true
@@ -37,9 +38,7 @@ class GestureActionProvider : GestureDetector.GestureListener {
         return false
     }
 
-    override fun pinchStop() {
-
-    }
+    override fun pinchStop() = Unit
 
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
         actionBuffer.add(RotateAction())
