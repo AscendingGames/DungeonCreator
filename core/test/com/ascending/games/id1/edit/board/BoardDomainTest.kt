@@ -2,7 +2,9 @@ package com.ascending.games.id1.edit.board
 
 import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.model.board.*
+import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.model.world.Player
+import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.lib.model.geometry.Coord2
 import com.ascending.games.lib.model.geometry.Direction4
 import com.badlogic.gdx.math.Vector2
@@ -14,7 +16,7 @@ import org.junit.Test
 class BoardDomainTest {
 
     private val board = Board(3,3)
-    private val boardDomain = BoardDomain(board, Player(), MockRoomFactory())
+    private val boardDomain = BoardDomain(board, PlayerService().createInitialPlayer(), MockRoomFactory())
 
     @Test
     fun spawnRoom() {
@@ -42,6 +44,15 @@ class BoardDomainTest {
         boardDomain.update(1f)
 
         assertEquals("Hero has moved to top room element", boardDomain.board.rooms[1].roomElements[0], boardDomain.board.hero.roomElement)
+
+        Monster(1).spawn(boardDomain.board.rooms[1].roomElements[0])
+        boardDomain.update(1f)
+        assertTrue("Hero has cleared room", boardDomain.board.rooms[1].roomElements[0].roomContents.isEmpty())
+        assertTrue("Hero has been hurt", boardDomain.board.hero.stats[StatType.CURRENT_HP]!! < boardDomain.board.hero.stats[StatType.MAX_HP]!!)
+
+        Crystal(Crystal.Type.HEALING, boardDomain.board.rooms[1].roomElements[0])
+        boardDomain.update(1f)
+        assertTrue("Hero has been healed", boardDomain.board.hero.stats[StatType.CURRENT_HP]!! == boardDomain.board.hero.stats[StatType.MAX_HP]!!)
     }
 
     @Test
