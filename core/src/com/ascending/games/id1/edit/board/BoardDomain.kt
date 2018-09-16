@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
-class BoardDomain(val board: Board, player : Player, private val roomFactory : IRoomFactory) {
+class BoardDomain(val board: Board, player : Player, roomFactory : IRoomFactory) {
 
     val onProjectedRoomChanged = HashSet<() -> Unit>()
     val onBoardFinished = HashSet<(Boolean) -> Unit>()
@@ -22,9 +22,9 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
         const val COUNT_WAITING_ROOMS = 3
     }
 
-    var waitingRooms = List(COUNT_WAITING_ROOMS) { roomFactory.createRoom() }
     var currentRoom by Delegates.notNull<Room>()
     var projectedRoom by Delegates.notNull<Room>()
+    val roomPool = RoomPool(roomFactory, (board.height + 2).toFloat())
 
     private var time = 0f
     private val heroActionProvider = HeroActionProvider(board)
@@ -48,7 +48,7 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
         if (board.hero.spawned) {
             if (statService.isDead(board.hero)) {
                 onBoardFinished.forEach { it.invoke(false) }
-            } else if (board.hero.roomElement.roomContents.filter { it is StairsDown }.isNotEmpty()) {
+            } else if (board.hero.roomElement.roomContents.any { it is StairsDown }) {
                 onBoardFinished.forEach { it.invoke(true) }
             }
         }
@@ -89,7 +89,7 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
         if (existingAction != null)  return existingAction
 
         val newAction = timedActionProvider.getNextActions()
-        if (newAction != null) mapRoomContentToActionList.put(board.hero, newAction)
+        if (newAction != null) mapRoomContentToActionList[board.hero] = newAction
         return newAction
     }
 
@@ -129,9 +129,9 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
     }
 
     fun nextRoom() {
-        currentRoom = waitingRooms[0]
+        currentRoom = roomPool.poll()
         currentRoom.position = Vector2(((board.width - 1) / 2).toFloat(), board.height.toFloat() - 1)
-        waitingRooms = waitingRooms.drop(1) + roomFactory.createRoom()
+
         board.rooms.add(currentRoom)
         updateProjectedRoom()
 

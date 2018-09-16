@@ -5,6 +5,7 @@ import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.edit.board.DefaultRoomFactory
 import com.ascending.games.id1.edit.board.action.room.GestureActionProvider
 import com.ascending.games.id1.model.board.Board
+import com.ascending.games.id1.model.board.RoomPool
 import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.id1.view.mechanics.StatsView
 import com.ascending.games.id1.view.world.WorldScreen
@@ -28,6 +29,7 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
     private val board = Board(BOARD_SIZE.x, BOARD_SIZE.y)
     private val boardDomain = BoardDomain(board, game.player, DefaultRoomFactory.createDefaultRoomFactory(level))
     private val boardView = BoardView(board)
+    private val roomPoolView = RoomPoolView(boardDomain.roomPool, boardView.shapeRenderer)
     private val gestureActionProvider = GestureActionProvider()
     private var currentRoomView = ProjectedRoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
 
@@ -36,6 +38,7 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
     init {
         Gdx.input.inputProcessor = uiStage
         game.sceneManager.views.add(currentRoomView)
+        game.sceneManager.views.add(roomPoolView)
 
         boardDomain.onProjectedRoomChanged += { ->
             game.sceneManager.views.remove(currentRoomView)
@@ -78,13 +81,11 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
     }
 
     override fun show() {
-        System.out.println("Showing Dungeon Screen")
         game.sceneManager.views.add(boardView)
         Gdx.input.inputProcessor = GestureDetector(gestureActionProvider)
     }
 
     override fun hide() {
-        System.out.println("Hiding Dungeon Screen")
         game.sceneManager.views.remove(boardView)
         game.sceneManager.views.remove(currentRoomView)
     }
