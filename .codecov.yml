@@ -1,0 +1,7 @@
+codecov:
+  notify:
+    require_ci_to_pass: no
+
+ignore:
+  - "**/view/*"         # Ignore View level code
+  - "**/*.java"         # Ignore Java code, all application code is written in Kotlin

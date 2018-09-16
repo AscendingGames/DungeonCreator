@@ -1,33 +1,50 @@
 package com.ascending.games.id1;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.ascending.games.id1.model.world.Player;
+import com.ascending.games.id1.model.world.PlayerService;
+import com.ascending.games.id1.view.SkinService;
+import com.ascending.games.id1.view.world.WorldScreen;
+import com.ascending.games.lib.view.SceneManager2;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-public class DungeonCreatorGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
+public class DungeonCreatorGame extends Game {
+	private SceneManager2 sceneManager;
+	private Texture img;
+	private Skin skin;
+	private Player player;
+
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
+		System.out.println("Starting game Dungeon Creator");
+
+		sceneManager = new SceneManager2(new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		img = new Texture("badlogic.jpg");
+
+		player = new PlayerService().createInitialPlayer();
+		skin = new SkinService().createSkin();
+		setScreen(new WorldScreen(this));
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		sceneManager.render();
+		super.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
+		sceneManager.dispose();
 		img.dispose();
 	}
+
+	public SceneManager2 getSceneManager() {
+		return sceneManager;
+	}
+	public Skin getSkin() { return skin; }
+	public Player getPlayer() { return player; }
 }

@@ -4,8 +4,28 @@ sourceCompatibility = 1.6
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
-
+sourceSets.test.java.srcDirs = [ "test/" ]
 
 eclipse.project {
     name = appName + "-core"
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.7.7.201606060606"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled true
+    }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
 }
