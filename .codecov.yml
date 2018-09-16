@@ -3,4 +3,5 @@ codecov:
     require_ci_to_pass: no
 
 ignore:
-  - "**/view/*"         # Ignore View level code
+  - "core/src/com/ascending/games/id1/view"         # Ignore View level code
+  - "core/src/com/ascending/games/lib/view"
