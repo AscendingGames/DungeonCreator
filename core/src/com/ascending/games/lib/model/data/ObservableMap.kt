@@ -43,10 +43,6 @@ class ObservableMap<E, F>(private val mutableMap: MutableMap<E, F>) : IObservabl
         return mutableMap.put(key, value)
     }
 
-    override fun putAll(from: Map<out E, F>) {
-        from.forEach { key, value -> put(key, value) }
-    }
-
     override fun remove(key: E): F? {
         val value = mutableMap.remove(key)
         value ?: return null
