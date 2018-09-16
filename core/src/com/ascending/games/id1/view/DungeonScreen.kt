@@ -5,6 +5,8 @@ import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.edit.board.DefaultRoomFactory
 import com.ascending.games.id1.edit.board.action.room.GestureActionProvider
 import com.ascending.games.id1.model.board.Board
+import com.ascending.games.id1.model.world.Player
+import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
@@ -18,7 +20,8 @@ class DungeonScreen(private val game : DungeonCreatorGame) : Screen{
     }
 
     private val board = Board(BOARD_SIZE.x, BOARD_SIZE.y)
-    private val boardDomain = BoardDomain(board, DefaultRoomFactory.createDefaultRoomFactory())
+    private val player = PlayerService().createInitialPlayer()
+    private val boardDomain = BoardDomain(board, player, DefaultRoomFactory.createDefaultRoomFactory(1))
     private val boardView = BoardView(board)
     private val gestureActionProvider = GestureActionProvider()
     private var currentRoomView = ProjectedRoomView(boardDomain.projectedRoom, boardView.shapeRenderer)

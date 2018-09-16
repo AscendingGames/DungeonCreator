@@ -5,12 +5,13 @@ import com.ascending.games.id1.edit.board.action.content.IRoomContentAction
 import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.edit.board.action.room.IBoardAction
 import com.ascending.games.id1.model.board.*
+import com.ascending.games.id1.model.world.Player
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
-class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
+class BoardDomain(val board: Board, player : Player, private val roomFactory : IRoomFactory) {
 
     val onProjectedRoomChanged = HashSet<() -> Unit>()
 
@@ -27,6 +28,7 @@ class BoardDomain(val board: Board, private val roomFactory : IRoomFactory) {
     val mapRoomContentToActionList = mutableMapOf<ARoomContent, List<IRoomContentAction>>()
 
     init {
+        player.stats.forEach { statType, value -> board.hero.stats.put(statType, value) }
         nextRoom()
     }
 
