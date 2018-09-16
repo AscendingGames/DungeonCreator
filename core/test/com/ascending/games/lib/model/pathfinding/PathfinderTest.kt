@@ -14,7 +14,7 @@ class PathfinderTest {
         override fun getNeighbours(node: Int): List<Int> {
             when (node) {
                 0 -> return listOf(1)
-                1 -> return listOf(2)
+                1 -> return listOf(0, 2)
                 2 -> return listOf(3)
                 else -> return listOf()
             }
