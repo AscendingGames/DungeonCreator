@@ -2,14 +2,16 @@ package com.ascending.games.id1.edit.board.action.content
 
 import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.edit.mechanics.BattleDomain
-import com.ascending.games.id1.model.board.Hero
-import com.ascending.games.id1.model.board.Monster
 import com.ascending.games.id1.model.mechanics.Battle
+import com.ascending.games.lib.edit.action.ITimedAction
 
-class BattleAction(private val battle : Battle) : IRoomContentAction {
+class BattleAction(private val battle : Battle) : ITimedAction {
     private val battleDomain = BattleDomain(battle)
 
-    override fun execute(boardDomain: BoardDomain, delta: Float): Boolean {
+    override val canExecute : Boolean
+        get() = battle.monster.roomElement.roomContents.contains(battle.monster)
+
+    override fun execute(delta: Float): Boolean {
         if (battle.winner == null) {
             battleDomain.update(delta)
         }
@@ -20,9 +22,5 @@ class BattleAction(private val battle : Battle) : IRoomContentAction {
         }
 
         return winner != null
-    }
-
-    override fun canExecute(boardDomain: BoardDomain): Boolean {
-        return battle.monster.roomElement.roomContents.contains(battle.monster)
     }
 }

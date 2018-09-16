@@ -1,24 +1,26 @@
 package com.ascending.games.id1.edit.board.action.content
 
-import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.id1.model.mechanics.Battle
-import com.ascending.games.lib.model.geometry.Coord2
+import com.ascending.games.lib.edit.action.ComposedTimedAction
+import com.ascending.games.lib.edit.action.ITimedAction
+import com.ascending.games.lib.edit.action.ITimedActionProvider
 import com.ascending.games.lib.model.pathfinding.Pathfinder
-import kotlin.properties.Delegates
 
-class HeroActionProvider(val hero : Hero) : IRoomContentActionProvider {
+class HeroActionProvider(val board : Board) : ITimedActionProvider {
 
     lateinit var lastRoom : Room
 
-    override fun getNextActions(boardDomain : BoardDomain) : List<IRoomContentAction> {
+    private val hero = board.hero
+
+    override fun getNextActions() : List<ITimedAction> {
         if (hero.spawned) {
             if (hero.roomElement.room.isCleared) {
-                return moveToRandomNeighbourRoom(boardDomain)
+                return moveToRandomNeighbourRoom()
             } else {
                 if (hero.roomElement.roomContents.isEmpty()) {
                     val randomRoomElement = hero.roomElement.room.roomElements.shuffled().last()
-                    return moveToRoomElement(boardDomain, randomRoomElement)
+                    return moveToRoomElement(randomRoomElement)
                 } else {
                     return clearRoom()
                 }
@@ -28,8 +30,8 @@ class HeroActionProvider(val hero : Hero) : IRoomContentActionProvider {
         return listOf()
     }
 
-    private fun moveToRandomNeighbourRoom(boardDomain: BoardDomain) : List<IRoomContentAction> {
-        var neighbouringRooms = boardDomain.board.getNeighbours(hero.roomElement.room)
+    private fun moveToRandomNeighbourRoom() : List<ITimedAction> {
+        var neighbouringRooms = board.getNeighbours(hero.roomElement.room)
         if (neighbouringRooms.isEmpty()) return listOf()
 
         if (neighbouringRooms.size > 1) neighbouringRooms -= lastRoom
@@ -41,15 +43,15 @@ class HeroActionProvider(val hero : Hero) : IRoomContentActionProvider {
 
         val targetRoomElement = neighbouringRooms.shuffled().last().roomElements.shuffled().last()
         lastRoom = targetRoomElement.room
-        return moveToRoomElement(boardDomain, targetRoomElement)
+        return moveToRoomElement(targetRoomElement)
     }
 
-    private fun moveToRoomElement(boardDomain: BoardDomain, roomElement: RoomElement) : List<IRoomContentAction> {
-        val path = Pathfinder<RoomElement>(boardDomain.board, RoomElementDistanceEstimator()).getPath(hero.roomElement, roomElement)
-        return listOf(ComposedRoomContentAction(path.map { MoveContentAction(hero, it) }))
+    private fun moveToRoomElement(roomElement: RoomElement) : List<ITimedAction> {
+        val path = Pathfinder<RoomElement>(board, RoomElementDistanceEstimator()).getPath(hero.roomElement, roomElement)
+        return listOf(ComposedTimedAction(path.map { MoveContentAction(hero, it) }))
     }
 
-    private fun clearRoom() : List<IRoomContentAction> {
+    private fun clearRoom() : List<ITimedAction> {
         val roomContent = hero.roomElement.roomContents[0]
         if (roomContent is Monster) {
             return listOf(BattleAction(Battle(hero, roomContent)))

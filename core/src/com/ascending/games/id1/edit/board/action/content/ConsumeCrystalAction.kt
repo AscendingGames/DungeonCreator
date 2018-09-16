@@ -1,13 +1,15 @@
 package com.ascending.games.id1.edit.board.action.content
 
-import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.model.board.Crystal
-import com.ascending.games.id1.model.board.Hero
 import com.ascending.games.id1.model.mechanics.StatType
+import com.ascending.games.lib.edit.action.ITimedAction
 import com.ascending.games.lib.model.game.AGameObject
 
-class ConsumeCrystalAction(private val gameObject : AGameObject, private val crystal : Crystal) : IRoomContentAction {
-    override fun execute(boardDomain: BoardDomain, delta: Float): Boolean {
+class ConsumeCrystalAction(private val gameObject : AGameObject, private val crystal : Crystal) : ITimedAction {
+    override val canExecute : Boolean
+        get() = crystal.roomElement.roomContents.contains(crystal)
+
+    override fun execute(delta: Float): Boolean {
         crystal.roomElement.roomContents.remove(crystal)
         when (crystal.type) {
             Crystal.Type.HEALING -> gameObject.stats[StatType.CURRENT_HP] = gameObject.stats[StatType.MAX_HP] ?: 0f
@@ -15,9 +17,4 @@ class ConsumeCrystalAction(private val gameObject : AGameObject, private val cry
         }
         return true
     }
-
-    override fun canExecute(boardDomain: BoardDomain): Boolean {
-        return crystal.roomElement.roomContents.contains(crystal)
-    }
-
 }

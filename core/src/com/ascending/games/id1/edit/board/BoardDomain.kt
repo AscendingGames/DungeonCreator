@@ -1,7 +1,7 @@
 package com.ascending.games.id1.edit.board
 
 import com.ascending.games.id1.edit.board.action.content.HeroActionProvider
-import com.ascending.games.id1.edit.board.action.content.IRoomContentAction
+import com.ascending.games.lib.edit.action.ITimedAction
 import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.edit.board.action.room.IBoardAction
 import com.ascending.games.id1.model.board.*
@@ -23,9 +23,9 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
     var currentRoom by Delegates.notNull<Room>()
     var projectedRoom by Delegates.notNull<Room>()
     var time = 0f
-    val heroActionProvider = HeroActionProvider(board.hero)
+    val heroActionProvider = HeroActionProvider(board)
 
-    val mapRoomContentToActionList = mutableMapOf<ARoomContent, List<IRoomContentAction>>()
+    val mapRoomContentToActionList = mutableMapOf<ARoomContent, List<ITimedAction>>()
 
     init {
         player.stats.forEach { statType, value -> board.hero.stats.put(statType, value) }
@@ -69,14 +69,14 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
     private fun updateRoomContentActions(time : Float)  {
         var heroActionList = mapRoomContentToActionList.get(board.hero) ?: emptyList()
         if (heroActionList.isEmpty()) {
-            heroActionList = heroActionProvider.getNextActions(this)
+            heroActionList = heroActionProvider.getNextActions()
             mapRoomContentToActionList.put(board.hero, heroActionList)
         }
 
         if (!heroActionList.isEmpty()) {
             val action = heroActionList[0]
-            if (action.canExecute(this)) {
-                if (action.execute(this, time)) {
+            if (action.canExecute) {
+                if (action.execute(time)) {
                     mapRoomContentToActionList.put(board.hero, heroActionList.minus(action))
                 }
             } else {
