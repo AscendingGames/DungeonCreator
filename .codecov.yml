@@ -3,4 +3,4 @@ codecov:
     require_ci_to_pass: no
 
 ignore:
-  - "**/view"         # Ignore View level code
+  - "**/view/*"         # Ignore View level code
