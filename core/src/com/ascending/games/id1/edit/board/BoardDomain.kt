@@ -44,6 +44,14 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
         }
 
         updateRoomContentActions(time)
+
+        if (board.hero.spawned) {
+            if (statService.isDead(board.hero)) {
+                onBoardFinished.forEach { it.invoke(false) }
+            } else if (board.hero.roomElement.roomContents.filter { it is StairsDown }.isNotEmpty()) {
+                onBoardFinished.forEach { it.invoke(true) }
+            }
+        }
     }
 
     private fun updateFallingRooms(time : Float) {
@@ -69,18 +77,10 @@ class BoardDomain(val board: Board, player : Player, private val roomFactory : I
     }
 
     private fun updateRoomContentActions(time : Float)  {
-        if (board.hero.spawned) {
-            val heroAction = getAction(board.hero, heroActionProvider)
+        val heroAction = getAction(board.hero, heroActionProvider)
 
-            if (heroAction != null && (!heroAction.canExecute || heroAction.execute(time))) {
-                mapRoomContentToActionList.remove(board.hero)
-            }
-
-            if (statService.isDead(board.hero)) {
-                onBoardFinished.forEach { it.invoke(false) }
-            } else if (board.hero.roomElement.roomContents.filter { it is StairsDown }.isNotEmpty()) {
-                onBoardFinished.forEach { it.invoke(true) }
-            }
+        if (heroAction != null && (!heroAction.canExecute || heroAction.execute(time))) {
+            mapRoomContentToActionList.remove(board.hero)
         }
     }
 
