@@ -8,11 +8,12 @@ class PathfinderTest {
 
     private val graph = object : IGraph<Int> {
         override fun getNodes(): List<Int> {
-            return listOf(1,2,3)
+            return listOf(0, 1,2,3)
         }
 
         override fun getNeighbours(node: Int): List<Int> {
             when (node) {
+                0 -> return listOf(1)
                 1 -> return listOf(2)
                 2 -> return listOf(3)
                 else -> return listOf()
