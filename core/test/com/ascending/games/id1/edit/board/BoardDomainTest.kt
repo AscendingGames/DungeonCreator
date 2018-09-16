@@ -20,10 +20,10 @@ class BoardDomainTest {
 
     @Test
     fun spawnRoom() {
-        val oldWaitingRooms = boardDomain.waitingRooms
+        val firstWaitingRoom = boardDomain.roomPool.waitingRooms[0]
         boardDomain.nextRoom()
 
-        assertEquals("New current room is the first waiting room", oldWaitingRooms[0], boardDomain.currentRoom)
+        assertEquals("New current room is the first waiting room", firstWaitingRoom, boardDomain.currentRoom)
         assertEquals("New room has been positioned in the middle top of the board", Vector2(1f, 2f), boardDomain.currentRoom.position)
         assertThat("Board contains newly spawned room", board.rooms, hasItem(boardDomain.currentRoom))
     }

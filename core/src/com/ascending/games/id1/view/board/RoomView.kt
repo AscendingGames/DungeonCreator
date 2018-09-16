@@ -3,6 +3,7 @@ package com.ascending.games.id1.view.board
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.lib.model.geometry.Direction4
 import com.ascending.games.lib.view.AView2
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -32,6 +33,7 @@ class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
         shapeRenderer.end()
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+        Gdx.gl.glLineWidth(BoardView.BOARD_LINE_SIZE)
         for (roomElement in room.roomElements) {
             val roomElementPosition = BoardView.convertToScreenCoordinates(roomElement.boardCoord)
             for (wall in roomElement.walls) {

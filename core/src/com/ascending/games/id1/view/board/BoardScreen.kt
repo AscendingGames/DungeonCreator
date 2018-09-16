@@ -37,8 +37,6 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
 
     init {
         Gdx.input.inputProcessor = uiStage
-        game.sceneManager.views.add(currentRoomView)
-        game.sceneManager.views.add(roomPoolView)
 
         boardDomain.onProjectedRoomChanged += { ->
             game.sceneManager.views.remove(currentRoomView)
@@ -82,11 +80,14 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
 
     override fun show() {
         game.sceneManager.views.add(boardView)
+        game.sceneManager.views.add(currentRoomView)
+        game.sceneManager.views.add(roomPoolView)
         Gdx.input.inputProcessor = GestureDetector(gestureActionProvider)
     }
 
     override fun hide() {
         game.sceneManager.views.remove(boardView)
         game.sceneManager.views.remove(currentRoomView)
+        game.sceneManager.views.remove(roomPoolView)
     }
 }

@@ -1,5 +1,6 @@
 package com.ascending.games.id1.view.mechanics
 
+import com.ascending.games.id1.model.mechanics.StatService
 import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.view.world.WorldScreen
 import com.ascending.games.lib.model.data.ObservableMap
@@ -17,6 +18,8 @@ class StatsView(private val stats : ObservableMap<IStatType, Float>, stage : Sta
     private var hpLabel : Label
     private var attackLabel : Label
     private var defenseLabel : Label
+    private var levelLabel : Label
+    private var expLabel : Label
 
     init {
         statsTable.setFillParent(true)
@@ -26,10 +29,14 @@ class StatsView(private val stats : ObservableMap<IStatType, Float>, stage : Sta
         hpLabel = Label("", skin)
         attackLabel = Label("", skin)
         defenseLabel = Label("", skin)
+        levelLabel = Label("", skin)
+        expLabel = Label("", skin)
 
         statsTable.add(hpLabel).pad(50f)
         statsTable.add(attackLabel).pad(50f)
         statsTable.add(defenseLabel).pad(50f)
+        statsTable.add(levelLabel).pad(50f)
+        statsTable.add(expLabel).pad(50f)
 
         updateLabels()
 
@@ -40,5 +47,7 @@ class StatsView(private val stats : ObservableMap<IStatType, Float>, stage : Sta
         hpLabel.setText((stats[StatType.CURRENT_HP] ?: 0f).toInt().toString() + "/" + (stats[StatType.MAX_HP] ?: 0f).toInt().toString())
         attackLabel.setText((stats[StatType.ATTACK] ?: 0f).toInt().toString())
         defenseLabel.setText((stats[StatType.DEFENSE] ?: 0f).toInt().toString())
+        levelLabel.setText("Lvl. " + (stats[StatType.LEVEL] ?: 0f).toInt().toString())
+        expLabel.setText((stats[StatType.EXP] ?: 0f).toInt().toString() + "/" + (StatService().getNextExp(stats).toInt().toString()))
     }
 }

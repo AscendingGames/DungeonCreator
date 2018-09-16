@@ -15,7 +15,15 @@ class Battle(val hero : Hero, val monster : Monster) {
             else null
 
     fun fight() {
-        hero.statModifiers.add(statService.createDamage(hero, monster))
-        monster.statModifiers.add(statService.createDamage(hero, monster))
+        val oldWinner = winner
+        if (oldWinner == null) {
+            statService.applyDamage(hero, monster)
+            statService.applyDamage(monster, hero)
+        }
+
+        val winner = winner
+        if (oldWinner == null && winner == hero) {
+            statService.reward(hero, monster)
+        }
     }
 }

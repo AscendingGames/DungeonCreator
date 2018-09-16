@@ -25,8 +25,14 @@ class BattleTest {
 
     @Test
     fun fight() {
+        hero.stats[StatType.CURRENT_HP] = 2f
+        hero.stats[StatType.ATTACK] = 1f
+        hero.stats[StatType.EXP] = StatService().getNextExp(hero.stats) - 1f
+        monster.stats[StatType.CURRENT_HP] = 1f
+        monster.stats[StatType.ATTACK] = 1f
         battle.fight()
-        assertThat(hero.statModifiers, hasItem(isA(Damage::class.java)))
-        assertThat(monster.statModifiers, hasItem(isA(Damage::class.java)))
+        assertEquals(1f, hero.stats[StatType.CURRENT_HP])
+        assertEquals(2f, hero.stats[StatType.LEVEL])
+        assertEquals(0f, monster.stats[StatType.CURRENT_HP])
     }
 }
