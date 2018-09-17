@@ -16,7 +16,7 @@ import org.junit.Test
 class BoardDomainTest {
 
     private val board = Board(3,3)
-    private val boardDomain = BoardDomain(board, PlayerService().createInitialPlayer(), MockRoomFactory())
+    private val boardDomain = BoardDomain(board, PlayerService().createInitialPlayer(), 1, MockRoomFactory())
 
     @Test
     fun spawnRoom() {

@@ -5,4 +5,11 @@ import com.ascending.games.lib.model.game.IStatType
 
 class Player {
     val stats = ObservableMap(HashMap<IStatType, Float>())
+    var depth = 1
+
+    val newDepths : Int
+        get() = depth
+    val knownDepths : Int
+        get() = if (newDepths > 1) newDepths - 1 else 1
+
 }

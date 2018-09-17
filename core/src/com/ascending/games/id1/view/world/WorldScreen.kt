@@ -24,8 +24,8 @@ class WorldScreen(private val game : DungeonCreatorGame) : Screen {
     private val statsView = StatsView(game.player.stats, uiStage, skin)
 
     private var nameLabel : Label
-    private var buttonCurrentLevel : Button
-    private var buttonNextLevel : Button
+    private var buttonCurrentLevel : TextButton
+    private var buttonNextLevel : TextButton
 
     companion object {
         const val ENTRANCE_TEXT =   "Laid out before you stands a labyrinth so deep even a being such as you cannot grasp its full depth.\n" +
@@ -45,11 +45,11 @@ class WorldScreen(private val game : DungeonCreatorGame) : Screen {
         dungeonTable.add(nameLabel)
         dungeonTable.row().pad(100f)
 
-        buttonCurrentLevel = TextButton("Enter known depths (Level 1)", skin)
+        buttonCurrentLevel = TextButton("", skin)
         buttonCurrentLevel.listeners.add(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 if (event != null) {
-                    startLevel(1)
+                    startLevel(game.player.knownDepths)
                     event.handle()
                 }
             }
@@ -57,8 +57,15 @@ class WorldScreen(private val game : DungeonCreatorGame) : Screen {
         dungeonTable.add(buttonCurrentLevel)
         dungeonTable.row()
 
-        buttonNextLevel = TextButton("Explore new depths (Level 2)", skin)
-        buttonNextLevel.isDisabled = true
+        buttonNextLevel = TextButton("", skin)
+        buttonNextLevel.listeners.add(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                if (event != null) {
+                    startLevel(game.player.newDepths)
+                    event.handle()
+                }
+            }
+        })
         dungeonTable.add(buttonNextLevel)
     }
 
@@ -73,6 +80,14 @@ class WorldScreen(private val game : DungeonCreatorGame) : Screen {
 
     override fun show() {
         Gdx.input.inputProcessor = uiStage
+
+        val newDepths  = game.player.newDepths
+        val knownDepths = game.player.knownDepths
+
+        buttonCurrentLevel.label.setText("Enter known depths (Level $knownDepths)")
+        buttonNextLevel.label.setText("Explore new depths (Level $newDepths)")
+
+        if (newDepths == 1) buttonNextLevel.isDisabled = true
     }
 
     override fun render(delta: Float) {

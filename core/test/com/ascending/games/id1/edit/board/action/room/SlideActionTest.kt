@@ -14,7 +14,7 @@ class SlideActionTest {
 
     @Test
     fun execute() {
-        val boardDomain = BoardDomain(Board(3,3), Player(), MockRoomFactory())
+        val boardDomain = BoardDomain(Board(3,3), Player(), 1, MockRoomFactory())
         val slideAction = SlideAction(-4)
 
         assertNull(boardDomain.board.getRoomAt(Coord2(0, 3)))

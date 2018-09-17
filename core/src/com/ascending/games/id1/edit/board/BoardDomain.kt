@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
-class BoardDomain(val board: Board, val player : Player, roomFactory : IRoomFactory) {
+class BoardDomain(val board: Board, val player : Player, val level : Int, roomFactory : IRoomFactory) {
 
     val onProjectedRoomChanged = HashSet<() -> Unit>()
     val onBoardFinished = HashSet<(Boolean) -> Unit>()
@@ -44,6 +44,7 @@ class BoardDomain(val board: Board, val player : Player, roomFactory : IRoomFact
     fun clearBoard() {
         board.hero.stats.forEach { statType, value -> if (statType is StatType && statType.isPermanentStat) player.stats.put(statType, value) }
         player.stats[StatType.CURRENT_HP] = player.stats[StatType.MAX_HP] ?: 0f
+        if (level == player.depth) player.depth++
         onBoardFinished.forEach { it.invoke(true) }
     }
 
