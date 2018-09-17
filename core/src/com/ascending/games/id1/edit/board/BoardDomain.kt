@@ -6,6 +6,7 @@ import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.edit.board.action.room.IBoardAction
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.id1.model.mechanics.StatService
+import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.model.world.Player
 import com.ascending.games.lib.edit.action.ITimedActionProvider
 import com.ascending.games.lib.model.geometry.Coord2
@@ -13,7 +14,7 @@ import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
-class BoardDomain(val board: Board, player : Player, roomFactory : IRoomFactory) {
+class BoardDomain(val board: Board, val player : Player, roomFactory : IRoomFactory) {
 
     val onProjectedRoomChanged = HashSet<() -> Unit>()
     val onBoardFinished = HashSet<(Boolean) -> Unit>()
@@ -36,6 +37,16 @@ class BoardDomain(val board: Board, player : Player, roomFactory : IRoomFactory)
         nextRoom()
     }
 
+    fun failBoard() {
+        onBoardFinished.forEach { it.invoke(false) }
+    }
+
+    fun clearBoard() {
+        board.hero.stats.forEach { statType, value -> if (statType is StatType && statType.isPermanentStat) player.stats.put(statType, value) }
+        player.stats[StatType.CURRENT_HP] = player.stats[StatType.MAX_HP] ?: 0f
+        onBoardFinished.forEach { it.invoke(true) }
+    }
+
     fun update(time : Float) {
         updateFallingRooms(time)
 
@@ -47,9 +58,9 @@ class BoardDomain(val board: Board, player : Player, roomFactory : IRoomFactory)
 
         if (board.hero.spawned) {
             if (statService.isDead(board.hero)) {
-                onBoardFinished.forEach { it.invoke(false) }
+                failBoard()
             } else if (board.hero.roomElement.roomContents.any { it is StairsDown }) {
-                onBoardFinished.forEach { it.invoke(true) }
+                clearBoard()
             }
         }
     }

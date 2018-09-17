@@ -57,6 +57,16 @@ class BoardDomainTest {
     }
 
     @Test
+    fun clearBoard() {
+        board.hero.stats[StatType.LEVEL] = 2f
+        boardDomain.onBoardFinished += { clear ->
+            assertTrue(clear)
+            assertEquals(2f, boardDomain.player.stats[StatType.LEVEL])
+        }
+        boardDomain.clearBoard()
+    }
+
+    @Test
     fun projectedRoom() {
         assertEquals(Vector2(1f,0f), boardDomain.projectedRoom.position)
         boardDomain.execute(DropAction())

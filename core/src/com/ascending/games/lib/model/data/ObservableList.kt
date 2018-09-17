@@ -38,10 +38,9 @@ class ObservableList<E>(private val mutableList: MutableList<E>) : IObservableLi
         onAdd.forEach { it.invoke(index, element) }
     }
     override fun clear() {
-        for (element in mutableList) {
-            onRemove.forEach { it.invoke(element) }
-        }
+        val oldList = mutableList.toList()
         mutableList.clear()
+        oldList.forEach { element -> onRemove.forEach { it.invoke(element) } }
     }
 
     override fun listIterator(): MutableListIterator<E> {
