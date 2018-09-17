@@ -4,7 +4,7 @@ class ComposedTimedAction(private val actions : List<ITimedAction>) : ITimedActi
     private var currentActionIndex = 0
 
     override val canExecute : Boolean
-        get() = if (actions.isEmpty()) false else actions.subList(currentActionIndex, actions.size - 1).none { !it.canExecute }
+        get() = if (currentActionIndex > actions.size - 1) false else actions.subList(currentActionIndex, actions.size - 1).none { !it.canExecute }
 
     override fun execute(delta: Float): Boolean {
         if (currentActionIndex >= actions.size) return true
