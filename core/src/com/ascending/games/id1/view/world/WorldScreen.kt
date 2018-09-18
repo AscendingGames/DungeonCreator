@@ -17,7 +17,8 @@ class WorldScreen(val game : DungeonCreatorGame) : Screen {
 
     val locationViews = mapOf<Location, IVisible>(
             Pair(Location.DUNGEON, DungeonView(this, uiStage)),
-            Pair(Location.OVERWORLD, OverworldView(this, uiStage))
+            Pair(Location.OVERWORLD, OverworldView(this, uiStage)),
+            Pair(Location.SHRINE, ShrineView(this, uiStage))
     )
 
     private var currentLocation = Location.DUNGEON

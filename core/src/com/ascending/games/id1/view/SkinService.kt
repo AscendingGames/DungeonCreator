@@ -33,6 +33,7 @@ class SkinService {
         overworldTextButtonStyle.disabled = skin.newDrawable("white", Color.GRAY)
         overworldTextButtonStyle.font = skin.getFont("default")
         overworldTextButtonStyle.unpressedOffsetY = 20f
+        overworldTextButtonStyle.pressedOffsetY = 20f
         skin.add("overworld", overworldTextButtonStyle)
 
         val defaultTextButtonStyle = TextButton.TextButtonStyle()

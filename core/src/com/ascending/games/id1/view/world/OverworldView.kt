@@ -10,30 +10,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 
-class OverworldView(private val worldScreen: WorldScreen, private val uiStage : Stage) : IVisible {
+class OverworldView(worldScreen: WorldScreen, uiStage : Stage) : ALocationView(worldScreen, uiStage, OVERWORLD_TEXT) {
     companion object {
         const val OVERWORLD_TEXT =
                 "As you gaze downwards, you see the mortal world\n"+
                 "unfolding before you..."
     }
 
-    private val skin = worldScreen.game.skin
-
-    private val overworldTable = Table()
-    private val overworldLabel = Label(OVERWORLD_TEXT, skin)
     private val dungeonButton = TextButton("Dungeon", skin, "overworld")
+    private val shrineButton = TextButton("Shrine", skin, "overworld")
 
     init {
-        overworldTable.setFillParent(true)
-        overworldTable.align(Align.top)
-        overworldTable.pad(100f)
-
-        overworldTable.add(overworldLabel)
-        overworldLabel.setWrap(true)
-        overworldLabel.setAlignment(Align.center or Align.top)
-        overworldTable.row().pad(100f)
-
-        overworldTable.add(dungeonButton)
+        locationTable.add(dungeonButton)
         dungeonButton.listeners.add(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 if (event != null) {
@@ -42,13 +30,16 @@ class OverworldView(private val worldScreen: WorldScreen, private val uiStage : 
                 }
             }
         })
-    }
 
-    override fun show() {
-        uiStage.addActor(overworldTable)
-    }
-
-    override fun hide() {
-        overworldTable.remove()
+        locationTable.row().pad(100f)
+        locationTable.add(shrineButton)
+        shrineButton.listeners.add(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                if (event != null) {
+                    worldScreen.setLocation(Location.SHRINE)
+                    event.handle()
+                }
+            }
+        })
     }
 }
