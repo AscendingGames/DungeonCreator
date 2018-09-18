@@ -1,93 +1,44 @@
 package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.DungeonCreatorGame
+import com.ascending.games.id1.model.world.Location
 import com.ascending.games.id1.view.board.BoardScreen
 import com.ascending.games.id1.view.mechanics.StatsView
-import com.ascending.games.lib.model.data.ObservableMap
+import com.ascending.games.lib.view.IVisible
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
-import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.scenes.scene2d.*
-import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.utils.Align
 
 
-class WorldScreen(private val game : DungeonCreatorGame) : Screen {
-    private val skin = game.skin
+class WorldScreen(val game : DungeonCreatorGame) : Screen {
     private val uiStage = Stage()
-    private val dungeonTable = Table()
-    private val statsView = StatsView(game.player.stats, uiStage, skin)
+    private val statsView = StatsView(game.player.stats, uiStage, game.skin)
 
-    private var nameLabel : Label
-    private var buttonCurrentLevel : TextButton
-    private var buttonNextLevel : TextButton
+    val locationViews = mapOf<Location, IVisible>(
+            Pair(Location.DUNGEON, DungeonView(this, uiStage)),
+            Pair(Location.OVERWORLD, OverworldView(this, uiStage))
+    )
 
-    companion object {
-        const val ENTRANCE_TEXT =   "Laid out before you stands a labyrinth so deep even a being such as you cannot grasp its full depth.\n" +
-                                                "An ambitious group of your followers has gathered here to challenge these depths for the vast amount\n" +
-                                                "of riches hidden deep inside..."
-    }
+    private var currentLocation = Location.DUNGEON
 
-    init {
-        dungeonTable.setFillParent(true)
-        dungeonTable.align(Align.top)
-        dungeonTable.pad(100f)
-        uiStage.addActor(dungeonTable)
-
-        nameLabel = Label(ENTRANCE_TEXT, skin)
-        nameLabel.setWrap(true)
-        nameLabel.setAlignment(Align.center or Align.top)
-        dungeonTable.add(nameLabel)
-        dungeonTable.row().pad(100f)
-
-        buttonCurrentLevel = TextButton("", skin)
-        buttonCurrentLevel.listeners.add(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                if (event != null) {
-                    startLevel(game.player.knownDepths)
-                    event.handle()
-                }
-            }
-        })
-        dungeonTable.add(buttonCurrentLevel)
-        dungeonTable.row()
-
-        buttonNextLevel = TextButton("", skin)
-        buttonNextLevel.listeners.add(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                if (event != null) {
-                    startLevel(game.player.newDepths)
-                    event.handle()
-                }
-            }
-        })
-        dungeonTable.add(buttonNextLevel)
-    }
-
-    private fun startLevel(level : Int) {
+    fun startLevel(level : Int) {
         game.screen = BoardScreen(game, level)
-        hide()
+    }
+
+    fun setLocation(location : Location) {
+        locationViews[currentLocation]!!.hide()
+        currentLocation = location
+        locationViews[currentLocation]!!.show()
     }
 
     override fun hide() {
-
+        locationViews[currentLocation]!!.hide()
     }
 
     override fun show() {
         Gdx.input.inputProcessor = uiStage
-
-        val newDepths  = game.player.newDepths
-        val knownDepths = game.player.knownDepths
-
-        buttonCurrentLevel.label.setText("Enter known depths (Level $knownDepths)")
-        buttonNextLevel.label.setText("Explore new depths (Level $newDepths)")
-
-        if (newDepths == 1) buttonNextLevel.isDisabled = true
+        locationViews[currentLocation]!!.show()
     }
 
     override fun render(delta: Float) {

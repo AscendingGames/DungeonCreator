@@ -1,7 +1,7 @@
 package com.ascending.games.id1;
 
 import com.ascending.games.id1.model.world.Player;
-import com.ascending.games.id1.model.world.PlayerService;
+import com.ascending.games.id1.edit.world.PlayerService;
 import com.ascending.games.id1.view.SkinService;
 import com.ascending.games.id1.view.world.WorldScreen;
 import com.ascending.games.lib.view.SceneManager2;
@@ -9,7 +9,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class DungeonCreatorGame extends Game {

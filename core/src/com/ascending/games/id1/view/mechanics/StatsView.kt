@@ -34,12 +34,12 @@ class StatsView(private val stats : ObservableMap<IStatType, Float>, stage : Sta
         expLabel = Label("", skin)
         goldLabel = Label("", skin)
 
-        statsTable.add(hpLabel).pad(50f)
-        statsTable.add(attackLabel).pad(50f)
-        statsTable.add(defenseLabel).pad(50f)
-        statsTable.add(levelLabel).pad(50f)
-        statsTable.add(expLabel).pad(50f)
-        statsTable.add(goldLabel).pad(50f)
+        statsTable.add(hpLabel).pad(40f)
+        statsTable.add(attackLabel).pad(40f)
+        statsTable.add(defenseLabel).pad(40f)
+        statsTable.add(levelLabel).pad(40f)
+        statsTable.add(expLabel).pad(40f)
+        statsTable.add(goldLabel).pad(40f)
 
         updateLabels()
 

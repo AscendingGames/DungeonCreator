@@ -5,17 +5,13 @@ import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.edit.board.DefaultRoomFactory
 import com.ascending.games.id1.edit.board.action.room.GestureActionProvider
 import com.ascending.games.id1.model.board.Board
-import com.ascending.games.id1.model.board.RoomPool
-import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.id1.view.mechanics.StatsView
 import com.ascending.games.id1.view.world.WorldScreen
-import com.ascending.games.lib.model.data.ObservableMap
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 
 class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
     private val skin = game.skin

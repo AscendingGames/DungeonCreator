@@ -1,6 +1,7 @@
-package com.ascending.games.id1.model.world
+package com.ascending.games.id1.edit.world
 
 import com.ascending.games.id1.model.mechanics.StatType
+import com.ascending.games.id1.model.world.Player
 
 class PlayerService {
 

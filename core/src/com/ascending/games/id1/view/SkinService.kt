@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -26,12 +27,20 @@ class SkinService {
         labelStyle.fontColor = skin.getColor("default")
         skin.add("default", labelStyle)
 
-        val buttonStyle = TextButton.TextButtonStyle()
-        buttonStyle.down = skin.newDrawable("white", Color.RED)
-        buttonStyle.up = skin.newDrawable("white", Color.WHITE)
-        buttonStyle.disabled = skin.newDrawable("white", Color.GRAY)
-        buttonStyle.font = skin.getFont("default")
-        skin.add("default", buttonStyle)
+        val overworldTextButtonStyle = TextButton.TextButtonStyle()
+        overworldTextButtonStyle.down = skin.newDrawable("white", Color.RED)
+        overworldTextButtonStyle.up = skin.newDrawable("white", Color.WHITE)
+        overworldTextButtonStyle.disabled = skin.newDrawable("white", Color.GRAY)
+        overworldTextButtonStyle.font = skin.getFont("default")
+        overworldTextButtonStyle.unpressedOffsetY = 20f
+        skin.add("overworld", overworldTextButtonStyle)
+
+        val defaultTextButtonStyle = TextButton.TextButtonStyle()
+        defaultTextButtonStyle.down = skin.newDrawable("white", Color.RED)
+        defaultTextButtonStyle.up = skin.newDrawable("white", Color.WHITE)
+        defaultTextButtonStyle.disabled = skin.newDrawable("white", Color.GRAY)
+        defaultTextButtonStyle.font = skin.getFont("default")
+        skin.add("default", defaultTextButtonStyle)
         return skin
     }
 }
