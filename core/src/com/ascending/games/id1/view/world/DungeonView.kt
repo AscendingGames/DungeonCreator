@@ -1,8 +1,5 @@
 package com.ascending.games.id1.view.world
 
-import com.ascending.games.id1.model.world.Location
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-
 class DungeonView(worldScreen: WorldScreen) : ALocationView(worldScreen, ENTRANCE_TEXT) {
 
     companion object {
@@ -12,9 +9,9 @@ class DungeonView(worldScreen: WorldScreen) : ALocationView(worldScreen, ENTRANC
                 "these depths for the vast amount of riches hidden deep inside..."
     }
 
-    private val buttonCurrentLevel = TextButton("", skin)
-    private val buttonNextLevel : TextButton = TextButton("", skin)
-    private val buttonBack : TextButton = TextButton("Back", skin)
+    private val buttonCurrentLevel = createTextButton { it.startLevel(player.knownDepths) }
+    private val buttonNextLevel = createTextButton { it.startLevel(player.newDepths) }
+    private val buttonBack = createBackButton()
 
     init {
         locationTable.add(buttonCurrentLevel)
@@ -22,10 +19,6 @@ class DungeonView(worldScreen: WorldScreen) : ALocationView(worldScreen, ENTRANC
         locationTable.add(buttonNextLevel)
         locationTable.row().pad(100f)
         locationTable.add(buttonBack)
-
-        buttonCurrentLevel.listeners.add(createChangeListener { it.startLevel(player.knownDepths) })
-        buttonNextLevel.listeners.add(createChangeListener { it.startLevel(player.newDepths) })
-        buttonBack.listeners.add(createChangeListener { it.setLocation(Location.OVERWORLD) })
     }
 
     override fun show() {

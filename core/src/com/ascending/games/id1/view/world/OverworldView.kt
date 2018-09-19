@@ -1,7 +1,6 @@
 package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.model.world.Location
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 
 class OverworldView(worldScreen: WorldScreen) : ALocationView(worldScreen, OVERWORLD_TEXT) {
     companion object {
@@ -10,9 +9,9 @@ class OverworldView(worldScreen: WorldScreen) : ALocationView(worldScreen, OVERW
                 "unfolding before you..."
     }
 
-    private val dungeonButton = TextButton("Dungeon", skin, "overworld")
-    private val shrineButton = TextButton("Shrine", skin, "overworld")
-    private val cityButton = TextButton("City", skin, "overworld")
+    private val dungeonButton = createTextButton("Dungeon", "overworld" ) { it.setLocation(Location.DUNGEON) }
+    private val shrineButton = createTextButton("Shrine", "overworld" ) { it.setLocation(Location.SHRINE) }
+    private val cityButton = createTextButton("City", "overworld" ) { it.setLocation(Location.CITY) }
 
     init {
         locationTable.add(dungeonButton)
@@ -20,9 +19,5 @@ class OverworldView(worldScreen: WorldScreen) : ALocationView(worldScreen, OVERW
         locationTable.add(shrineButton)
         locationTable.row().pad(100f)
         locationTable.add(cityButton)
-
-        dungeonButton.listeners.add(createChangeListener { it.setLocation(Location.DUNGEON) })
-        shrineButton.listeners.add(createChangeListener { it.setLocation(Location.SHRINE) })
-        cityButton.listeners.add(createChangeListener { it.setLocation(Location.CITY) })
     }
 }

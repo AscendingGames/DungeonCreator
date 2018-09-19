@@ -1,9 +1,11 @@
 package com.ascending.games.id1.view.world
 
+import com.ascending.games.id1.model.world.Location
 import com.ascending.games.lib.view.IVisible
 import com.ascending.games.lib.view.ui.ChangeListenerService
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 
@@ -38,6 +40,16 @@ abstract class ALocationView(private val worldScreen: WorldScreen, locationDescr
 
     protected fun createChangeListener(callback : (WorldScreen) -> Unit) : ChangeListener {
         return listenerService.createChangeListener { callback(worldScreen) }
+    }
+
+    protected fun createTextButton(text : String = "", styleName : String = "default", callback : (WorldScreen) -> Unit) : TextButton {
+        val backButton = TextButton(text, skin, styleName)
+        backButton.listeners.add(createChangeListener(callback))
+        return backButton
+    }
+
+    protected fun createBackButton()  : TextButton {
+        return createTextButton("Back") { it.setLocation(Location.OVERWORLD) }
     }
 
 }
