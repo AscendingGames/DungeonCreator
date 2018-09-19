@@ -1,17 +1,21 @@
 package com.ascending.games.id1.view.world
 
 import com.ascending.games.lib.view.IVisible
+import com.ascending.games.lib.view.ui.ChangeListenerService
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 
-abstract class ALocationView(worldScreen: WorldScreen, protected val uiStage : Stage, locationDescription : String) : IVisible {
+abstract class ALocationView(private val worldScreen: WorldScreen, protected val uiStage : Stage, locationDescription : String) : IVisible {
     protected val player = worldScreen.game.player
     protected val skin = worldScreen.game.skin
 
     protected val locationTable = Table()
     private val descriptionLabel = Label(locationDescription, skin)
+
+    private val listenerService = ChangeListenerService()
 
     init {
         locationTable.setFillParent(true)
@@ -31,6 +35,10 @@ abstract class ALocationView(worldScreen: WorldScreen, protected val uiStage : S
 
     override fun hide() {
         locationTable.remove()
+    }
+
+    protected fun createChangeListener(callback : (WorldScreen) -> Unit) : ChangeListener {
+        return listenerService.createChangeListener { callback(worldScreen) }
     }
 
 }

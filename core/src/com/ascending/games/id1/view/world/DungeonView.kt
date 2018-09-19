@@ -30,32 +30,9 @@ class DungeonView(worldScreen: WorldScreen, uiStage: Stage) : ALocationView(worl
         locationTable.row().pad(100f)
         locationTable.add(buttonBack)
 
-        buttonCurrentLevel.listeners.add(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                if (event != null) {
-                    worldScreen.startLevel(player.knownDepths)
-                    event.handle()
-                }
-            }
-        })
-
-        buttonNextLevel.listeners.add(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                if (event != null) {
-                    worldScreen.startLevel(player.newDepths)
-                    event.handle()
-                }
-            }
-        })
-
-        buttonBack.listeners.add(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                if (event != null) {
-                    worldScreen.setLocation(Location.OVERWORLD)
-                    event.handle()
-                }
-            }
-        })
+        buttonCurrentLevel.listeners.add(createChangeListener { it.startLevel(player.knownDepths) })
+        buttonNextLevel.listeners.add(createChangeListener { it.startLevel(player.newDepths) })
+        buttonBack.listeners.add(createChangeListener { it.setLocation(Location.OVERWORLD) })
     }
 
     override fun show() {

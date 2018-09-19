@@ -4,22 +4,24 @@ import com.ascending.games.id1.DungeonCreatorGame
 import com.ascending.games.id1.model.world.Location
 import com.ascending.games.id1.view.board.BoardScreen
 import com.ascending.games.id1.view.mechanics.StatsView
-import com.ascending.games.lib.view.IVisible
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.*
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 
 
 class WorldScreen(val game : DungeonCreatorGame) : Screen {
     private val uiStage = Stage()
-    private val statsView = StatsView(game.player.stats, uiStage, game.skin)
 
-    val locationViews = mapOf<Location, IVisible>(
-            Pair(Location.DUNGEON, DungeonView(this, uiStage)),
-            Pair(Location.OVERWORLD, OverworldView(this, uiStage)),
-            Pair(Location.SHRINE, ShrineView(this, uiStage))
-    )
+    private val statsView = StatsView(game.player.stats, uiStage, game.skin)
+    private val locationViews = Location.values().associate {
+                it to when (it) {
+                    Location.DUNGEON -> DungeonView(this, uiStage)
+                    Location.OVERWORLD -> OverworldView(this, uiStage)
+                    Location.SHRINE -> ShrineView(this, uiStage)
+                    Location.CITY -> CityView(this, uiStage)
+                }
+            }
+
 
     private var currentLocation = Location.DUNGEON
 
