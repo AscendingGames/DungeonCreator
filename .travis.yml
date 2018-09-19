@@ -12,6 +12,11 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 
+env:
+    global:
+        - secure: "divDtyz01oYh6fKqkdwZLA//fuOgrSyF9xTNAX36fnvbD81cWp6984ZHOzxzJvMiCC+OLuhGRHE9kE5w7Kp3UBErzM/JrOt0YiRVFiBFga79r90Dq/EGuOaW1uxqICehVfYLm6n6EfOG+eQJqY2jp7amlYbpu92YXliLDnFmXnAo5nV3UiiwJN278V5v+q8l9cVFOvTatybqvnYvRi1Ui1kfnsIZH9XHm4d1Fw1KrbU1f7ZSeZbKbKrA+SHvngCOwB+YiKk0f4u3lmoGptWQ14HLyAi5S0eDhkfVZNy28dffcHgUHLgfa+HedZxXQruQDBOUxOXuVz4r7MbZiEL+2iTZot6VqxWHndDrCC6Qe83WmpzRqZu106hV/G9rqzA2zDh3fERJ/bC8o8Xv0n4cqVCzLfUeO96Lm28HL75tCgbNVrSiMCgxmDpyTmGywac3fF+VhjTnK7i7qdNlqeiJEGJiNOaaSmj6WE1hbeJ0tbTKicPmD7wM7ucTeJ3ygP75k8EpJfHZaM096syxsTAo4nYU+Qhf8I+LsBs44QhMd3rVwf9Bk/J24YEwIpdQ8N8gFq2ojEteBplu5ppzY6gYfPk9Y9I5kq/MBmiKCuZrFyLQQbJsOAbXxo5tV2D82/bW5ItcniBJ5vgSrT616bnac+VjU4fEuaD8QqzRy7Nqk5E="
+        - secure: "R76Iw9NwtULCxiR9wsutXqO9qDFaZsCPXs1Kozxuh1kAq1Z87UnccpBqltrDn/G3092S9rBtRgidMVVvkRJh5xUVM7plDTSMdz8rV+dA9w1cp1SKrmePtIDJJWJ4mvZb2kKu2xFB6nlZaYi8Ay+w7P5rjlaPj9m5G1WUStoToNh47fA3JUHg0lnakQ9svYW6VuxC6HHnWPxsmg3QB6t8VePuN/GGEbrrFH+n8KVMjYxd/0re2NaqjquKU4Z7WcAx/PU5Ff7wpbZDVb2dCTxJifnzOKalZJT6svHYKn+Sh6jwmsTw/Hj9lL7NGGCUkgb5xA4QKF/mLm0O4gnFarQEMXr9i9SsQ1COY9UZ4UbI9QHtvlLFdWfgiJEdRF2JOdogQ3DdfpY9z8FAneQ2zyF86E+qeUpnG0WOVoATXvDagJKvxx6j9JCECbvgT3jEu1tPy1jixXUGDmcQrhE9rCqsuZkBbe+p140iPrke1rgw++IC/Qf7Jd1Vl9OsFYvf0/GutBQI99UZgi2URS+nFXbc8X+jU9IXX/onaAi3qYmDZAf6FMm4lLBntk2MtRy53KH9D73fNdp1vXKD1qJ7wyHAOaTPxOfm2wI8Llx9e6Hg4FzYbueZ5NlcPlyRq92TobihN+BvkJEMTnfrsR0L1UjkUtA0FFiBnA/a2BJvgIGFsT4="
+
 android:
   components:
     - tools # to get the new `repository-11.xml`
@@ -32,7 +37,7 @@ before_deploy:
 deploy:
     provider: releases
     api_key:
-        secure:  "WFdRs/uFdxlxh241L3aJTxd3JF9W3rwb7a69qHDc/LZKudzYFPXGiPdVm44vHwyDU+5GsSDwGoSXWqZ2IITrcOtogYKqQ/TC7Kaxyt71jj+iRUMFOprdzfDRUPInHyWmUpQhL3erHqt++ER99/JJF0ik0+3QQt6dvsC8iIoXUx2UqplVc1CEfWi6Xm7xmeVjCKsXWKHv100p0EoTTyHEc8dNP4XN19mJAh6XLz9JiWalDIXpgmFEt9TmaXXWaECl74JBnKzRZ+1mcAZh8jUW/f2OLgDvSaWl+G4/Wn8CojttgNqzhp1VvyYVzQ0Y3x6KgHnI6zH3l6j1WHP2oNazRPlH3CgsQRtBo4iELaJNrAVxBBkTT0YobksEqCaR3pf22PBQQg7oGxA39RM0PmZ/A6nG3fKP+ppqwrPbIKrEcchNSsMAhnUrZLALRShyrz9Oe9hwsT+rhNSSiWTnx/Pj9FoKo6Qwu0V8veWaPQQbOD202Ig+39kxfNqcoIQQ0RZvYAq/B6WlwdBka1dpH9SH09qxZBPyvnfCyrYYxAa3IRa5C8ynIGdMTOMdkNFB8MO8zuvj/zhXeYXEkrIEuIM/mblls9k3C6+YBiricM5SwdVxpTIrqyOWsHmfhY+IgURYHikqiRsQYXFyeml9GqVtoyiIxq+EViRGeB0CWPoePJM="
+        secure: "WFdRs/uFdxlxh241L3aJTxd3JF9W3rwb7a69qHDc/LZKudzYFPXGiPdVm44vHwyDU+5GsSDwGoSXWqZ2IITrcOtogYKqQ/TC7Kaxyt71jj+iRUMFOprdzfDRUPInHyWmUpQhL3erHqt++ER99/JJF0ik0+3QQt6dvsC8iIoXUx2UqplVc1CEfWi6Xm7xmeVjCKsXWKHv100p0EoTTyHEc8dNP4XN19mJAh6XLz9JiWalDIXpgmFEt9TmaXXWaECl74JBnKzRZ+1mcAZh8jUW/f2OLgDvSaWl+G4/Wn8CojttgNqzhp1VvyYVzQ0Y3x6KgHnI6zH3l6j1WHP2oNazRPlH3CgsQRtBo4iELaJNrAVxBBkTT0YobksEqCaR3pf22PBQQg7oGxA39RM0PmZ/A6nG3fKP+ppqwrPbIKrEcchNSsMAhnUrZLALRShyrz9Oe9hwsT+rhNSSiWTnx/Pj9FoKo6Qwu0V8veWaPQQbOD202Ig+39kxfNqcoIQQ0RZvYAq/B6WlwdBka1dpH9SH09qxZBPyvnfCyrYYxAa3IRa5C8ynIGdMTOMdkNFB8MO8zuvj/zhXeYXEkrIEuIM/mblls9k3C6+YBiricM5SwdVxpTIrqyOWsHmfhY+IgURYHikqiRsQYXFyeml9GqVtoyiIxq+EViRGeB0CWPoePJM="
     file: 
         - desktop/build/libs/DungeonCreator-$(date +'%Y%m%d%H%M%S').jar
         - android/build/outputs/apk/DungeonCreator-$(date +'%Y%m%d%H%M%S')-unaligned.apk
