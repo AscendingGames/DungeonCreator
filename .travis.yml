@@ -22,7 +22,7 @@ android:
 before_install:
     - yes | sdkmanager "platforms;android-28"
     - chmod +x gradlew
-before_deploy:
+script:
     - cp $TRAVIS_BUILD_DIR/android.keystore $HOME
     - ./gradlew desktop:dist
     - mv desktop/build/libs/desktop-1.0.jar desktop/build/libs/DungeonCreator-$(date +'%Y%m%d%H%M%S').jar
