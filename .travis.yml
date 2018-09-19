@@ -21,7 +21,21 @@ android:
     - android-28
 before_install:
     - yes | sdkmanager "platforms;android-28"
-script:
-    - ./gradlew clean test
+    - chmod +x gradlew
+before_deploy:
+    - ./gradlew desktop:dist
+    - mv desktop/build/libs/desktop-1.0.jar desktop/build/libs/DungeonCreator-$(date +'%Y%m%d%H%M%S').jar
+    - ./gradlew android:assembleRelease
+    - mv android/build/outputs/apk/android-release-unsigned.apk android/build/outputs/apk/DungeonCreator-$(date +'%Y%m%d%H%M%S')-unaligned.apk
+deploy:
+    provider: releases
+    api_key:
+        secure:  "WFdRs/uFdxlxh241L3aJTxd3JF9W3rwb7a69qHDc/LZKudzYFPXGiPdVm44vHwyDU+5GsSDwGoSXWqZ2IITrcOtogYKqQ/TC7Kaxyt71jj+iRUMFOprdzfDRUPInHyWmUpQhL3erHqt++ER99/JJF0ik0+3QQt6dvsC8iIoXUx2UqplVc1CEfWi6Xm7xmeVjCKsXWKHv100p0EoTTyHEc8dNP4XN19mJAh6XLz9JiWalDIXpgmFEt9TmaXXWaECl74JBnKzRZ+1mcAZh8jUW/f2OLgDvSaWl+G4/Wn8CojttgNqzhp1VvyYVzQ0Y3x6KgHnI6zH3l6j1WHP2oNazRPlH3CgsQRtBo4iELaJNrAVxBBkTT0YobksEqCaR3pf22PBQQg7oGxA39RM0PmZ/A6nG3fKP+ppqwrPbIKrEcchNSsMAhnUrZLALRShyrz9Oe9hwsT+rhNSSiWTnx/Pj9FoKo6Qwu0V8veWaPQQbOD202Ig+39kxfNqcoIQQ0RZvYAq/B6WlwdBka1dpH9SH09qxZBPyvnfCyrYYxAa3IRa5C8ynIGdMTOMdkNFB8MO8zuvj/zhXeYXEkrIEuIM/mblls9k3C6+YBiricM5SwdVxpTIrqyOWsHmfhY+IgURYHikqiRsQYXFyeml9GqVtoyiIxq+EViRGeB0CWPoePJM="
+    file: 
+        - desktop/build/libs/DungeonCreator-$(date +'%Y%m%d%H%M%S').jar
+        - android/build/outputs/apk/DungeonCreator-$(date +'%Y%m%d%H%M%S')-unaligned.apk
+    on:
+        tags: false
+        repo: AscendingGames/DungeonCreator
 after_success:
     - bash <(curl -s https://codecov.io/bash)
