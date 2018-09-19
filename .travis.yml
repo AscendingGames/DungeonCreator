@@ -30,7 +30,9 @@ script:
 before_deploy:
 - mv desktop/build/libs/desktop-1.0.jar desktop/build/libs/DungeonCreator-$(date +'%Y%m%d%H%M%S').jar
 - cd android/build/outputs/apk
-- mv android-release-unsigned.apk DungeonCreator-$(date +'%Y%m%d%H%M%S')-unaligned.apk
+- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${TRAVIS_BUILD_DIR}/android.jks -storepass $storepass -keypass $keypass app-release-unsigned.apk AscendingGames
+- jarsigner -verify app-release-unsigned.apk
+- "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS}/zipalign -v 4 app-release-unsigned.apk DungeonCreator-$(date +'%Y%m%d%H%M%S')-unaligned.apk
 deploy:
   provider: releases
   api_key:
