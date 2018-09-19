@@ -23,11 +23,12 @@ before_install:
     - yes | sdkmanager "platforms;android-28"
     - chmod +x gradlew
 script:
-    - cp $TRAVIS_BUILD_DIR/android.keystore $HOME
-    - ./gradlew desktop:dist
+    - "./gradlew clean test build"
+    
+before_deploy:
     - mv desktop/build/libs/desktop-1.0.jar desktop/build/libs/DungeonCreator-$(date +'%Y%m%d%H%M%S').jar
-    - ./gradlew android:assembleRelease
-    - mv android/build/outputs/apk/android-release-unsigned.apk android/build/outputs/apk/DungeonCreator-$(date +'%Y%m%d%H%M%S')-unaligned.apk
+    - cd android/build/outputs/apk
+    - mv android-release-unsigned.apk DungeonCreator-$(date +'%Y%m%d%H%M%S')-unaligned.apk
 deploy:
     provider: releases
     api_key:
