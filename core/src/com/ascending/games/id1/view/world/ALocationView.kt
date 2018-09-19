@@ -2,13 +2,12 @@ package com.ascending.games.id1.view.world
 
 import com.ascending.games.lib.view.IVisible
 import com.ascending.games.lib.view.ui.ChangeListenerService
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 
-abstract class ALocationView(private val worldScreen: WorldScreen, protected val uiStage : Stage, locationDescription : String) : IVisible {
+abstract class ALocationView(private val worldScreen: WorldScreen, locationDescription : String) : IVisible {
     protected val player = worldScreen.game.player
     protected val skin = worldScreen.game.skin
 
@@ -30,7 +29,7 @@ abstract class ALocationView(private val worldScreen: WorldScreen, protected val
     }
 
     override fun show() {
-        uiStage.addActor(locationTable)
+        worldScreen.uiStage.addActor(locationTable)
     }
 
     override fun hide() {

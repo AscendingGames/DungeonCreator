@@ -1,10 +1,9 @@
 package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.model.world.Location
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 
-class OverworldView(worldScreen: WorldScreen, uiStage : Stage) : ALocationView(worldScreen, uiStage, OVERWORLD_TEXT) {
+class OverworldView(worldScreen: WorldScreen) : ALocationView(worldScreen, OVERWORLD_TEXT) {
     companion object {
         const val OVERWORLD_TEXT =
                 "As you gaze downwards, you see the mortal world\n"+

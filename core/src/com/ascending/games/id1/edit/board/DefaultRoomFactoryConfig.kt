@@ -15,8 +15,8 @@ data class DefaultRoomFactoryConfig(
         private val DEFAULT_NUMBER_DOORS = 2..4
         private val DEFAULT_NUMBER_MONSTERS = 0..3
         private const val DEFAULT_PROB_CRYSTAL = 0.1f
-        private const val DEFAULT_MIN_ROOMS_TILL_STAIRS_DOWN = 0
-        private const val DEFAULT_PROB_STAIRS_DOWN = 1f
+        private const val DEFAULT_MIN_ROOMS_TILL_STAIRS_DOWN = 25
+        private const val DEFAULT_PROB_STAIRS_DOWN = 0.2f
 
         val SHAPE_LINE = RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0)))
         val SHAPE_L = RoomShape(listOf(Coord2(1,0), Coord2(0,0), Coord2(-1,0), Coord2(1,-1)))

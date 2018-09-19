@@ -1,15 +1,9 @@
 package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.model.world.Location
-import com.ascending.games.lib.view.IVisible
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 
-class ShrineView(worldScreen: WorldScreen, uiStage : Stage) : ALocationView(worldScreen, uiStage, SHRINE_TEXT) {
+class ShrineView(worldScreen: WorldScreen) : ALocationView(worldScreen, SHRINE_TEXT) {
     companion object {
         const val SHRINE_TEXT =
                 "This is your shrine, nothing but a humongous stone\n"+
