@@ -26,7 +26,7 @@ before_install:
 - chmod +x gradlew
 
 script:
-- ./gradlew clean assemble test
+- ./gradlew clean assembleRelease test
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
