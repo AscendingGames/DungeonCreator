@@ -24,7 +24,7 @@ before_install:
 - echo $deploy_password | gpg --passphrase-fd 0 keystore.jks.gpg
 - yes | sdkmanager "platforms;android-28"
 - chmod +x gradlew
--keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
+- keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
 
 script:
 - "./gradlew clean test build"
