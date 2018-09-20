@@ -21,7 +21,7 @@ before_install:
 - yes | sdkmanager "platforms;android-28"
 - chmod +x gradlew
 script:
-- "./gradlew clean test build"
+- ./gradlew clean assembleRelease test
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 deploy:
