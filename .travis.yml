@@ -1,17 +1,14 @@
 sudo: required
 language: android
 jdk: oraclejdk8
-
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
-
 cache:
   directories:
   - "$HOME/.gradle/caches"
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
-
 android:
   components:
   - tools
@@ -19,22 +16,18 @@ android:
   - platform-tools
   - build-tools-28.0.2
   - android-28
-
 before_install:
 - echo $deploy_password | gpg --passphrase-fd 0 keystore.jks.gpg
 - yes | sdkmanager "platforms;android-28"
 - chmod +x gradlew
-
 script:
-- ./gradlew clean assembleRelease test
-
+- "./gradlew clean test build"
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-
 deploy:
   provider: releases
   api_key:
-    secure: p+dbCE9zCUpkUEQGdMKnrQraKQVT/Iy4UnWUinI/cZU3ehkB/yIYvxteS38v3IGNZ3tA1z/4a/BfGJ/EJME0SOkKXfaF6ZpoQRHl/gH+1uLRNY2XUDpFWvLE4KOHp6byF21j3Mq/c7h656/q4TxL/++E1TVXPCSDVONrGphcK2bcmGikhkGm58KQkci95ioyeSTgE8dTWw1KSKBsJBXQQ90m92ZA+rFFFA2uHQ/4n8iGKajpVyFPqi+QFDUEPXp4/QyXSQQAXFt7w+w7Huqr2fkQcTNZqhBMzly1kQafHM/EEACpV2rNWqnO41dNkYR1WVGpItpVhhqCJSJ5OSYVr0C/UMJ4WgapnTFjxtOXy9Rm14/mBY6VjxJ/PMAvTbmdw3g9RqTYF5Yj8rs2gff4862vU8n0+iS9CIewlfBmokYu48x9bPUZMP12EqqLFJuWtrmsIkrsF7dHmOy2ktKxi4JytloYnpALJmja7GwRczY4Jp0LjgIYpz5qv0QOs+7uMVa35gXNjwLVDt69lCzII4tbZI4ejjiQqKFeXaxD3O/pfwwxOot2cnRK4gRkEft+L6zj77Ht1rF6bUKFPKT4j7bIvImZDO+8uesbdSm9f+RY7ew1p/1NF1Eo4K03o/XmI3miSTs/ds05bqBuBzeyKU2v9rQD+L0hqIRE52BKZqM=
+    secure: NUqqsNi/QjCOsCiRuv0STilUFbYVZrQAO5J/eal26UeBhvNA3ACsMZXhlLPImv5mhbN0L/oOWhhlJbJYEbzRXdDYVcGK3F20oTOvdLjopzE9NSyhihCSb9HcWEGWbP17LMgrrY5XGmr9bdhsmBTZ4SAiU07gWj4glCFqiyTXNI5kkiNPgJsh2JxhbW/yVyAn4iLJ647evzjXB/aePAp8ifRRswKRSKJwEc7KymwpJidEGSqB0eCirYiaUJUzCFkPMPmjEiuX2co5E+64L2PVzJWCeqRF4RMwVcGVoGV3DYuIQ1Fpm80eRzvPBeSBgkzJPqqsA0gvp+izDt8jQp1ugg3uP00/P88apjSArDtkyffzA6EC6d9cOAvecwOuKwvxH7gCRTVq1Zg9qxBz4Yzhz3E0zTNr7mB/JNWSXuoop/f7shKOPO+Fw6eS1mzpMvavOWECSkeDj9v/J/LP+IQl6x9OZAj3XQzfw/TRrasbGYqsQEmiap6Q6TeiQ5uXCkytSwbnBALgLX3r335/TYOv2L1kviZaUPUwPTsc8WAtSvqMwJlGA9+AhClcTwv+OY8f8k/nLiftzUTTyprRIb4Ho6idRaVtSRF44++hFuDjYeyJMJk4B2pfZ5jwfNE+5XbF8QtWI0ZcBQHC2iJu5qxpbtsNeNq8lBsL7cnQkf4QTSs=
   file: android/release/android-release.apk
   on:
     repo: AscendingGames/DungeonCreator
