@@ -27,3 +27,11 @@ script:
 - "./gradlew clean test build"
 after_success:
 - bash <(curl -s https://codecov.io/bash)
+deploy:
+  provider: releases
+  api_key:
+    secure: p+dbCE9zCUpkUEQGdMKnrQraKQVT/Iy4UnWUinI/cZU3ehkB/yIYvxteS38v3IGNZ3tA1z/4a/BfGJ/EJME0SOkKXfaF6ZpoQRHl/gH+1uLRNY2XUDpFWvLE4KOHp6byF21j3Mq/c7h656/q4TxL/++E1TVXPCSDVONrGphcK2bcmGikhkGm58KQkci95ioyeSTgE8dTWw1KSKBsJBXQQ90m92ZA+rFFFA2uHQ/4n8iGKajpVyFPqi+QFDUEPXp4/QyXSQQAXFt7w+w7Huqr2fkQcTNZqhBMzly1kQafHM/EEACpV2rNWqnO41dNkYR1WVGpItpVhhqCJSJ5OSYVr0C/UMJ4WgapnTFjxtOXy9Rm14/mBY6VjxJ/PMAvTbmdw3g9RqTYF5Yj8rs2gff4862vU8n0+iS9CIewlfBmokYu48x9bPUZMP12EqqLFJuWtrmsIkrsF7dHmOy2ktKxi4JytloYnpALJmja7GwRczY4Jp0LjgIYpz5qv0QOs+7uMVa35gXNjwLVDt69lCzII4tbZI4ejjiQqKFeXaxD3O/pfwwxOot2cnRK4gRkEft+L6zj77Ht1rF6bUKFPKT4j7bIvImZDO+8uesbdSm9f+RY7ew1p/1NF1Eo4K03o/XmI3miSTs/ds05bqBuBzeyKU2v9rQD+L0hqIRE52BKZqM=
+  file: android/release/android-release.apk
+  on:
+    repo: AscendingGames/DungeonCreator
+    branch: development
