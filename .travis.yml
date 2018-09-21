@@ -25,9 +25,9 @@ script:
 - "./gradlew clean assembleRelease test"
 after_success:
 - bash <(curl -s https://codecov.io/bash)
+- scripts/tag.sh
 before_deploy:
 - ls android/build/outputs/apk
-- scripts/tag.sh
 deploy:
   provider: releases
   api_key:
