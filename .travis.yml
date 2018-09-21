@@ -27,7 +27,7 @@ after_success:
 before_deploy:
 - git push origin :refs/tags/development
 - git tag -fa "development"
-- git push origin development--tags
+- git push origin development --tags
 - ls
 deploy:
   provider: releases
