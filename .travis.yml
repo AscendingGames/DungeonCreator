@@ -27,7 +27,6 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 - scripts/tag.sh
 before_deploy:
-- ls android/build/outputs/apk/release
 - mv desktop/build/libs/desktop-1.0.jar desktop/build/libs/{PROJECT_NAME}-$TRAVIS_TAG.jar
 - mv android/build/outputs/apk/release/android-release-unsigned.apk android/build/outputs/apk/release/{PROJECT_NAME}-$TRAVIS_TAG.apk
 deploy:
