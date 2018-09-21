@@ -39,7 +39,7 @@ deploy:
   - android/build/outputs/apk/release/DungeonCreator-$TRAVIS_TAG.apk
   - desktop/build/libs/DungeonCreator-$TRAVIS_TAG.jar
   skip_cleanup: true
-  prerelease: [$TRAVIS_TAG != latest]
+  prerelease: [$TRAVIS_TAG != "latest"]
   overwrite: true
   name: $TRAVIS_TAG
   body: Automatic build of Tag ($TRAVIS_TAG) built by Travis CI on $(date
