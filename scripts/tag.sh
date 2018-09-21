@@ -4,7 +4,7 @@ if [ "$TRAVIS_BRANCH" = "development" -a "$TRAVIS_PULL_REQUEST" = "false" ]; the
   git config --global user.email "hi@travis-ci.org"
   git config --global user.name "Sr. Travis"
 
-  git remote add release "https://${GH_TOKEN}@github.com/AscendingGames/DungeonCreator.git"
+  git remote add release "https://${deploy_password}@github.com/AscendingGames/DungeonCreator.git"
 
   git push -d release development
   git tag -d development
