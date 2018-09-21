@@ -25,7 +25,8 @@ script:
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 before_deploy:
-- git tag -f "development"
+- git tag -fa "development"
+- git push development "development"
 deploy:
   provider: releases
   api_key:
@@ -34,7 +35,7 @@ deploy:
   skip_cleanup: true
   prerelease: true
   overwrite: true
-  body: Automatic development build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI on $(date +'%F %T %Z').
+  body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI on $(date +'%F %T %Z').
   on:
     repo: AscendingGames/DungeonCreator
     branch: development
