@@ -27,7 +27,7 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 - scripts/tag.sh
 before_deploy:
-- ls android/build/outputs/apk
+- ls android/build/outputs/apk/release
 deploy:
   provider: releases
   api_key:
@@ -36,8 +36,8 @@ deploy:
   skip_cleanup: true
   prerelease: true
   overwrite: true
-  name: latest
-  body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI on $(date
+  name: $TRAVIS_TAG
+  body: Automatic build of Tag ($TRAVIS_TAG) built by Travis CI on $(date
     +'%F %T %Z').
   on:
     repo: AscendingGames/DungeonCreator
