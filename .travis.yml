@@ -26,8 +26,7 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 before_deploy:
 - if [ $TRAVIS_BRANCH == "development"]; then
-    - git tag -d "development"
-    - git tag "development"
+    - git tag -f "development"
   fi
 deploy:
   provider: releases
