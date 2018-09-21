@@ -26,13 +26,13 @@ script:
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 before_deploy:
-- ls build
+- ls android/build/outputs/apk
 - scripts/tag.sh
 deploy:
   provider: releases
   api_key:
     secure: NUqqsNi/QjCOsCiRuv0STilUFbYVZrQAO5J/eal26UeBhvNA3ACsMZXhlLPImv5mhbN0L/oOWhhlJbJYEbzRXdDYVcGK3F20oTOvdLjopzE9NSyhihCSb9HcWEGWbP17LMgrrY5XGmr9bdhsmBTZ4SAiU07gWj4glCFqiyTXNI5kkiNPgJsh2JxhbW/yVyAn4iLJ647evzjXB/aePAp8ifRRswKRSKJwEc7KymwpJidEGSqB0eCirYiaUJUzCFkPMPmjEiuX2co5E+64L2PVzJWCeqRF4RMwVcGVoGV3DYuIQ1Fpm80eRzvPBeSBgkzJPqqsA0gvp+izDt8jQp1ugg3uP00/P88apjSArDtkyffzA6EC6d9cOAvecwOuKwvxH7gCRTVq1Zg9qxBz4Yzhz3E0zTNr7mB/JNWSXuoop/f7shKOPO+Fw6eS1mzpMvavOWECSkeDj9v/J/LP+IQl6x9OZAj3XQzfw/TRrasbGYqsQEmiap6Q6TeiQ5uXCkytSwbnBALgLX3r335/TYOv2L1kviZaUPUwPTsc8WAtSvqMwJlGA9+AhClcTwv+OY8f8k/nLiftzUTTyprRIb4Ho6idRaVtSRF44++hFuDjYeyJMJk4B2pfZ5jwfNE+5XbF8QtWI0ZcBQHC2iJu5qxpbtsNeNq8lBsL7cnQkf4QTSs=
-  file: "build/outputs/apk/release/app-release-unsigned.apk"
+  file: "android/build/outputs/apk/release/app-release-unsigned.apk" 
   skip_cleanup: true
   prerelease: true
   overwrite: true
