@@ -20,6 +20,7 @@ before_install:
 - echo $deploy_password | gpg --passphrase-fd 0 keystore.jks.gpg
 - yes | sdkmanager "platforms;android-28"
 - chmod +x gradlew
+- chmod +x scripts/tag.sh
 script:
 - ./gradlew clean assembleRelease test
 after_success:
