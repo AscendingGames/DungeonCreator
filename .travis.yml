@@ -27,7 +27,7 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 - scripts/tag.sh
 before_deploy:
-- ls desktop
+- ls desktop/build
 - mv desktop/build/libs/desktop-1.0.jar desktop/build/libs/DungeonCreator-$TRAVIS_TAG.jar
 - mv android/build/outputs/apk/release/android-release-unsigned.apk android/build/outputs/apk/release/DungeonCreator-$TRAVIS_TAG.apk
 deploy:
