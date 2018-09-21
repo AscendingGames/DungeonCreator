@@ -25,9 +25,7 @@ script:
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 before_deploy:
-- git push origin :refs/tags/development
-- git tag -fa "development"
-- git push origin development --tags
+- scripts/tag.sh
 - ls
 deploy:
   provider: releases
