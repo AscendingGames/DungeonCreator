@@ -115,7 +115,7 @@ project(":core") {
         }
     }
 
-    tasks.build.dependsOn(jacocoTestReport) 
+    check.dependsOn jacocoTestCoverageVerification
 
     dependencies {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
