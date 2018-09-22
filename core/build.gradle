@@ -1,4 +1,5 @@
 apply plugin: "kotlin"
+apply plugin: "jacoco"
 
 sourceCompatibility = 1.6
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -23,6 +24,21 @@ jacocoTestReport {
         xml.enabled true
         csv.enabled false
         html.enabled true
+    }
+}
+
+
+check.dependsOn jacocoTestCoverageVerification
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            element = 'CLASS'
+            // White list
+            excludes = coverageExclusions
+            limit {
+                minimum = 0.70
+            }
+        }
     }
 }
 
