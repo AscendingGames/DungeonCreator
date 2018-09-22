@@ -26,19 +26,6 @@ jacocoTestReport {
     }
 }
 
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.8
-            }
-        }
-    }
-}
-
-tasks.build.dependsOn(jacocoTestReport) 
-
 dependencies {
     testImplementation 'junit:junit:4.12'
 }
