@@ -10,9 +10,6 @@ class JSONResourceTest {
 
     companion object {
         data class MockObject(var x : Int = 0)
-        enum class MockEnum {
-            VALUE_1, VALUE_2
-        }
     }
 
     val jsonResource = JSONResource("test.json")

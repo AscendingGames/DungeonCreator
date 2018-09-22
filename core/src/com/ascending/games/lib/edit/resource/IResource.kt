@@ -18,6 +18,7 @@ interface IResource : ISaveable {
     override fun save() {
         val serialized = serialize()
         getFile().writeString(serialized, false)
+        isLoaded = true
     }
 
     override fun load() {
@@ -27,5 +28,17 @@ interface IResource : ISaveable {
 
             isLoaded = true
         }
+    }
+
+    fun unload() {
+        if (isLoaded) {
+            contents.clear()
+            isLoaded = false
+        }
+    }
+
+    fun reload() {
+        unload()
+        load()
     }
 }

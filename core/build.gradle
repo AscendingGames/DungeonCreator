@@ -29,4 +29,5 @@ jacocoTestReport {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
+    testImplementation 'com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.8'
 }

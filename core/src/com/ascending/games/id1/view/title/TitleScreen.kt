@@ -39,7 +39,6 @@ class TitleScreen(val game : DungeonCreatorGame) : Screen {
     private fun newGame() {
         val player = PlayerService().createInitialPlayer()
         game.saveResource.contents += player
-        game.saveResource.isLoaded = true
         game.saveResource.save()
         startGame()
     }
