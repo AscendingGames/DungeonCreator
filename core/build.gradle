@@ -26,6 +26,17 @@ jacocoTestReport {
     }
 }
 
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+    }
+}
+
 dependencies {
     testImplementation 'junit:junit:4.12'
 }
