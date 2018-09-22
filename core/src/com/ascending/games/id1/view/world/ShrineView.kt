@@ -1,8 +1,6 @@
 package com.ascending.games.id1.view.world
 
-import com.ascending.games.id1.model.world.PlayerService
-import com.ascending.games.id1.view.mechanics.RitualLabelProvider
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.ascending.games.id1.model.world.Location
 
 class ShrineView(worldScreen: WorldScreen) : ALocationView(worldScreen, SHRINE_TEXT) {
     companion object {
@@ -14,30 +12,12 @@ class ShrineView(worldScreen: WorldScreen) : ALocationView(worldScreen, SHRINE_T
     }
 
     private val buttonBack = createBackButton()
-    private val ritualsButton = createTextButton("Rituals") { showRituals() }
-    private val ritualButtons = mutableListOf<TextButton>()
+    private val ritualsButton = createTextButton("Rituals") { it.setLocation(Location.RITUAL_PLACE) }
 
-    private val ritualLabelProvider = RitualLabelProvider()
-    private val playerService = PlayerService()
 
     init {
         locationTable.add(buttonBack)
         locationTable.row().pad(100f)
         locationTable.add(ritualsButton)
-    }
-
-    fun showRituals() {
-        player.enabledRituals.forEach {ritual ->
-            val ritualButton = createTextButton(ritualLabelProvider.getValue(ritual)) {
-                playerService.performRitual(player, ritual)
-                ritualsButton.remove()
-            }
-            ritualButtons.add(ritualButton)
-        }
-    }
-
-    fun hideRituals() {
-        ritualButtons.forEach { it.remove() }
-        ritualButtons.clear()
     }
 }

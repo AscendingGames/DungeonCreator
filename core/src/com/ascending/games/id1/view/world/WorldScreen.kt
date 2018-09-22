@@ -21,6 +21,7 @@ class WorldScreen(val game : DungeonCreatorGame, private var currentLocation : L
             Location.OVERWORLD -> OverworldView(this)
             Location.SHRINE -> ShrineView(this)
             Location.CITY -> CityView(this)
+            Location.RITUAL_PLACE -> RitualPlaceView(this)
         }
     }
 

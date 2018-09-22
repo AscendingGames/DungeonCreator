@@ -48,8 +48,8 @@ abstract class ALocationView(private val worldScreen: WorldScreen, locationDescr
         return backButton
     }
 
-    protected fun createBackButton()  : TextButton {
-        return createTextButton("Back") { it.setLocation(Location.OVERWORLD) }
+    protected fun createBackButton(location : Location = Location.OVERWORLD)  : TextButton {
+        return createTextButton("Back") { it.setLocation(location) }
     }
 
 }

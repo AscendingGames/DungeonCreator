@@ -42,7 +42,7 @@ class PlayerService {
 
     fun updateEnabledRituals(player : Player) {
         player.enabledRituals +=
-                Ritual.values().filter { it.unlockDepth >= player.depth && !player.performedRituals.contains(it) }
+                Ritual.values().filter { player.depth >= it.unlockDepth && !player.performedRituals.contains(it) }
     }
 
     fun performRitual(player : Player, ritual : Ritual) {
