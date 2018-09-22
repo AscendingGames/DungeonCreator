@@ -32,11 +32,9 @@ check.dependsOn jacocoTestCoverageVerification
 jacocoTestCoverageVerification {
     violationRules {
         rule {
-            element = 'CLASS'
-            // White list
-            excludes = coverageExclusions
+            excludes = ['com.ascending.games.view.*']
             limit {
-                minimum = 0.70
+                minimum = 0.80
             }
         }
     }
