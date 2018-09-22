@@ -1,6 +1,5 @@
 apply plugin: "kotlin"
 apply plugin: "jacoco"
-apply plugin: "java"
 
 sourceCompatibility = 1.6
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -29,13 +28,24 @@ jacocoTestReport {
 }
 
 
-check.dependsOn jacocoTestCoverageVerification
 jacocoTestCoverageVerification {
+
     violationRules {
         rule {
-            excludes = ['com.ascending.games.view.*']
             limit {
-                minimum = 0.80
+                minimum = 0.5
+            }
+        }
+
+        rule {
+            enabled = false
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 0.3
             }
         }
     }
