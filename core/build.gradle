@@ -37,7 +37,7 @@ jacocoTestCoverageVerification {
     }
 }
 
-check.dependsOn jacocoTestCoverageVerification
+tasks.build.dependsOn(jacocoTestReport) 
 
 dependencies {
     testImplementation 'junit:junit:4.12'
