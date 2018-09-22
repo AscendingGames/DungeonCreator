@@ -1,6 +1,7 @@
 package com.ascending.games.id1.view.title
 
 import com.ascending.games.id1.DungeonCreatorGame
+import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.id1.view.world.WorldScreen
 import com.ascending.games.lib.view.ui.ChangeListenerService
 import com.badlogic.gdx.Gdx
@@ -27,8 +28,25 @@ class TitleScreen(val game : DungeonCreatorGame) : Screen {
         titleTable.add(buttonContinue)
         titleTable.row().pad(100f)
 
-        buttonStart.listeners.add(listenerService.createChangeListener { startGame() })
-        buttonContinue.listeners.add(listenerService.createChangeListener { startGame() })
+        buttonStart.listeners.add(listenerService.createChangeListener { newGame() })
+        buttonContinue.listeners.add(listenerService.createChangeListener { continueGame() })
+
+        if (!game.saveResource.getFile().exists()) {
+            buttonContinue.isDisabled = true
+        }
+    }
+
+    private fun newGame() {
+        val player = PlayerService().createInitialPlayer()
+        game.saveResource.contents += player
+        game.saveResource.isLoaded = true
+        game.saveResource.save()
+        startGame()
+    }
+
+    private fun continueGame() {
+        game.saveResource.load()
+        startGame()
     }
 
     private fun startGame() {

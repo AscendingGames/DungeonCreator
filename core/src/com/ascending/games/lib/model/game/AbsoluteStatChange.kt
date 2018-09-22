@@ -1,8 +1,6 @@
 package com.ascending.games.lib.model.game
 
-import com.ascending.games.id1.model.mechanics.StatType
-
-open class AbsoluteStatChange(private val statChanges : MutableMap<IStatType, Float>) : IStatModifier {
+open class AbsoluteStatChange(private val statChanges : MutableMap<String, Float>) : IStatModifier {
     override var appliedTo: IStats? = null
 
     override fun apply(stats: IStats) {

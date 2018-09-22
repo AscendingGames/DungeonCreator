@@ -14,7 +14,7 @@ class MoveContentAction(val aRoomContent: ARoomContent, val targetRoomElement : 
         val targetCoord = targetRoomElement.boardCoord
         val movementVector = Vector2(targetCoord.x.toFloat(), targetCoord.y.toFloat()).sub(aRoomContent.absolutePosition)
         val distance = movementVector.len()
-        val speed = aRoomContent.stats[StatType.SPEED] ?: 1f
+        val speed = aRoomContent.stats[StatType.SPEED.name] ?: 1f
         val movedDistance = delta * speed
 
         if (distance <= movedDistance) {

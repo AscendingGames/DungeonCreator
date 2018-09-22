@@ -15,11 +15,11 @@ class PlayerServiceTest {
     @Test
     fun clearLevel() {
         val hero = Hero()
-        hero.stats[StatType.MAX_HP] = 1f
+        hero.stats[StatType.MAX_HP.name] = 1f
         playerService.clearLevel(player, hero, 1)
         assertEquals(2, player.depth)
-        assertEquals(1f, player.stats[StatType.MAX_HP])
-        assertTrue(player.enabledRituals.contains(Ritual.RitualOfBlessings))
+        assertEquals(1f, player.stats[StatType.MAX_HP.name])
+        assertTrue(player.enabledRituals.contains(Ritual.RitualOfBlessings.name))
         assertEquals(1, player.enabledRituals.size)
         playerService.clearLevel(player, hero, 1)
         assertEquals(2, player.depth)
@@ -27,26 +27,26 @@ class PlayerServiceTest {
 
     @Test
     fun performRitual() {
-        player.enabledRituals.add(Ritual.RitualOfBlessings)
+        player.enabledRituals.add(Ritual.RitualOfBlessings.name)
         playerService.performRitual(player, Ritual.RitualOfBlessings)
-        assertTrue(player.enabledBlessings.contains(Blessing.Novice))
+        assertTrue(player.enabledBlessings.contains(Blessing.Novice.name))
         assertTrue(player.enabledRituals.isEmpty())
-        assertTrue(player.performedRituals.contains(Ritual.RitualOfBlessings))
+        assertTrue(player.performedRituals.contains(Ritual.RitualOfBlessings.name))
     }
 
     @Test
     fun grantBlessing() {
-        player.enabledBlessings.add(Blessing.Novice)
+        player.enabledBlessings.add(Blessing.Novice.name)
         playerService.grantBlessing(player, Blessing.Novice)
-        assertTrue(player.enabledBlessings.contains(Blessing.Novice))
-        assertEquals(player.grantedBlessings[Blessing.Novice], 1)
+        assertTrue(player.enabledBlessings.contains(Blessing.Novice.name))
+        assertEquals(player.grantedBlessings[Blessing.Novice.name], 1)
         assertEquals(1, player.enabledBlessings.size)
-        assertEquals(PlayerService.INIT_HP + Blessing.Novice.value, player.stats[StatType.MAX_HP])
+        assertEquals(PlayerService.INIT_HP + Blessing.Novice.value, player.stats[StatType.MAX_HP.name])
 
-        player.grantedBlessings[Blessing.Novice] = Blessing.Novice.maxNumber - 1
+        player.grantedBlessings[Blessing.Novice.name] = Blessing.Novice.maxNumber - 1
         playerService.grantBlessing(player, Blessing.Novice)
-        assertFalse(player.enabledBlessings.contains(Blessing.Novice))
-        assertTrue(Blessing.Novice.isCleared(player.grantedBlessings[Blessing.Novice]!!))
-        assertTrue(player.enabledBlessings.contains(Blessing.Warrior))
+        assertFalse(player.enabledBlessings.contains(Blessing.Novice.name))
+        assertTrue(Blessing.Novice.isCleared(player.grantedBlessings[Blessing.Novice.name]!!))
+        assertTrue(player.enabledBlessings.contains(Blessing.Warrior.name))
     }
 }

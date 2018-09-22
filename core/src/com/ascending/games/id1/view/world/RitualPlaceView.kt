@@ -1,5 +1,6 @@
 package com.ascending.games.id1.view.world
 
+import com.ascending.games.id1.model.mechanics.Ritual
 import com.ascending.games.id1.model.world.Location
 import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.id1.view.mechanics.RitualLabelProvider
@@ -23,8 +24,8 @@ class RitualPlaceView(worldScreen: WorldScreen) : ALocationView(worldScreen, RIT
     override fun show() {
         super.show()
         player.enabledRituals.forEach {ritual ->
-            val ritualButton = createTextButton(ritualLabelProvider.getValue(ritual)) {
-                playerService.performRitual(player, ritual)
+            val ritualButton = createTextButton(ritualLabelProvider.getValue(Ritual.valueOf(ritual))) {
+                playerService.performRitual(player, Ritual.valueOf(ritual))
                 hide()
                 show()
             }

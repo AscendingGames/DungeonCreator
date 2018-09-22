@@ -1,9 +1,9 @@
 package com.ascending.games.id1;
 
-import com.ascending.games.id1.model.world.Player;
-import com.ascending.games.id1.model.world.PlayerService;
 import com.ascending.games.id1.view.SkinService;
 import com.ascending.games.id1.view.title.TitleScreen;
+import com.ascending.games.lib.edit.resource.IResource;
+import com.ascending.games.lib.edit.resource.JSONResource;
 import com.ascending.games.lib.view.SceneManager2;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -14,10 +14,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.jetbrains.annotations.NotNull;
 
 public class DungeonCreatorGame extends Game {
+
+	private static final String SAVE_FILE = "./DungeonCreator/data/save/save.json";
+
 	private SceneManager2 sceneManager;
 	private Texture img;
 	private Skin skin;
-	private Player player;
+	private IResource saveResource;
 
 	@Override
 	public void create () {
@@ -25,8 +28,7 @@ public class DungeonCreatorGame extends Game {
 
 		sceneManager = new SceneManager2(new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		img = new Texture("badlogic.jpg");
-
-		player = new PlayerService().createInitialPlayer();
+		saveResource = new JSONResource(SAVE_FILE);
 		skin = new SkinService().createSkin();
 		setScreen(new TitleScreen(this));
 	}
@@ -39,6 +41,10 @@ public class DungeonCreatorGame extends Game {
 	
 	@Override
 	public void dispose () {
+		if (saveResource.isLoaded()) {
+			saveResource.save();
+		}
+
 		sceneManager.dispose();
 		img.dispose();
 	}
@@ -52,5 +58,5 @@ public class DungeonCreatorGame extends Game {
 	public Skin getSkin() { return skin; }
 
 	@NotNull
-	public Player getPlayer() { return player; }
+	public IResource getSaveResource() { return saveResource; }
 }

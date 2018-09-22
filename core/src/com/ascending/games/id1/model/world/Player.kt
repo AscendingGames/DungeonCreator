@@ -1,18 +1,15 @@
 package com.ascending.games.id1.model.world
 
-import com.ascending.games.id1.model.mechanics.Blessing
-import com.ascending.games.id1.model.mechanics.Ritual
 import com.ascending.games.lib.model.data.ObservableMap
-import com.ascending.games.lib.model.game.IStatType
 
 class Player {
-    val stats = ObservableMap(HashMap<IStatType, Float>())
+    val stats = ObservableMap<String, Float>()
     var depth = 1
-    val enabledRituals = mutableSetOf<Ritual>()
-    val performedRituals = mutableSetOf<Ritual>()
+    val enabledRituals = mutableSetOf<String>()
+    val performedRituals = mutableSetOf<String>()
 
-    val enabledBlessings = mutableSetOf<Blessing>()
-    val grantedBlessings = mutableMapOf<Blessing, Int>()
+    val enabledBlessings = mutableSetOf<String>()
+    val grantedBlessings = mutableMapOf<String, Int>()
 
     val newDepths : Int
         get() = depth

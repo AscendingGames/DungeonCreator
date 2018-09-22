@@ -2,17 +2,14 @@ package com.ascending.games.id1.view.mechanics
 
 import com.ascending.games.id1.model.mechanics.StatService
 import com.ascending.games.id1.model.mechanics.StatType
-import com.ascending.games.id1.view.world.WorldScreen
 import com.ascending.games.lib.model.data.ObservableMap
-import com.ascending.games.lib.model.game.IStatType
-import com.ascending.games.lib.model.game.IStats
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 
-class StatsView(private val stats : ObservableMap<IStatType, Float>, stage : Stage, skin : Skin) {
+class StatsView(private val stats : ObservableMap<String, Float>, stage : Stage, skin : Skin) {
     private val statsTable = Table()
 
     private var hpLabel : Label
@@ -47,11 +44,11 @@ class StatsView(private val stats : ObservableMap<IStatType, Float>, stage : Sta
     }
 
     private fun updateLabels() {
-        hpLabel.setText((stats[StatType.CURRENT_HP] ?: 0f).toInt().toString() + "/" + (stats[StatType.MAX_HP] ?: 0f).toInt().toString())
-        attackLabel.setText((stats[StatType.ATTACK] ?: 0f).toInt().toString())
-        defenseLabel.setText((stats[StatType.DEFENSE] ?: 0f).toInt().toString())
-        levelLabel.setText("Lvl. " + (stats[StatType.LEVEL] ?: 0f).toInt().toString())
-        expLabel.setText("Exp. " + (stats[StatType.EXP] ?: 0f).toInt().toString() + "/" + (StatService().getNextExp(stats).toInt().toString()))
-        goldLabel.setText((stats[StatType.GOLD] ?: 0f).toInt().toString())
+        hpLabel.setText((stats[StatType.CURRENT_HP.name] ?: 0f).toInt().toString() + "/" + (stats[StatType.MAX_HP.name] ?: 0f).toInt().toString())
+        attackLabel.setText((stats[StatType.ATTACK.name] ?: 0f).toInt().toString())
+        defenseLabel.setText((stats[StatType.DEFENSE.name] ?: 0f).toInt().toString())
+        levelLabel.setText("Lvl. " + (stats[StatType.LEVEL.name] ?: 0f).toInt().toString())
+        expLabel.setText("Exp. " + (stats[StatType.EXP.name] ?: 0f).toInt().toString() + "/" + (StatService().getNextExp(stats).toInt().toString()))
+        goldLabel.setText((stats[StatType.GOLD.name] ?: 0f).toInt().toString())
     }
 }

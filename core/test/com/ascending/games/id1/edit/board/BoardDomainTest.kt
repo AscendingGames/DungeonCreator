@@ -47,19 +47,19 @@ class BoardDomainTest {
         Monster(1).spawn(boardDomain.board.rooms[1].roomElements[0])
         boardDomain.update(1f)
         assertTrue("Hero has cleared room", boardDomain.board.rooms[1].roomElements[0].roomContents.isEmpty())
-        assertTrue("Hero has been hurt", boardDomain.board.hero.stats[StatType.CURRENT_HP]!! < boardDomain.board.hero.stats[StatType.MAX_HP]!!)
+        assertTrue("Hero has been hurt", boardDomain.board.hero.stats[StatType.CURRENT_HP.name]!! < boardDomain.board.hero.stats[StatType.MAX_HP.name]!!)
 
         Crystal(Crystal.Type.HEALING, boardDomain.board.rooms[1].roomElements[0])
         boardDomain.update(1f)
-        assertTrue("Hero has been healed", boardDomain.board.hero.stats[StatType.CURRENT_HP]!! == boardDomain.board.hero.stats[StatType.MAX_HP]!!)
+        assertTrue("Hero has been healed", boardDomain.board.hero.stats[StatType.CURRENT_HP.name]!! == boardDomain.board.hero.stats[StatType.MAX_HP.name]!!)
     }
 
     @Test
     fun clearBoard() {
-        board.hero.stats[StatType.LEVEL] = 2f
+        board.hero.stats[StatType.LEVEL.name] = 2f
         boardDomain.onBoardFinished += { clear ->
             assertTrue(clear)
-            assertEquals(2f, boardDomain.player.stats[StatType.LEVEL])
+            assertEquals(2f, boardDomain.player.stats[StatType.LEVEL.name])
         }
         boardDomain.clearBoard()
     }
