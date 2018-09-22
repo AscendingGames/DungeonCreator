@@ -4,6 +4,11 @@ import com.badlogic.gdx.utils.Json
 
 
 class JSONResource(override var uri : String) : IResource {
+
+    companion object {
+        const val FILE_TYPE = ".json"
+    }
+
     override val contents = mutableListOf<Any>()
     override var isLoaded  = false
 
