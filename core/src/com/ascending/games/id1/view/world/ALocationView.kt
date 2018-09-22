@@ -14,7 +14,7 @@ abstract class ALocationView(private val worldScreen: WorldScreen, locationDescr
     protected val skin = worldScreen.game.skin
 
     protected val locationTable = Table()
-    private val descriptionLabel = Label(locationDescription, skin)
+    protected val descriptionLabel = Label(locationDescription, skin)
 
     private val listenerService = ChangeListenerService()
 

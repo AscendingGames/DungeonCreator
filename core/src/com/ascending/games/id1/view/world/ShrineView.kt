@@ -13,11 +13,13 @@ class ShrineView(worldScreen: WorldScreen) : ALocationView(worldScreen, SHRINE_T
 
     private val buttonBack = createBackButton()
     private val ritualsButton = createTextButton("Rituals") { it.setLocation(Location.RITUAL_PLACE) }
-
+    private val blessingsButton = createTextButton("Blessings") { it.setLocation(Location.BLESSING_PLACE) }
 
     init {
         locationTable.add(buttonBack)
         locationTable.row().pad(100f)
         locationTable.add(ritualsButton)
+        locationTable.row().pad(100f)
+        locationTable.add(blessingsButton)
     }
 }
