@@ -27,30 +27,6 @@ jacocoTestReport {
     }
 }
 
-
-jacocoTestCoverageVerification {
-
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.5
-            }
-        }
-
-        rule {
-            enabled = false
-            element = 'CLASS'
-            includes = ['org.gradle.*']
-
-            limit {
-                counter = 'LINE'
-                value = 'TOTALCOUNT'
-                maximum = 0.3
-            }
-        }
-    }
-}
-
 dependencies {
     testImplementation 'junit:junit:4.12'
 }
