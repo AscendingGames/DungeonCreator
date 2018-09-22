@@ -9,7 +9,7 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.scenes.scene2d.Stage
 
 
-class WorldScreen(val game : DungeonCreatorGame) : Screen {
+class WorldScreen(val game : DungeonCreatorGame, private var currentLocation : Location = Location.OVERWORLD) : Screen {
     val uiStage = Stage()
 
     private val statsView = StatsView(game.player.stats, uiStage, game.skin)
@@ -23,8 +23,6 @@ class WorldScreen(val game : DungeonCreatorGame) : Screen {
             Location.CITY -> CityView(this)
         }
     }
-
-    private var currentLocation = Location.OVERWORLD
 
     fun startLevel(level : Int) {
         game.screen = BoardScreen(game, level)

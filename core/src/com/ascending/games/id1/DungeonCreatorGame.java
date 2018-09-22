@@ -1,7 +1,7 @@
 package com.ascending.games.id1;
 
-import com.ascending.games.id1.edit.world.PlayerService;
 import com.ascending.games.id1.model.world.Player;
+import com.ascending.games.id1.model.world.PlayerService;
 import com.ascending.games.id1.view.SkinService;
 import com.ascending.games.id1.view.title.TitleScreen;
 import com.ascending.games.lib.view.SceneManager2;

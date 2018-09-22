@@ -1,13 +1,13 @@
 package com.ascending.games.id1.edit.board
 
 import com.ascending.games.id1.edit.board.action.content.HeroActionProvider
-import com.ascending.games.lib.edit.action.ITimedAction
 import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.edit.board.action.room.IBoardAction
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.id1.model.mechanics.StatService
-import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.model.world.Player
+import com.ascending.games.id1.model.world.PlayerService
+import com.ascending.games.lib.edit.action.ITimedAction
 import com.ascending.games.lib.edit.action.ITimedActionProvider
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
@@ -31,6 +31,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
     private val heroActionProvider = HeroActionProvider(board)
     private val mapRoomContentToActionList = mutableMapOf<ARoomContent, ITimedAction>()
     private val statService = StatService()
+    private val playerService = PlayerService()
 
     init {
         player.stats.forEach { statType, value -> board.hero.stats.put(statType, value) }
@@ -42,9 +43,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
     }
 
     fun clearBoard() {
-        board.hero.stats.forEach { statType, value -> if (statType is StatType && statType.isPermanentStat) player.stats.put(statType, value) }
-        player.stats[StatType.CURRENT_HP] = player.stats[StatType.MAX_HP] ?: 0f
-        if (level == player.depth) player.depth++
+        playerService.clearLevel(player, board.hero, level)
         onBoardFinished.forEach { it.invoke(true) }
     }
 

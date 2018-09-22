@@ -12,7 +12,7 @@ class Pathfinder<Node>(val graph : IGraph<Node>, val distanceEstimator : IDistan
 
             val neighbours = graph.getNeighbours(rankedNode.first)
                     .filter { !closedList.contains(it) }
-                    .map { Pair(it, distanceEstimator.estimateDistance(rankedNode.first, it) + distanceEstimator.estimateDistance(it, targetNode)) }
+                    .map { it to distanceEstimator.estimateDistance(rankedNode.first, it) + distanceEstimator.estimateDistance(it, targetNode) }
             expandNeighbours(neighbours, openList)
             neighbours.forEach { mapNodeToPredecessor[it.first] = rankedNode.first }
         }

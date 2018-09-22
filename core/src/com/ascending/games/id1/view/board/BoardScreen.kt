@@ -5,6 +5,7 @@ import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.edit.board.DefaultRoomFactory
 import com.ascending.games.id1.edit.board.action.room.GestureActionProvider
 import com.ascending.games.id1.model.board.Board
+import com.ascending.games.id1.model.world.Location
 import com.ascending.games.id1.view.mechanics.StatsView
 import com.ascending.games.id1.view.world.WorldScreen
 import com.ascending.games.lib.model.geometry.Coord2
@@ -41,7 +42,7 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
         }
 
         boardDomain.onBoardFinished += {
-            game.screen = WorldScreen(game)
+            game.screen = WorldScreen(game, Location.DUNGEON)
             hide()
         }
     }
