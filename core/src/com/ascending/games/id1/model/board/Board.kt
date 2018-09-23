@@ -70,9 +70,13 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
     }
 
     fun openWallsNeighbouringDoors(room : Room) {
+        val connectedRooms = mutableSetOf<Room>()
         for (roomElement in room.roomElements) {
             val wallsToOpen = getWallsToOpen(roomElement)
-            wallsToOpen.forEach { it.roomElement.walls -= it }
+            wallsToOpen.forEach {
+                connectedRooms.add(it.roomElement.room)
+                it.roomElement.walls -= it
+            }
         }
     }
 

@@ -26,8 +26,10 @@ class CityView(worldScreen: WorldScreen) : ALocationView(worldScreen, CITY_TEXT)
             locationTable.add(smithyButton)
         }
 
-        locationTable.row().pad(100f)
-        locationTable.add(alchemistButton)
+        if (player.performedRituals.contains(Ritual.RitualOfEnlightenment.name)) {
+            locationTable.row().pad(100f)
+            locationTable.add(alchemistButton)
+        }
 
         super.show()
     }

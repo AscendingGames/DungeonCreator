@@ -131,7 +131,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
     fun clearRowIfFull(row : Int) : Boolean {
         val clearedElements = getClearedElements(row)
         for (roomElement in clearedElements) {
-            statService.rewardRoomElementClear(board.hero)
+            statService.rewardRoomElementClear(board.hero, roomElement.room.type)
 
             val room = roomElement.room
             room.roomElements -= roomElement

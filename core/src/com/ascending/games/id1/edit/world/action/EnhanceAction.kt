@@ -16,7 +16,7 @@ class EnhanceAction(private val player : Player, val enhancedStat : StatType, va
         }
 
         fun createEnhancePotionAction(player : Player) : EnhanceAction {
-            return EnhanceAction(player, StatType.HP_PER_POTION, StatType.POTION_LEVEL, PlayerService.COST_PER_ARMOR_LEVEL, PlayerService.INIT_HP_PER_POTION)
+            return EnhanceAction(player, StatType.HP_PER_POTION, StatType.POTION_LEVEL, PlayerService.COST_PER_POTION_LEVEL, PlayerService.INIT_HP_PER_POTION)
         }
 
         fun createEnhanceMedicinePouchAction(player : Player) : EnhanceAction {

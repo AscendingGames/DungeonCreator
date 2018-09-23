@@ -1,5 +1,6 @@
 package com.ascending.games.id1.model.mechanics
 
+import com.ascending.games.id1.model.board.RoomType
 import com.ascending.games.lib.model.game.IStats
 
 class StatService {
@@ -40,8 +41,8 @@ class StatService {
         }
     }
 
-    fun rewardRoomElementClear(stats : IStats) {
-        stats.change(StatType.GOLD.name, BASED_GOLD_PER_ROOM_ELEMENT)
+    fun rewardRoomElementClear(stats : IStats, roomType : RoomType) {
+        stats.change(StatType.GOLD.name, BASED_GOLD_PER_ROOM_ELEMENT + roomType.getExtraGoldPerTile())
     }
 
     fun levelUp(stats : IStats) {

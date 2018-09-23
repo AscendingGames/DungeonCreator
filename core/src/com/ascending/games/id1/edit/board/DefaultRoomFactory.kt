@@ -28,8 +28,24 @@ class DefaultRoomFactory(private val factoryConfig: DefaultRoomFactoryConfig, va
         return numCreatedRooms >= factoryConfig.minRoomsTillStairsDown && Math.random() <= factoryConfig.probStairsDown
     }
 
+    private fun getRoomType() : RoomType {
+        val totalPriorityCount = factoryConfig.roomTypePriorites.filter { level <= (factoryConfig.roomTypeMinLevels[it.key] ?: 0) }.values.sum()
+        val random = Math.random() * totalPriorityCount
+        var res = 0
+        for ((roomType, priority) in factoryConfig.roomTypePriorites.entries) {
+            if (level <= (factoryConfig.roomTypeMinLevels[roomType] ?: 0)) {
+                res += priority
+                if (res >= random) return roomType
+            }
+        }
+
+        return RoomType.NORMAL
+    }
+
     override fun createRoom(): Room {
         val room = factoryConfig.roomShapes.shuffled().last().createRoom()
+        val roomType = getRoomType()
+        room.type = roomType
 
         val numberDoors = getNumberDoors()
         val closedWalls = room.roomElements.flatMap { it.closedWalls }
@@ -38,7 +54,8 @@ class DefaultRoomFactory(private val factoryConfig: DefaultRoomFactoryConfig, va
 
         val numberMonsters  = getNumberMonsters()
         val shuffledElements = room.roomElements.shuffled()
-        shuffledElements.take(numberMonsters).forEach { Monster(level).spawn(it) }
+        val monsterLevel = roomType.getMonsterLevel(level)
+        shuffledElements.take(numberMonsters).forEach { Monster(monsterLevel).spawn(it) }
         var remainingElements = shuffledElements.drop(numberMonsters)
 
         if (remainingElements.isNotEmpty() && hasCrystal()) {

@@ -14,7 +14,7 @@ class PlayerService {
         const val INIT_DEFENSE = 0f
         const val INIT_SPEED = 2f
         const val INIT_LEVEL = 1f
-        const val INIT_GOLD = 3000f
+        const val INIT_GOLD = 100f
         const val INIT_HP_PER_POTION = 20f
         const val COST_PER_POTION = 100f
         const val COST_INCREASE_PER_POTION_LEVEL = 50f
