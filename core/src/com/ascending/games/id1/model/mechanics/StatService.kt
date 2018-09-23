@@ -17,6 +17,19 @@ class StatService {
         val defense = defender.stats[StatType.DEFENSE.name] ?: 0f
         val damage = Math.max(0f, attack - defense)
         defender.stats[StatType.CURRENT_HP.name] = Math.max(0f, (defender.stats[StatType.CURRENT_HP.name] ?: 0f) - damage)
+
+        if (isDead(defender) && hasPotion(defender)) {
+            consumePotion(defender)
+        }
+    }
+
+    fun hasPotion(stats : IStats) : Boolean {
+        return (stats.stats[StatType.COUNT_POTIONS.name] ?: 0f) > 0f
+    }
+
+    fun consumePotion(stats : IStats) {
+        stats.stats[StatType.COUNT_POTIONS.name] = (stats.stats[StatType.COUNT_POTIONS.name] ?: 0f) - 1
+        stats.stats[StatType.CURRENT_HP.name] = Math.min(stats.stats[StatType.MAX_HP.name] ?: 0f, (stats.stats[StatType.CURRENT_HP.name] ?: 0f) + (stats.stats[StatType.HP_PER_POTION.name] ?: 0f))
     }
 
     fun reward(killer : IStats, killed : IStats) {

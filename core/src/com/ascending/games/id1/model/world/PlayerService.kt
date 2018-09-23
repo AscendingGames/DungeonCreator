@@ -14,9 +14,14 @@ class PlayerService {
         const val INIT_DEFENSE = 0f
         const val INIT_SPEED = 2f
         const val INIT_LEVEL = 1f
-        const val INIT_GOLD = 1000f
+        const val INIT_GOLD = 3000f
+        const val INIT_HP_PER_POTION = 20f
+        const val COST_PER_POTION = 100f
+        const val COST_INCREASE_PER_POTION_LEVEL = 50f
         const val COST_PER_WEAPON_LEVEL = 500f
         const val COST_PER_ARMOR_LEVEL = 1000f
+        const val COST_PER_POTION_LEVEL = 500f
+        const val COST_PER_MEDICINE_POUCH_LEVEL = 1000f
     }
 
     fun createInitialPlayer() : Player {
@@ -28,6 +33,7 @@ class PlayerService {
         initialPlayer.stats[StatType.SPEED.name] = INIT_SPEED
         initialPlayer.stats[StatType.LEVEL.name] = INIT_LEVEL
         initialPlayer.stats[StatType.GOLD.name] = INIT_GOLD
+        initialPlayer.stats[StatType.HP_PER_POTION.name] = INIT_HP_PER_POTION
         return initialPlayer
     }
 
@@ -62,5 +68,9 @@ class PlayerService {
 
     fun getEnhancementCosts(player : Player, enhancementLevelStat : StatType, costsPerLevel : Float) : Float {
         return ((player.stats[enhancementLevelStat.name] ?: 0f) + 1f) * costsPerLevel
+    }
+
+    fun getPotionCosts(player : Player) : Float {
+        return COST_PER_POTION + (player.stats[StatType.POTION_LEVEL.name] ?: 0f) * COST_INCREASE_PER_POTION_LEVEL
     }
 }

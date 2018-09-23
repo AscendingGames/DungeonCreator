@@ -2,7 +2,6 @@ package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.edit.world.action.EnhanceAction
 import com.ascending.games.id1.model.world.Location
-import com.ascending.games.id1.model.world.PlayerService
 
 class SmithyView(worldScreen: WorldScreen) : ALocationView(worldScreen, SMITHY_VIEW) {
     companion object {
@@ -13,7 +12,6 @@ class SmithyView(worldScreen: WorldScreen) : ALocationView(worldScreen, SMITHY_V
     }
 
     private val buttonBack = createBackButton(Location.CITY)
-    private val playerService = PlayerService()
     private val buttonEnhanceWeapons = createTextButton("Enhance Weapons") { EnhanceAction.createEnhanceWeaponAction(player).execute(); updateDisableState() }
     private val buttonEnhanceArmor = createTextButton("Enhance Armor") { EnhanceAction.createEnhanceArmorAction(player).execute(); updateDisableState() }
 

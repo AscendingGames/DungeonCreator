@@ -15,6 +15,7 @@ class StatsView(private val stats : ObservableMap<String, Float>, stage : Stage,
     private var hpLabel : Label
     private var attackLabel : Label
     private var defenseLabel : Label
+    private var potionsLabel : Label
     private var levelLabel : Label
     private var expLabel : Label
     private var goldLabel : Label
@@ -28,15 +29,17 @@ class StatsView(private val stats : ObservableMap<String, Float>, stage : Stage,
         attackLabel = Label("", skin)
         defenseLabel = Label("", skin)
         levelLabel = Label("", skin)
+        potionsLabel = Label("", skin)
         expLabel = Label("", skin)
         goldLabel = Label("", skin)
 
-        statsTable.add(hpLabel).pad(40f)
-        statsTable.add(attackLabel).pad(40f)
-        statsTable.add(defenseLabel).pad(40f)
-        statsTable.add(levelLabel).pad(40f)
-        statsTable.add(expLabel).pad(40f)
-        statsTable.add(goldLabel).pad(40f)
+        statsTable.add(hpLabel).pad(30f)
+        statsTable.add(attackLabel).pad(30f)
+        statsTable.add(defenseLabel).pad(30f)
+        statsTable.add(potionsLabel).pad(30f)
+        statsTable.add(levelLabel).pad(30f)
+        statsTable.add(expLabel).pad(30f)
+        statsTable.add(goldLabel).pad(30f)
 
         updateLabels()
 
@@ -47,6 +50,7 @@ class StatsView(private val stats : ObservableMap<String, Float>, stage : Stage,
         hpLabel.setText((stats[StatType.CURRENT_HP.name] ?: 0f).toInt().toString() + "/" + (stats[StatType.MAX_HP.name] ?: 0f).toInt().toString())
         attackLabel.setText((stats[StatType.ATTACK.name] ?: 0f).toInt().toString())
         defenseLabel.setText((stats[StatType.DEFENSE.name] ?: 0f).toInt().toString())
+        potionsLabel.setText((stats[StatType.COUNT_POTIONS.name] ?: 0f).toInt().toString())
         levelLabel.setText("Lvl. " + (stats[StatType.LEVEL.name] ?: 0f).toInt().toString())
         expLabel.setText("Exp. " + (stats[StatType.EXP.name] ?: 0f).toInt().toString() + "/" + (StatService().getNextExp(stats).toInt().toString()))
         goldLabel.setText((stats[StatType.GOLD.name] ?: 0f).toInt().toString())

@@ -14,10 +14,10 @@ class CityView(worldScreen: WorldScreen) : ALocationView(worldScreen, CITY_TEXT)
 
     private val buttonBack = createBackButton()
     private val smithyButton = createTextButton("Smithy") { it.setLocation(Location.SMITHY) }
+    private val alchemistButton = createTextButton("Alchemist") { it.setLocation(Location.ALCHEMIST) }
 
     init {
         locationTable.add(buttonBack)
-
     }
 
     override fun show() {
@@ -25,6 +25,10 @@ class CityView(worldScreen: WorldScreen) : ALocationView(worldScreen, CITY_TEXT)
             locationTable.row().pad(100f)
             locationTable.add(smithyButton)
         }
+
+        locationTable.row().pad(100f)
+        locationTable.add(alchemistButton)
+
         super.show()
     }
 

@@ -5,6 +5,7 @@ import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.edit.board.action.room.IBoardAction
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.id1.model.mechanics.StatService
+import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.model.world.Player
 import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.lib.edit.action.ITimedAction
@@ -39,6 +40,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
     }
 
     fun failBoard() {
+        player.stats.put(StatType.COUNT_POTIONS.name, board.hero.stats[StatType.COUNT_POTIONS.name] ?: 0f)
         onBoardFinished.forEach { it.invoke(false) }
     }
 
@@ -149,7 +151,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
         updateProjectedRoom()
 
         if (board.isRoomOverlapping(currentRoom)) {
-            onBoardFinished.forEach { it.invoke(false) }
+            failBoard()
         }
     }
 

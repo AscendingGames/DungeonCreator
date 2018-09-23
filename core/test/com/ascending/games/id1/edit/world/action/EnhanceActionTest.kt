@@ -42,4 +42,20 @@ class EnhanceActionTest {
         assertEquals(StatType.DEFENSE, createdAction.enhancedStat)
         assertEquals(PlayerService.COST_PER_ARMOR_LEVEL, createdAction.costsPerLevel)
     }
+
+    @Test
+    fun testCreateEnhancePotionsAction() {
+        val createdAction = EnhanceAction.createEnhancePotionAction(player)
+        assertEquals(StatType.POTION_LEVEL, createdAction.enhancementLevelStat)
+        assertEquals(StatType.HP_PER_POTION, createdAction.enhancedStat)
+        assertEquals(PlayerService.COST_PER_POTION_LEVEL, createdAction.costsPerLevel)
+    }
+
+    @Test
+    fun testCreateEnhanceMedicinePouchAction() {
+        val createdAction = EnhanceAction.createEnhanceMedicinePouchAction(player)
+        assertEquals(StatType.MEDICINE_PUCH_LEVEL, createdAction.enhancementLevelStat)
+        assertEquals(StatType.MAX_POTIONS, createdAction.enhancedStat)
+        assertEquals(PlayerService.COST_PER_MEDICINE_POUCH_LEVEL, createdAction.costsPerLevel)
+    }
 }
