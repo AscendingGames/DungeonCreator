@@ -2,7 +2,7 @@ package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.DungeonCreatorGame
 import com.ascending.games.id1.model.world.Location
-import com.ascending.games.id1.model.world.Player
+import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.id1.view.board.BoardScreen
 import com.ascending.games.id1.view.mechanics.StatsView
 import com.badlogic.gdx.Gdx
@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 class WorldScreen(val game : DungeonCreatorGame, private var currentLocation : Location = Location.OVERWORLD) : Screen {
     val uiStage = Stage()
 
-    private val statsView = StatsView((game.saveResource.contents[0] as Player).stats, uiStage, game.skin)
+    private val statsView = StatsView(PlayerService().getPlayer(game.saveResource).stats, uiStage, game.skin)
     private val locationViews = Location.values().associate { it to createLocationView(it) }
 
     private fun createLocationView(location : Location) : ALocationView {
@@ -24,6 +24,7 @@ class WorldScreen(val game : DungeonCreatorGame, private var currentLocation : L
             Location.CITY -> CityView(this)
             Location.RITUAL_PLACE -> RitualPlaceView(this)
             Location.BLESSING_PLACE -> BlessingPlaceView(this)
+            Location.SMITHY -> SmithyView(this)
         }
     }
 

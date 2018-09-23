@@ -13,17 +13,4 @@ data class Battle(val hero : Hero, val monster : Monster) {
             if (statService.isDead(hero)) monster
             else if (statService.isDead(monster)) hero
             else null
-
-    fun fight() {
-        val oldWinner = winner
-        if (oldWinner == null) {
-            statService.applyDamage(hero, monster)
-            statService.applyDamage(monster, hero)
-        }
-
-        val winner = winner
-        if (oldWinner == null && winner == hero) {
-            statService.reward(hero, monster)
-        }
-    }
 }

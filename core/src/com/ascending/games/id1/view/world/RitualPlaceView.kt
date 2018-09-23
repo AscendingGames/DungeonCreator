@@ -1,8 +1,8 @@
 package com.ascending.games.id1.view.world
 
+import com.ascending.games.id1.edit.world.action.PerformRitualAction
 import com.ascending.games.id1.model.mechanics.Ritual
 import com.ascending.games.id1.model.world.Location
-import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.id1.view.mechanics.RitualLabelProvider
 
 class RitualPlaceView(worldScreen: WorldScreen) : ALocationView(worldScreen, RITUAL_TEXT) {
@@ -15,7 +15,6 @@ class RitualPlaceView(worldScreen: WorldScreen) : ALocationView(worldScreen, RIT
 
     private val buttonBack = createBackButton(Location.SHRINE)
     private val ritualLabelProvider = RitualLabelProvider()
-    private val playerService = PlayerService()
 
     init {
         locationTable.add(buttonBack)
@@ -25,10 +24,11 @@ class RitualPlaceView(worldScreen: WorldScreen) : ALocationView(worldScreen, RIT
         super.show()
         player.enabledRituals.forEach {ritual ->
             val ritualButton = createTextButton(ritualLabelProvider.getValue(Ritual.valueOf(ritual))) {
-                playerService.performRitual(player, Ritual.valueOf(ritual))
+                PerformRitualAction(player, Ritual.valueOf(ritual)).execute()
                 hide()
                 show()
             }
+            ritualButton.isDisabled = !PerformRitualAction(player, Ritual.valueOf(ritual)).canExecute
             locationTable.row().pad(100f)
             locationTable.add(ritualButton)
         }

@@ -1,5 +1,8 @@
 package com.ascending.games.id1.view.world
 
+import com.ascending.games.id1.model.mechanics.Ritual
+import com.ascending.games.id1.model.world.Location
+
 class CityView(worldScreen: WorldScreen) : ALocationView(worldScreen, CITY_TEXT) {
     companion object {
         const val CITY_TEXT =
@@ -10,8 +13,26 @@ class CityView(worldScreen: WorldScreen) : ALocationView(worldScreen, CITY_TEXT)
     }
 
     private val buttonBack = createBackButton()
+    private val smithyButton = createTextButton("Smithy") { it.setLocation(Location.SMITHY) }
 
     init {
+        locationTable.add(buttonBack)
+
+    }
+
+    override fun show() {
+        if (player.performedRituals.contains(Ritual.RitualOfVisions.name)) {
+            locationTable.row().pad(100f)
+            locationTable.add(smithyButton)
+        }
+        super.show()
+    }
+
+    override fun hide() {
+        super.hide()
+        locationTable.clearChildren()
+        locationTable.add(descriptionLabel)
+        locationTable.row().pad(100f)
         locationTable.add(buttonBack)
     }
 }

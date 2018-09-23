@@ -4,6 +4,7 @@ import com.ascending.games.id1.model.board.Hero
 import com.ascending.games.id1.model.mechanics.Blessing
 import com.ascending.games.id1.model.mechanics.Ritual
 import com.ascending.games.id1.model.mechanics.StatType
+import com.ascending.games.lib.edit.resource.IResource
 
 class PlayerService {
 
@@ -14,6 +15,8 @@ class PlayerService {
         const val INIT_SPEED = 2f
         const val INIT_LEVEL = 1f
         const val INIT_GOLD = 1000f
+        const val COST_PER_WEAPON_LEVEL = 500f
+        const val COST_PER_ARMOR_LEVEL = 1000f
     }
 
     fun createInitialPlayer() : Player {
@@ -53,38 +56,11 @@ class PlayerService {
         player.enabledBlessings += Blessing.values().filter { !player.grantedBlessings.keys.contains(it.name) }.filter { getClearedBlessings(player).containsAll(it.requires) }.map { it.name }
     }
 
-    fun performRitual(player : Player, ritual : Ritual) {
-        with(player) {
-            performedRituals.add(ritual.name)
-            enabledRituals.remove(ritual.name)
-            stats[StatType.GOLD.name] = (stats[StatType.GOLD.name] ?: 0f) - ritual.goldCosts.toFloat()
-            stats[StatType.MAX_HP.name] = (stats[StatType.MAX_HP.name] ?: 0f) - ritual.hpCosts.toFloat()
-            stats[StatType.CURRENT_HP.name] = (stats[StatType.CURRENT_HP.name] ?: 0f) - ritual.hpCosts.toFloat()
-        }
-
-        updateEnabledBlessings(player)
+    fun getPlayer(resource : IResource) : Player {
+        return resource.contents[0] as Player
     }
 
-    fun isRitualEnabled(player : Player, ritual : Ritual) : Boolean {
-        return player.enabledRituals.contains(ritual.name)
-                && (player.stats[StatType.GOLD.name] ?: 0f) >= ritual.goldCosts.toFloat()
-                && (player.stats[StatType.MAX_HP.name] ?: 0f) >= ritual.hpCosts.toFloat()
-    }
-
-    fun grantBlessing(player : Player, blessing : Blessing) {
-        with(player) {
-            val newLevel = (grantedBlessings[blessing.name] ?: 0) + 1
-            grantedBlessings.put(blessing.name, newLevel)
-            if (blessing.isCleared(newLevel)) enabledBlessings.remove(blessing.name)
-            stats[StatType.GOLD.name] = (stats[StatType.GOLD.name] ?: 0f) - blessing.costs.toFloat()
-            stats[blessing.stat.name] = (stats[blessing.stat.name] ?: 0f) + blessing.value
-        }
-
-        updateEnabledBlessings(player)
-    }
-
-    fun isBlessingEnabled(player : Player, blessing : Blessing) : Boolean {
-        return player.enabledBlessings.contains(blessing.name)
-                && (player.stats[StatType.GOLD.name] ?: 0f) >= blessing.costs.toFloat()
+    fun getEnhancementCosts(player : Player, enhancementLevelStat : StatType, costsPerLevel : Float) : Float {
+        return ((player.stats[enhancementLevelStat.name] ?: 0f) + 1f) * costsPerLevel
     }
 }

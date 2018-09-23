@@ -1,7 +1,7 @@
 package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.model.world.Location
-import com.ascending.games.id1.model.world.Player
+import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.lib.view.IVisible
 import com.ascending.games.lib.view.ui.ChangeListenerService
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 
 abstract class ALocationView(private val worldScreen: WorldScreen, locationDescription : String) : IVisible {
-    protected val player = worldScreen.game.saveResource.contents[0] as Player
+    protected val player = PlayerService().getPlayer(worldScreen.game.saveResource)
     protected val skin = worldScreen.game.skin
 
     protected val locationTable = Table()

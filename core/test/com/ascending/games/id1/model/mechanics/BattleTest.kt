@@ -20,17 +20,4 @@ class BattleTest {
         monster.stats[StatType.CURRENT_HP.name] = 1f
         assertNull(battle.winner)
     }
-
-    @Test
-    fun fight() {
-        hero.stats[StatType.CURRENT_HP.name] = 2f
-        hero.stats[StatType.ATTACK.name] = 1f
-        hero.stats[StatType.EXP.name] = StatService().getNextExp(hero.stats) - 1f
-        monster.stats[StatType.CURRENT_HP.name] = 1f
-        monster.stats[StatType.ATTACK.name] = 1f
-        battle.fight()
-        assertEquals(1f, hero.stats[StatType.CURRENT_HP.name])
-        assertEquals(2f, hero.stats[StatType.LEVEL.name])
-        assertEquals(0f, monster.stats[StatType.CURRENT_HP.name])
-    }
 }

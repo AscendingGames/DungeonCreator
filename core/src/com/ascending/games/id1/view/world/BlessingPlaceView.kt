@@ -1,5 +1,6 @@
 package com.ascending.games.id1.view.world
 
+import com.ascending.games.id1.edit.world.action.GrantBlessingAction
 import com.ascending.games.id1.model.mechanics.Blessing
 import com.ascending.games.id1.model.world.Location
 import com.ascending.games.id1.model.world.PlayerService
@@ -23,10 +24,11 @@ class BlessingPlaceView(worldScreen: WorldScreen) : ALocationView(worldScreen, B
         super.show()
         player.enabledBlessings.forEach {blessing ->
             val blessingButton = createTextButton(blessing) {
-                playerService.grantBlessing(player, Blessing.valueOf(blessing))
+                GrantBlessingAction(player, Blessing.valueOf(blessing)).execute()
                 hide()
                 show()
             }
+            blessingButton.isDisabled = !GrantBlessingAction(player, Blessing.valueOf(blessing)).canExecute
             locationTable.row().pad(100f)
             locationTable.add(blessingButton)
         }
