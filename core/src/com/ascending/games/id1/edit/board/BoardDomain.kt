@@ -1,19 +1,21 @@
 package com.ascending.games.id1.edit.board
 
 import com.ascending.games.id1.edit.board.action.content.HeroActionProvider
-import com.ascending.games.lib.edit.action.ITimedAction
 import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.edit.board.action.room.IBoardAction
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.id1.model.mechanics.StatService
+import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.model.world.Player
+import com.ascending.games.id1.model.world.PlayerService
+import com.ascending.games.lib.edit.action.ITimedAction
 import com.ascending.games.lib.edit.action.ITimedActionProvider
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
-class BoardDomain(val board: Board, player : Player, roomFactory : IRoomFactory) {
+class BoardDomain(val board: Board, val player : Player, val level : Int, roomFactory : IRoomFactory) {
 
     val onProjectedRoomChanged = HashSet<() -> Unit>()
     val onBoardFinished = HashSet<(Boolean) -> Unit>()
@@ -30,10 +32,21 @@ class BoardDomain(val board: Board, player : Player, roomFactory : IRoomFactory)
     private val heroActionProvider = HeroActionProvider(board)
     private val mapRoomContentToActionList = mutableMapOf<ARoomContent, ITimedAction>()
     private val statService = StatService()
+    private val playerService = PlayerService()
 
     init {
         player.stats.forEach { statType, value -> board.hero.stats.put(statType, value) }
         nextRoom()
+    }
+
+    fun failBoard() {
+        player.stats.put(StatType.COUNT_POTIONS.name, board.hero.stats[StatType.COUNT_POTIONS.name] ?: 0f)
+        onBoardFinished.forEach { it.invoke(false) }
+    }
+
+    fun clearBoard() {
+        playerService.clearLevel(player, board.hero, level)
+        onBoardFinished.forEach { it.invoke(true) }
     }
 
     fun update(time : Float) {
@@ -47,9 +60,9 @@ class BoardDomain(val board: Board, player : Player, roomFactory : IRoomFactory)
 
         if (board.hero.spawned) {
             if (statService.isDead(board.hero)) {
-                onBoardFinished.forEach { it.invoke(false) }
+                failBoard()
             } else if (board.hero.roomElement.roomContents.any { it is StairsDown }) {
-                onBoardFinished.forEach { it.invoke(true) }
+                clearBoard()
             }
         }
     }
@@ -118,7 +131,7 @@ class BoardDomain(val board: Board, player : Player, roomFactory : IRoomFactory)
     fun clearRowIfFull(row : Int) : Boolean {
         val clearedElements = getClearedElements(row)
         for (roomElement in clearedElements) {
-            statService.rewardRoomElementClear(board.hero)
+            statService.rewardRoomElementClear(board.hero, roomElement.room.type)
 
             val room = roomElement.room
             room.roomElements -= roomElement
@@ -138,7 +151,7 @@ class BoardDomain(val board: Board, player : Player, roomFactory : IRoomFactory)
         updateProjectedRoom()
 
         if (board.isRoomOverlapping(currentRoom)) {
-            onBoardFinished.forEach { it.invoke(false) }
+            failBoard()
         }
     }
 

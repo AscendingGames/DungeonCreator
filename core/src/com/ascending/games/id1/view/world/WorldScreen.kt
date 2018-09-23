@@ -1,78 +1,51 @@
 package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.DungeonCreatorGame
+import com.ascending.games.id1.model.world.Location
+import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.id1.view.board.BoardScreen
 import com.ascending.games.id1.view.mechanics.StatsView
-import com.ascending.games.lib.model.data.ObservableMap
-import com.badlogic.gdx.Screen
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
-import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.scenes.scene2d.*
-import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.Screen
+import com.badlogic.gdx.scenes.scene2d.Stage
 
 
-class WorldScreen(private val game : DungeonCreatorGame) : Screen {
-    private val skin = game.skin
-    private val uiStage = Stage()
-    private val dungeonTable = Table()
-    private val statsView = StatsView(game.player.stats, uiStage, skin)
+class WorldScreen(val game : DungeonCreatorGame, private var currentLocation : Location = Location.OVERWORLD) : Screen {
+    val uiStage = Stage()
 
-    private var nameLabel : Label
-    private var buttonCurrentLevel : Button
-    private var buttonNextLevel : Button
+    private val statsView = StatsView(PlayerService().getPlayer(game.saveResource).stats, uiStage, game.skin)
+    private val locationViews = Location.values().associate { it to createLocationView(it) }
 
-    companion object {
-        const val ENTRANCE_TEXT =   "Laid out before you stands a labyrinth so deep even a being such as you cannot grasp its full depth.\n" +
-                                                "An ambitious group of your followers has gathered here to challenge these depths for the vast amount\n" +
-                                                "of riches hidden deep inside..."
+    private fun createLocationView(location : Location) : ALocationView {
+        return when (location) {
+            Location.DUNGEON -> DungeonView(this)
+            Location.OVERWORLD -> OverworldView(this)
+            Location.SHRINE -> ShrineView(this)
+            Location.CITY -> CityView(this)
+            Location.RITUAL_PLACE -> RitualPlaceView(this)
+            Location.BLESSING_PLACE -> BlessingPlaceView(this)
+            Location.SMITHY -> SmithyView(this)
+            Location.ALCHEMIST -> AlchemistView(this)
+        }
     }
 
-    init {
-        dungeonTable.setFillParent(true)
-        dungeonTable.align(Align.top)
-        dungeonTable.pad(100f)
-        uiStage.addActor(dungeonTable)
-
-        nameLabel = Label(ENTRANCE_TEXT, skin)
-        nameLabel.setWrap(true)
-        nameLabel.setAlignment(Align.center or Align.top)
-        dungeonTable.add(nameLabel)
-        dungeonTable.row().pad(100f)
-
-        buttonCurrentLevel = TextButton("Enter known depths (Level 1)", skin)
-        buttonCurrentLevel.listeners.add(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                if (event != null) {
-                    startLevel(1)
-                    event.handle()
-                }
-            }
-        })
-        dungeonTable.add(buttonCurrentLevel)
-        dungeonTable.row()
-
-        buttonNextLevel = TextButton("Explore new depths (Level 2)", skin)
-        buttonNextLevel.isDisabled = true
-        dungeonTable.add(buttonNextLevel)
-    }
-
-    private fun startLevel(level : Int) {
+    fun startLevel(level : Int) {
         game.screen = BoardScreen(game, level)
-        hide()
+    }
+
+    fun setLocation(location : Location) {
+        locationViews[currentLocation]!!.hide()
+        currentLocation = location
+        locationViews[currentLocation]!!.show()
     }
 
     override fun hide() {
-
+        locationViews[currentLocation]!!.hide()
     }
 
     override fun show() {
         Gdx.input.inputProcessor = uiStage
+        locationViews[currentLocation]!!.show()
     }
 
     override fun render(delta: Float) {

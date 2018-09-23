@@ -1,5 +1,6 @@
 package com.ascending.games.id1.edit.mechanics
 
+import com.ascending.games.id1.edit.mechanics.action.FightAction
 import com.ascending.games.id1.model.mechanics.Battle
 
 class BattleDomain(val battle : Battle) {
@@ -14,7 +15,7 @@ class BattleDomain(val battle : Battle) {
         if (this.time >= TIME_PER_TURN) {
             this.time -= TIME_PER_TURN
 
-            battle.fight()
+            FightAction(battle).execute()
         }
     }
 }

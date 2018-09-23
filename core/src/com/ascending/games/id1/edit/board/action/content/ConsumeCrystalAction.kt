@@ -12,8 +12,8 @@ class ConsumeCrystalAction(private val gameObject : AGameObject, private val cry
     override fun execute(delta: Float): Boolean {
         crystal.roomElement.roomContents.remove(crystal)
         when (crystal.type) {
-            Crystal.Type.HEALING -> gameObject.stats[StatType.CURRENT_HP] = gameObject.stats[StatType.MAX_HP] ?: 0f
-            Crystal.Type.ATTACK -> gameObject.stats[StatType.ATTACK] = (gameObject.stats[StatType.ATTACK] ?: 0f) + 1f
+            Crystal.Type.HEALING -> gameObject.stats[StatType.CURRENT_HP.name] = gameObject.stats[StatType.MAX_HP.name] ?: 0f
+            Crystal.Type.ATTACK -> gameObject.stats[StatType.ATTACK.name] = (gameObject.stats[StatType.ATTACK.name] ?: 0f) + 1f
         }
         return true
     }

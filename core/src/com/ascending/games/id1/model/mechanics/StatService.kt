@@ -1,57 +1,69 @@
 package com.ascending.games.id1.model.mechanics
 
-import com.ascending.games.id1.model.board.RoomElement
-import com.ascending.games.lib.model.game.IStatType
+import com.ascending.games.id1.model.board.RoomType
 import com.ascending.games.lib.model.game.IStats
 
 class StatService {
 
     companion object {
-        const val BASED_GOLD_PER_ROOM_ELEMENT = 1
+        const val BASED_GOLD_PER_ROOM_ELEMENT = 1f
     }
 
     fun isDead(stats : IStats) : Boolean {
-        return (stats.stats.get(StatType.CURRENT_HP) ?: 0f) <= 0f
+        return (stats.stats.get(StatType.CURRENT_HP.name) ?: 0f) <= 0f
     }
 
     fun applyDamage(attacker : IStats, defender : IStats) {
-        val attack = attacker.stats[StatType.ATTACK] ?: 0f
-        val defense = defender.stats[StatType.DEFENSE] ?: 0f
+        val attack = attacker.stats[StatType.ATTACK.name] ?: 0f
+        val defense = defender.stats[StatType.DEFENSE.name] ?: 0f
         val damage = Math.max(0f, attack - defense)
-        defender.stats[StatType.CURRENT_HP] = Math.max(0f, (defender.stats[StatType.CURRENT_HP] ?: 0f) - damage)
+        defender.stats[StatType.CURRENT_HP.name] = Math.max(0f, (defender.stats[StatType.CURRENT_HP.name] ?: 0f) - damage)
+
+        if (isDead(defender) && hasPotion(defender)) {
+            consumePotion(defender)
+        }
+    }
+
+    fun hasPotion(stats : IStats) : Boolean {
+        return (stats.stats[StatType.COUNT_POTIONS.name] ?: 0f) > 0f
+    }
+
+    fun consumePotion(stats : IStats) {
+        stats.stats[StatType.COUNT_POTIONS.name] = (stats.stats[StatType.COUNT_POTIONS.name] ?: 0f) - 1
+        stats.stats[StatType.CURRENT_HP.name] = Math.min(stats.stats[StatType.MAX_HP.name] ?: 0f, (stats.stats[StatType.CURRENT_HP.name] ?: 0f) + (stats.stats[StatType.HP_PER_POTION.name] ?: 0f))
     }
 
     fun reward(killer : IStats, killed : IStats) {
-        killer.stats[StatType.EXP] = (killer.stats[StatType.EXP] ?: 0f) + (killed.stats[StatType.LEVEL] ?: 1f)
+        killer.change(StatType.EXP.name, killed.stats[StatType.LEVEL.name] ?: 1f)
 
         if (hasLevelUp(killer)) {
             levelUp(killer)
         }
     }
 
-    fun rewardRoomElementClear(stats : IStats) {
-        stats.stats[StatType.GOLD] = (stats.stats[StatType.GOLD] ?: 0f) + BASED_GOLD_PER_ROOM_ELEMENT
+    fun rewardRoomElementClear(stats : IStats, roomType : RoomType) {
+        stats.change(StatType.GOLD.name, BASED_GOLD_PER_ROOM_ELEMENT + roomType.getExtraGoldPerTile())
     }
 
     fun levelUp(stats : IStats) {
-        val level = (stats.stats[StatType.LEVEL] ?: 1f).toInt()
+        val level = (stats.stats[StatType.LEVEL.name] ?: 1f).toInt()
         if (level % 10 == 0) {
-            stats.stats[StatType.DEFENSE] = (stats.stats[StatType.DEFENSE] ?: 0f) + 1f
+            stats.change(StatType.DEFENSE.name, 1f)
         } else if (level % 5 == 0) {
-            stats.stats[StatType.ATTACK] = (stats.stats[StatType.ATTACK] ?: 0f) + 1f
+            stats.change(StatType.ATTACK.name, 1f)
         } else {
-            stats.stats[StatType.MAX_HP] = (stats.stats[StatType.MAX_HP] ?: 0f) + 1f
+            stats.change(StatType.MAX_HP.name, 1f)
         }
 
-        stats.stats[StatType.EXP] = (stats.stats[StatType.EXP] ?: 0f) - getNextExp(stats.stats)
-        stats.stats[StatType.LEVEL] = (stats.stats[StatType.LEVEL] ?: 1f) + 1
+        stats.change(StatType.EXP.name, -getNextExp(stats.stats))
+        stats.change(StatType.LEVEL.name, 1f, 1f)
     }
 
     fun hasLevelUp(stats : IStats) : Boolean {
-        return stats.stats[StatType.EXP] ?: 0f >= getNextExp(stats.stats)
+        return stats.stats[StatType.EXP.name] ?: 0f >= getNextExp(stats.stats)
     }
 
-    fun getNextExp(stats : Map<IStatType, Float>) : Float {
-        return ((stats[StatType.LEVEL] ?: 1f) + 1).let { it * it }
+    fun getNextExp(stats : Map<String, Float>) : Float {
+        return ((stats[StatType.LEVEL.name] ?: 1f) + 1).let { it * it }
     }
 }

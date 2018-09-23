@@ -14,7 +14,7 @@ class RotateActionTest {
 
     @Test
     fun execute() {
-        val boardDomain = BoardDomain(Board(3,3), Player(), MockRoomFactory())
+        val boardDomain = BoardDomain(Board(3,3), Player(), 1, MockRoomFactory())
         boardDomain.currentRoom.position.y = 0f
         boardDomain.currentRoom.roomElements += RoomElement(Coord2(1,0))
         boardDomain.currentRoom.roomElements[1].room = boardDomain.currentRoom

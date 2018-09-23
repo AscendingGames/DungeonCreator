@@ -5,19 +5,18 @@ import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.edit.board.DefaultRoomFactory
 import com.ascending.games.id1.edit.board.action.room.GestureActionProvider
 import com.ascending.games.id1.model.board.Board
-import com.ascending.games.id1.model.board.RoomPool
-import com.ascending.games.id1.model.world.PlayerService
+import com.ascending.games.id1.model.world.Location
+import com.ascending.games.id1.model.world.Player
 import com.ascending.games.id1.view.mechanics.StatsView
 import com.ascending.games.id1.view.world.WorldScreen
-import com.ascending.games.lib.model.data.ObservableMap
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 
 class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
+    private val player = game.saveResource.contents[0] as Player
     private val skin = game.skin
     private val uiStage = Stage()
 
@@ -27,7 +26,7 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
     }
 
     private val board = Board(BOARD_SIZE.x, BOARD_SIZE.y)
-    private val boardDomain = BoardDomain(board, game.player, DefaultRoomFactory.createDefaultRoomFactory(level))
+    private val boardDomain = BoardDomain(board, player, level, DefaultRoomFactory.createDefaultRoomFactory(level))
     private val boardView = BoardView(board)
     private val roomPoolView = RoomPoolView(boardDomain.roomPool, boardView.shapeRenderer)
     private val gestureActionProvider = GestureActionProvider()
@@ -45,7 +44,7 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
         }
 
         boardDomain.onBoardFinished += {
-            game.screen = WorldScreen(game)
+            game.screen = WorldScreen(game, Location.DUNGEON)
             hide()
         }
     }

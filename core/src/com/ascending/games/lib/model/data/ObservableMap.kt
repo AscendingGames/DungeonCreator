@@ -1,6 +1,8 @@
 package com.ascending.games.lib.model.data
 
-class ObservableMap<E, F>(private val mutableMap: MutableMap<E, F>) : IObservableMap<E, F> {
+class ObservableMap<E, F>(private var mutableMap: MutableMap<E, F>) : IObservableMap<E, F> {
+    constructor() : this(mutableMapOf())
+
     override val onPut = HashSet<(E, F) -> Unit>()
     override val onRemove = HashSet<(E, F) -> Unit>()
     override val onChange = HashSet<(E, F) -> Unit>()
@@ -30,17 +32,20 @@ class ObservableMap<E, F>(private val mutableMap: MutableMap<E, F>) : IObservabl
     }
 
     override fun clear() {
-        mutableMap.forEach { key, value ->
+        val oldMap = mutableMap.toMap()
+        mutableMap.clear()
+        oldMap.forEach { key, value ->
             onRemove.forEach { it.invoke(key, value) }
             onChange.forEach { it.invoke(key, value) }
         }
-        mutableMap.clear()
+
     }
 
     override fun put(key: E, value: F): F? {
+        val oldValue = mutableMap.put(key, value)
         onPut.forEach { it.invoke(key, value) }
         onChange.forEach { it.invoke(key, value) }
-        return mutableMap.put(key, value)
+        return oldValue
     }
 
     override fun remove(key: E): F? {

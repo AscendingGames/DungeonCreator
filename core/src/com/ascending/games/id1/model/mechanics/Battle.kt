@@ -4,7 +4,7 @@ import com.ascending.games.id1.model.board.ARoomContent
 import com.ascending.games.id1.model.board.Hero
 import com.ascending.games.id1.model.board.Monster
 
-class Battle(val hero : Hero, val monster : Monster) {
+data class Battle(val hero : Hero, val monster : Monster) {
 
     private val statService = StatService()
 
@@ -13,17 +13,4 @@ class Battle(val hero : Hero, val monster : Monster) {
             if (statService.isDead(hero)) monster
             else if (statService.isDead(monster)) hero
             else null
-
-    fun fight() {
-        val oldWinner = winner
-        if (oldWinner == null) {
-            statService.applyDamage(hero, monster)
-            statService.applyDamage(monster, hero)
-        }
-
-        val winner = winner
-        if (oldWinner == null && winner == hero) {
-            statService.reward(hero, monster)
-        }
-    }
 }
