@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -20,7 +19,7 @@ class SkinService {
 
         // Store the default libgdx font under the name "default".
         skin.add("default", BitmapFont())
-        skin.add("default", Color.WHITE)
+        skin.add("default", Color.BLACK)
 
         val labelStyle = Label.LabelStyle()
         labelStyle.font = skin.getFont("default")
@@ -34,6 +33,7 @@ class SkinService {
         overworldTextButtonStyle.font = skin.getFont("default")
         overworldTextButtonStyle.unpressedOffsetY = 20f
         overworldTextButtonStyle.pressedOffsetY = 20f
+        overworldTextButtonStyle.fontColor = skin.getColor("default")
         skin.add("overworld", overworldTextButtonStyle)
 
         val defaultTextButtonStyle = TextButton.TextButtonStyle()
@@ -41,6 +41,7 @@ class SkinService {
         defaultTextButtonStyle.up = skin.newDrawable("white", Color.WHITE)
         defaultTextButtonStyle.disabled = skin.newDrawable("white", Color.GRAY)
         defaultTextButtonStyle.font = skin.getFont("default")
+        defaultTextButtonStyle.fontColor = skin.getColor("default")
         skin.add("default", defaultTextButtonStyle)
         return skin
     }

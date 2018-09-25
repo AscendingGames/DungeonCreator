@@ -36,6 +36,7 @@ class BoardView(val board : Board) : AView2(0) {
     }
 
     override fun render(batch: SpriteBatch, camera : Camera) {
+        batch.end()
         shapeRenderer.projectionMatrix = camera.combined
         Gdx.gl.glLineWidth(BOARD_LINE_SIZE)
 
@@ -50,6 +51,7 @@ class BoardView(val board : Board) : AView2(0) {
         shapeRenderer.end()
 
         Gdx.gl.glLineWidth(1f)
+        batch.begin()
     }
 
     override fun dispose() {

@@ -2,12 +2,13 @@ package com.ascending.games.lib.model.game
 
 import com.ascending.games.lib.model.data.ObservableList
 import com.ascending.games.lib.model.data.ObservableMap
+import com.ascending.games.lib.model.geometry.IHierarchical2
+import com.ascending.games.lib.model.geometry.IRectangle2
 import com.badlogic.gdx.math.Vector2
 
-abstract class AGameObject : IPosition2, IChild, IStats {
+abstract class AGameObject : IRectangle2, IHierarchical2, IStats {
     override var relativePosition = Vector2()
-    override val absolutePosition: Vector2
-        get() =  (parent?.let { if (it is IPosition2) it.absolutePosition else Vector2() } ?: Vector2()).add(relativePosition)
+    override var size = Vector2()
     override val stats = ObservableMap(HashMap<String, Float>())
     override val statModifiers  by lazy {
         val statModifiers = ObservableList(mutableListOf<IStatModifier>())

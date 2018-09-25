@@ -52,6 +52,4 @@ class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
         }
         shapeRenderer.end()
     }
-
-    override fun dispose() = Unit
 }

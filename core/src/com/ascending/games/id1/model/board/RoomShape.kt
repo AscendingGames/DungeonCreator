@@ -16,7 +16,7 @@ data class RoomShape(val roomElements : List<Coord2>) {
 
     private fun createWalls(roomElement : RoomElement, room : Room) : List<Wall> {
         return Direction4.values()
-                .filter{ dir -> room.roomElements.none { roomElement.position.add(dir.toOffset()) == it.position } }
+                .filter{ dir -> room.roomElements.none { roomElement.roomRelativePosition.add(dir.toOffset()) == it.roomRelativePosition } }
                 .map { Wall(roomElement, it, WallState.CLOSED) }
     }
 }

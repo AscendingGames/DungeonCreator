@@ -12,12 +12,8 @@ class HeroView(val hero : Hero, val shapeRenderer : ShapeRenderer) : AView2(0) {
     override fun render(batch: SpriteBatch, camera: Camera) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.setColor(Color.GREEN)
-        val rectPos = Vector2((hero.absolutePosition.x + BoardView.OFFSET.x) * BoardView.TILE_SIZE, (hero.absolutePosition.y + BoardView.OFFSET.y) * BoardView.TILE_SIZE)
+        val rectPos = Vector2((hero.position.x + BoardView.OFFSET.x) * BoardView.TILE_SIZE, (hero.position.y + BoardView.OFFSET.y) * BoardView.TILE_SIZE)
         shapeRenderer.rect(rectPos.x, rectPos.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
         shapeRenderer.end()
-    }
-
-    override fun dispose() {
-
     }
 }

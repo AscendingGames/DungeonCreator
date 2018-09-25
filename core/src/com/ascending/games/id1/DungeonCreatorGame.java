@@ -4,7 +4,10 @@ import com.ascending.games.id1.view.SkinService;
 import com.ascending.games.id1.view.title.TitleScreen;
 import com.ascending.games.lib.edit.resource.IResource;
 import com.ascending.games.lib.edit.resource.ResourceFactory;
+import com.ascending.games.lib.model.geometry.Rectangle2;
 import com.ascending.games.lib.view.SceneManager2;
+import com.ascending.games.lib.view.SpriteView;
+import com.ascending.games.lib.view.texture.TextureManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,19 +20,25 @@ public class DungeonCreatorGame extends Game {
 
 	private static final String SAVE_FILE = "./DungeonCreator/data/save/save.json";
 
+	private TextureManager textureManager;
 	private SceneManager2 sceneManager;
-	private Texture img;
 	private Skin skin;
 	private IResource saveResource;
+	private SpriteView bgView;
 
 	@Override
 	public void create () {
 		System.out.println("Starting game Dungeon Creator");
 
 		sceneManager = new SceneManager2(new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-		img = new Texture("badlogic.jpg");
+		textureManager = new TextureManager();
 		saveResource = new ResourceFactory().createResource(SAVE_FILE);
 		skin = new SkinService().createSkin();
+
+		Texture bgTexture = textureManager.getTexture("bg.jpg");
+        bgView = new SpriteView(new Rectangle2(new Vector2(0,0), new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())), bgTexture, 0);
+        sceneManager.getViews().add(bgView);
+
 		setScreen(new TitleScreen(this));
 	}
 
@@ -46,7 +55,7 @@ public class DungeonCreatorGame extends Game {
 		}
 
 		sceneManager.dispose();
-		img.dispose();
+		textureManager.dispose();
 	}
 
 	@NotNull
@@ -59,4 +68,7 @@ public class DungeonCreatorGame extends Game {
 
 	@NotNull
 	public IResource getSaveResource() { return saveResource; }
+
+	@NotNull
+	public TextureManager getTextureManager() { return textureManager; }
 }
