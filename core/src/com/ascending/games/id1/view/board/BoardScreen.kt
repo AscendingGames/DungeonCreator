@@ -21,7 +21,7 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
     private val uiStage = Stage()
 
     companion object {
-        val BOARD_SIZE = Coord2(10, 20)
+        val BOARD_SIZE = Coord2(12, 19)
         const val THRESHOLD = 1f
     }
 

@@ -14,11 +14,10 @@ import com.badlogic.gdx.math.Vector2
 class BoardView(val board : Board) : AView2(0) {
 
     companion object  {
-        val OFFSET : Coord2 = Coord2(2, 1)
+        val OFFSET : Coord2 = Coord2(1, 2)
         const val TILE_SIZE : Float = 50f
         val BOARD_COLOR : Color = Color.GRAY
         const val BOARD_LINE_SIZE = 10f
-        const val WALL_LINE_SIZE = 3f
 
         fun convertToScreenCoordinates(coord : Coord2) : Vector2 {
             return Vector2((OFFSET.x + coord.x) * TILE_SIZE, (OFFSET.y + coord.y) * TILE_SIZE)
@@ -28,7 +27,7 @@ class BoardView(val board : Board) : AView2(0) {
     val shapeRenderer = ShapeRenderer()
     private val boardArea = Rectangle(OFFSET.x * TILE_SIZE, OFFSET.y * TILE_SIZE, board.width * TILE_SIZE, board.height * TILE_SIZE)
     private val heroView = HeroView(board.hero, shapeRenderer)
-    private val roomViews = board.rooms.map { RoomView(it, shapeRenderer) }.toMutableList()
+    private val roomViews = board.rooms.asSequence().map { RoomView(it, shapeRenderer) }.toMutableList()
 
     init {
         board.rooms.onAdd += { _, room -> roomViews.add(RoomView(room, shapeRenderer)) }

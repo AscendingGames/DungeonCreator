@@ -22,6 +22,7 @@ class SkinService {
         skin.add("gold", textureManager.getTexture("money.png"))
         skin.add("hp", textureManager.getTexture("heart.png"))
         skin.add("potion", textureManager.getTexture("potion.png"))
+        skin.add("menuItem", textureManager.getTexture("menubg.png"))
 
         // Store the default libgdx font under the name "default".
         skin.add("default", BitmapFont())
@@ -43,9 +44,9 @@ class SkinService {
         skin.add("overworld", overworldTextButtonStyle)
 
         val defaultTextButtonStyle = TextButton.TextButtonStyle()
-        defaultTextButtonStyle.down = skin.newDrawable("white", Color.RED)
-        defaultTextButtonStyle.up = skin.newDrawable("white", Color.WHITE)
-        defaultTextButtonStyle.disabled = skin.newDrawable("white", Color.GRAY)
+        defaultTextButtonStyle.down = skin.newDrawable("menuItem", Color.RED)
+        defaultTextButtonStyle.up = skin.newDrawable("menuItem", Color.WHITE)
+        defaultTextButtonStyle.disabled = skin.newDrawable("menuItem", Color.GRAY)
         defaultTextButtonStyle.font = skin.getFont("default")
         defaultTextButtonStyle.fontColor = skin.getColor("default")
         skin.add("default", defaultTextButtonStyle)
