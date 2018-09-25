@@ -1,5 +1,6 @@
 package com.ascending.games.id1.view
 
+import com.ascending.games.lib.view.texture.TextureManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -9,13 +10,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 
 class SkinService {
-    fun createSkin() : Skin {
+    fun createSkin(textureManager : TextureManager) : Skin {
         val skin = Skin()
         // Generate a 1x1 white texture and store it in the skin named "white".
         val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
         pixmap.setColor(Color.WHITE)
         pixmap.fill()
         skin.add("white", Texture(pixmap))
+        skin.add("sword", textureManager.getTexture("sword.png"))
+        skin.add("shield", textureManager.getTexture("shield.png"))
+        skin.add("gold", textureManager.getTexture("money.png"))
+        skin.add("hp", textureManager.getTexture("heart.png"))
+        skin.add("potion", textureManager.getTexture("potion.png"))
 
         // Store the default libgdx font under the name "default".
         skin.add("default", BitmapFont())

@@ -4,6 +4,7 @@ import com.ascending.games.id1.model.mechanics.StatService
 import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.lib.model.data.ObservableMap
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -12,34 +13,36 @@ import com.badlogic.gdx.utils.Align
 class StatsView(private val stats : ObservableMap<String, Float>, stage : Stage, skin : Skin) {
     private val statsTable = Table()
 
-    private var hpLabel : Label
-    private var attackLabel : Label
-    private var defenseLabel : Label
-    private var potionsLabel : Label
-    private var levelLabel : Label
-    private var expLabel : Label
-    private var goldLabel : Label
+    private val hpLabel = Label("", skin)
+    private val hpImage = Image(skin, "hp")
+    private val attackLabel = Label("", skin)
+    private val attackImage = Image(skin, "sword")
+    private val defenseLabel = Label("", skin)
+    private val defenseImage = Image(skin, "shield")
+    private val potionsLabel = Label("", skin)
+    private val potionsImage = Image(skin, "potion")
+    private val levelLabel = Label("", skin)
+    private val expLabel = Label("", skin)
+    private val goldLabel = Label("", skin)
+    private val goldImage = Image(skin, "gold")
 
     init {
         statsTable.setFillParent(true)
         statsTable.align(Align.top)
         stage.addActor(statsTable)
 
-        hpLabel = Label("", skin)
-        attackLabel = Label("", skin)
-        defenseLabel = Label("", skin)
-        levelLabel = Label("", skin)
-        potionsLabel = Label("", skin)
-        expLabel = Label("", skin)
-        goldLabel = Label("", skin)
-
-        statsTable.add(hpLabel).pad(30f)
-        statsTable.add(attackLabel).pad(30f)
-        statsTable.add(defenseLabel).pad(30f)
-        statsTable.add(potionsLabel).pad(30f)
-        statsTable.add(levelLabel).pad(30f)
-        statsTable.add(expLabel).pad(30f)
-        statsTable.add(goldLabel).pad(30f)
+        statsTable.add(hpLabel).padLeft(40f).padTop(30f).padBottom(30f)
+        statsTable.add(hpImage).prefSize(attackLabel.prefHeight).padRight(40f)
+        statsTable.add(attackLabel)
+        statsTable.add(attackImage).prefSize(attackLabel.prefHeight).padRight(40f)
+        statsTable.add(defenseLabel)
+        statsTable.add(defenseImage).prefSize(attackLabel.prefHeight).padRight(40f)
+        statsTable.add(potionsLabel)
+        statsTable.add(potionsImage).prefSize(attackLabel.prefHeight).padRight(40f)
+        statsTable.add(levelLabel).padRight(40f)
+        statsTable.add(expLabel).padRight(40f)
+        statsTable.add(goldLabel)
+        statsTable.add(goldImage).prefSize(attackLabel.prefHeight).padRight(40f)
 
         updateLabels()
 

@@ -33,7 +33,7 @@ public class DungeonCreatorGame extends Game {
 		sceneManager = new SceneManager2(new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		textureManager = new TextureManager();
 		saveResource = new ResourceFactory().createResource(SAVE_FILE);
-		skin = new SkinService().createSkin();
+		skin = new SkinService().createSkin(textureManager);
 
 		Texture bgTexture = textureManager.getTexture("bg.jpg");
         bgView = new SpriteView(new Rectangle2(new Vector2(0,0), new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())), bgTexture, 0);
