@@ -23,6 +23,12 @@ class SkinService {
         skin.add("hp", textureManager.getTexture("heart.png"))
         skin.add("potion", textureManager.getTexture("potion.png"))
         skin.add("menuItem", textureManager.getTexture("menubg.png"))
+        skin.add("shrine", textureManager.getTexture("shrine.png"))
+        skin.add("city", textureManager.getTexture("city.png"))
+        skin.add("dungeon", textureManager.getTexture("dungeon.png"))
+        skin.add("shrine_down", textureManager.getTexture("shrineclick.png"))
+        skin.add("city_down", textureManager.getTexture("cityclick.png"))
+        skin.add("dungeon_down", textureManager.getTexture("dungeonclick.png"))
 
         // Store the default libgdx font under the name "default".
         skin.add("default", BitmapFont())
@@ -33,15 +39,35 @@ class SkinService {
         labelStyle.fontColor = skin.getColor("default")
         skin.add("default", labelStyle)
 
-        val overworldTextButtonStyle = TextButton.TextButtonStyle()
-        overworldTextButtonStyle.down = skin.newDrawable("white", Color.RED)
-        overworldTextButtonStyle.up = skin.newDrawable("white", Color.WHITE)
-        overworldTextButtonStyle.disabled = skin.newDrawable("white", Color.GRAY)
-        overworldTextButtonStyle.font = skin.getFont("default")
-        overworldTextButtonStyle.unpressedOffsetY = 20f
-        overworldTextButtonStyle.pressedOffsetY = 20f
-        overworldTextButtonStyle.fontColor = skin.getColor("default")
-        skin.add("overworld", overworldTextButtonStyle)
+        val cityTextButtonStyle = TextButton.TextButtonStyle()
+        cityTextButtonStyle.down = skin.newDrawable("city_down", Color.WHITE)
+        cityTextButtonStyle.up = skin.newDrawable("city", Color.WHITE)
+        cityTextButtonStyle.disabled = skin.newDrawable("city", Color.GRAY)
+        cityTextButtonStyle.font = skin.getFont("default")
+        cityTextButtonStyle.unpressedOffsetY = 150f
+        cityTextButtonStyle.pressedOffsetY = 150f
+        cityTextButtonStyle.fontColor = skin.getColor("default")
+        skin.add("city", cityTextButtonStyle)
+
+        val shrineTextButtonStyle = TextButton.TextButtonStyle()
+        shrineTextButtonStyle.down = skin.newDrawable("shrine_down", Color.WHITE)
+        shrineTextButtonStyle.up = skin.newDrawable("shrine", Color.WHITE)
+        shrineTextButtonStyle.disabled = skin.newDrawable("shrine", Color.GRAY)
+        shrineTextButtonStyle.font = skin.getFont("default")
+        shrineTextButtonStyle.unpressedOffsetY = 50f
+        shrineTextButtonStyle.pressedOffsetY = 50f
+        shrineTextButtonStyle.fontColor = skin.getColor("default")
+        skin.add("shrine", shrineTextButtonStyle)
+
+        val dungeonTextButtonStyle = TextButton.TextButtonStyle()
+        dungeonTextButtonStyle.down = skin.newDrawable("dungeon_down", Color.WHITE)
+        dungeonTextButtonStyle.up = skin.newDrawable("dungeon", Color.WHITE)
+        dungeonTextButtonStyle.disabled = skin.newDrawable("dungeon", Color.GRAY)
+        dungeonTextButtonStyle.font = skin.getFont("default")
+        dungeonTextButtonStyle.unpressedOffsetY = 40f
+        dungeonTextButtonStyle.pressedOffsetY = 40f
+        dungeonTextButtonStyle.fontColor = skin.getColor("default")
+        skin.add("dungeon", dungeonTextButtonStyle)
 
         val defaultTextButtonStyle = TextButton.TextButtonStyle()
         defaultTextButtonStyle.down = skin.newDrawable("menuItem", Color.RED)

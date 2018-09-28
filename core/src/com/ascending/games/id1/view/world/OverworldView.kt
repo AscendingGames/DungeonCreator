@@ -9,9 +9,9 @@ class OverworldView(worldScreen: WorldScreen) : ALocationView(worldScreen, OVERW
                 "unfolding before you..."
     }
 
-    private val dungeonButton = createTextButton("Dungeon", "overworld" ) { it.setLocation(Location.DUNGEON) }
-    private val shrineButton = createTextButton("Shrine", "overworld" ) { it.setLocation(Location.SHRINE) }
-    private val cityButton = createTextButton("City", "overworld" ) { it.setLocation(Location.CITY) }
+    private val dungeonButton = createTextButton("Dungeon", "dungeon" ) { it.setLocation(Location.DUNGEON) }
+    private val shrineButton = createTextButton("Shrine", "shrine" ) { it.setLocation(Location.SHRINE) }
+    private val cityButton = createTextButton("City", "city" ) { it.setLocation(Location.CITY) }
 
     init {
         locationTable.add(dungeonButton)
