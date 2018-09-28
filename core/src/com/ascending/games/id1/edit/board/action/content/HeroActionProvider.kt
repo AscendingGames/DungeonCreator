@@ -13,17 +13,12 @@ class HeroActionProvider(val board : Board) : ITimedActionProvider {
 
     private val hero = board.hero
 
-    override fun getNextActions() : ITimedAction? {
+    override fun getNextAction() : ITimedAction? {
         if (hero.spawned) {
-            if (hero.roomElement.room.isCleared) {
+            if (hero.roomElement.room.allRoomContents.isEmpty()) {
                 return moveToRandomNeighbourRoom()
             } else {
-                if (hero.roomElement.roomContents.isEmpty()) {
-                    val randomRoomElement = hero.roomElement.room.roomElements.shuffled().last()
-                    return moveToRoomElement(randomRoomElement)
-                } else {
-                    return clearRoom()
-                }
+                return clearRoom()
             }
         }
 

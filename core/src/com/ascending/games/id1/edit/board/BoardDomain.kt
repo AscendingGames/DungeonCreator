@@ -26,16 +26,16 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
 
     var currentRoom by Delegates.notNull<Room>()
     var projectedRoom by Delegates.notNull<Room>()
-    val roomPool = RoomPool(roomFactory, (board.height + 2).toFloat())
+    private val roomPoolPosY = board.height + 2
+    val roomPool = RoomPool(roomFactory, roomPoolPosY.toFloat())
 
-    private var time = 0f
     private val heroActionProvider = HeroActionProvider(board)
     private val mapRoomContentToActionList = mutableMapOf<ARoomContent, ITimedAction>()
     private val statService = StatService()
     private val playerService = PlayerService()
 
     init {
-        player.stats.forEach { statType, value -> board.hero.stats.put(statType, value) }
+        board.hero.stats.putAll(player.stats)
         nextRoom()
     }
 
@@ -101,7 +101,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
         val existingAction = mapRoomContentToActionList[aRoomContent]
         if (existingAction != null)  return existingAction
 
-        val newAction = timedActionProvider.getNextActions()
+        val newAction = timedActionProvider.getNextAction()
         if (newAction != null) mapRoomContentToActionList[board.hero] = newAction
         return newAction
     }
