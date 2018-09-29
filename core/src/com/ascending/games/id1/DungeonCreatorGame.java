@@ -5,9 +5,8 @@ import com.ascending.games.id1.view.title.TitleScreen;
 import com.ascending.games.lib.edit.resource.IResource;
 import com.ascending.games.lib.edit.resource.ResourceFactory;
 import com.ascending.games.lib.model.geometry.Rectangle2;
-import com.ascending.games.lib.view.SceneManager2;
 import com.ascending.games.lib.view.SpriteView;
-import com.ascending.games.lib.view.texture.TextureManager;
+import com.ascending.games.lib.view.Toolkit;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,31 +19,28 @@ public class DungeonCreatorGame extends Game {
 
 	private static final String SAVE_FILE = "./DungeonCreator/data/save/save.json";
 
-	private TextureManager textureManager;
-	private SceneManager2 sceneManager;
+	private Toolkit toolkit;
 	private Skin skin;
 	private IResource saveResource;
-	private SpriteView bgView;
 
 	@Override
 	public void create () {
 		System.out.println("Starting game Dungeon Creator");
 
-		sceneManager = new SceneManager2(new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-		textureManager = new TextureManager();
+		toolkit = new Toolkit((new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 		saveResource = new ResourceFactory().createResource(SAVE_FILE);
-		skin = new SkinService().createSkin(textureManager);
+		skin = new SkinService().createSkin(toolkit.getTextureManager());
 
-		Texture bgTexture = textureManager.getTexture("bg.jpg");
-        bgView = new SpriteView(new Rectangle2(new Vector2(0,0), new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())), bgTexture, 0);
-        sceneManager.getViews().add(bgView);
+		Texture bgTexture = toolkit.getTextureManager().getTexture("bg.jpg");
+        SpriteView bgView = new SpriteView(new Rectangle2(new Vector2(0,0), new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())), bgTexture, 0);
+		toolkit.getSceneManager().getViews().add(bgView);
 
 		setScreen(new TitleScreen(this));
 	}
 
 	@Override
 	public void render () {
-		sceneManager.render();
+		toolkit.getSceneManager().render();
 		super.render();
 	}
 	
@@ -54,13 +50,12 @@ public class DungeonCreatorGame extends Game {
 			saveResource.save();
 		}
 
-		sceneManager.dispose();
-		textureManager.dispose();
+		toolkit.dispose();
 	}
 
 	@NotNull
-	public SceneManager2 getSceneManager() {
-		return sceneManager;
+	public Toolkit getToolkit() {
+		return toolkit;
 	}
 
 	@NotNull
@@ -68,7 +63,4 @@ public class DungeonCreatorGame extends Game {
 
 	@NotNull
 	public IResource getSaveResource() { return saveResource; }
-
-	@NotNull
-	public TextureManager getTextureManager() { return textureManager; }
 }

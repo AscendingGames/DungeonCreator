@@ -27,7 +27,7 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
 
     private val board = Board(BOARD_SIZE.x, BOARD_SIZE.y)
     private val boardDomain = BoardDomain(board, player, level, DefaultRoomFactory.createDefaultRoomFactory(level))
-    private val boardView = BoardView(board)
+    private val boardView = BoardView(board, game.toolkit)
     private val roomPoolView = RoomPoolView(boardDomain.roomPool, boardView.shapeRenderer)
     private val gestureActionProvider = GestureActionProvider()
     private var currentRoomView = ProjectedRoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
@@ -38,9 +38,9 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
         Gdx.input.inputProcessor = uiStage
 
         boardDomain.onProjectedRoomChanged += { ->
-            game.sceneManager.views.remove(currentRoomView)
+            game.toolkit.sceneManager.views.remove(currentRoomView)
             currentRoomView = ProjectedRoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
-            game.sceneManager.views.add(currentRoomView)
+            game.toolkit.sceneManager.views.add(currentRoomView)
         }
 
         boardDomain.onBoardFinished += {
@@ -78,15 +78,15 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
     }
 
     override fun show() {
-        game.sceneManager.views.add(boardView)
-        game.sceneManager.views.add(currentRoomView)
-        game.sceneManager.views.add(roomPoolView)
+        game.toolkit.sceneManager.views.add(boardView)
+        game.toolkit.sceneManager.views.add(currentRoomView)
+        game.toolkit.sceneManager.views.add(roomPoolView)
         Gdx.input.inputProcessor = GestureDetector(gestureActionProvider)
     }
 
     override fun hide() {
-        game.sceneManager.views.remove(boardView)
-        game.sceneManager.views.remove(currentRoomView)
-        game.sceneManager.views.remove(roomPoolView)
+        game.toolkit.sceneManager.views.remove(boardView)
+        game.toolkit.sceneManager.views.remove(currentRoomView)
+        game.toolkit.sceneManager.views.remove(roomPoolView)
     }
 }

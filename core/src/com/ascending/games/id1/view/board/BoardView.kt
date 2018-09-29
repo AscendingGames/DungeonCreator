@@ -3,6 +3,8 @@ package com.ascending.games.id1.view.board
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.lib.model.geometry.Coord2
 import com.ascending.games.lib.view.AView2
+import com.ascending.games.lib.view.SpriteView
+import com.ascending.games.lib.view.Toolkit
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
@@ -11,7 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 
-class BoardView(val board : Board) : AView2(0) {
+class BoardView(val board : Board, val toolkit : Toolkit) : AView2(0) {
 
     companion object  {
         val OFFSET : Coord2 = Coord2(1, 2)
@@ -22,11 +24,15 @@ class BoardView(val board : Board) : AView2(0) {
         fun convertToScreenCoordinates(coord : Coord2) : Vector2 {
             return Vector2((OFFSET.x + coord.x) * TILE_SIZE, (OFFSET.y + coord.y) * TILE_SIZE)
         }
+
+        fun convertToScreenCoordinates(vector : Vector2) : Vector2 {
+            return Vector2((OFFSET.x + vector.x) * TILE_SIZE, (OFFSET.y + vector.y) * TILE_SIZE)
+        }
     }
 
     val shapeRenderer = ShapeRenderer()
     private val boardArea = Rectangle(OFFSET.x * TILE_SIZE, OFFSET.y * TILE_SIZE, board.width * TILE_SIZE, board.height * TILE_SIZE)
-    private val heroView = HeroView(board.hero, shapeRenderer)
+    private val heroView = SpriteView(BoardRectangle(board.hero), toolkit.textureManager.getTexture("hero.png"), 0)
     private val roomViews = board.rooms.asSequence().map { RoomView(it, shapeRenderer) }.toMutableList()
 
     init {
@@ -41,7 +47,9 @@ class BoardView(val board : Board) : AView2(0) {
 
         roomViews.forEach { it.render(batch, camera) }
         if (board.hero.spawned) {
+            batch.begin()
             heroView.render(batch, camera)
+            batch.end()
         }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
