@@ -3,13 +3,15 @@ package com.ascending.games.id1.view.board
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.lib.model.geometry.Direction4
 import com.ascending.games.lib.view.AView2
+import com.ascending.games.lib.view.SpriteView
+import com.ascending.games.lib.view.Toolkit
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 
-class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
+class RoomView(val room : Room, private val shapeRenderer: ShapeRenderer, private val toolkit : Toolkit) : AView2(0) {
     override fun render(batch: SpriteBatch, camera: Camera) {
         val isCleared = room.isCleared
 
@@ -21,13 +23,19 @@ class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
 
             for (aRoomContent in roomElement.clearables) {
                 if (aRoomContent is Monster) {
-                    shapeRenderer.setColor(Color.RED)
+                    shapeRenderer.end()
+                    batch.begin()
+                    val spriteView = SpriteView(BoardRectangle(aRoomContent), toolkit.textureManager.getTexture("monster1.png"), 0)
+                    spriteView.render(batch, camera)
+                    batch.end()
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
                 }  else if (aRoomContent is Crystal) {
                     shapeRenderer.setColor(Color.VIOLET)
+                    shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
                 } else if (aRoomContent is StairsDown) {
                     shapeRenderer.setColor(Color.WHITE)
+                    shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
                 }
-                shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
             }
         }
         shapeRenderer.end()

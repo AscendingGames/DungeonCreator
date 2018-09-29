@@ -33,10 +33,10 @@ class BoardView(val board : Board, val toolkit : Toolkit) : AView2(0) {
     val shapeRenderer = ShapeRenderer()
     private val boardArea = Rectangle(OFFSET.x * TILE_SIZE, OFFSET.y * TILE_SIZE, board.width * TILE_SIZE, board.height * TILE_SIZE)
     private val heroView = SpriteView(BoardRectangle(board.hero), toolkit.textureManager.getTexture("hero.png"), 0)
-    private val roomViews = board.rooms.asSequence().map { RoomView(it, shapeRenderer) }.toMutableList()
+    private val roomViews = board.rooms.asSequence().map { RoomView(it, shapeRenderer, toolkit) }.toMutableList()
 
     init {
-        board.rooms.onAdd += { _, room -> roomViews.add(RoomView(room, shapeRenderer)) }
+        board.rooms.onAdd += { _, room -> roomViews.add(RoomView(room, shapeRenderer, toolkit)) }
         board.rooms.onRemove += { room -> roomViews.removeAt(roomViews.indexOfFirst { it.room == room }) }
     }
 
