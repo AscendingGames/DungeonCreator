@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2
 class RoomElement(var roomRelativePosition : Coord2) : IPosition2 {
     lateinit var room : Room
 
-    val roomContents = mutableListOf<ARoomContent>()
+    val clearables = mutableListOf<AClearable>()
     var walls  = emptyList<Wall>()
     val boardX  : Int
         get() = Math.ceil(room.position.x.toDouble() + roomRelativePosition.x).toInt()

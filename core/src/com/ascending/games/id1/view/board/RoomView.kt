@@ -19,7 +19,7 @@ class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
             val roomElementPosition = BoardView.convertToScreenCoordinates(roomElement.boardCoord)
             shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
 
-            for (aRoomContent in roomElement.roomContents) {
+            for (aRoomContent in roomElement.clearables) {
                 if (aRoomContent is Monster) {
                     shapeRenderer.setColor(Color.RED)
                 }  else if (aRoomContent is Crystal) {

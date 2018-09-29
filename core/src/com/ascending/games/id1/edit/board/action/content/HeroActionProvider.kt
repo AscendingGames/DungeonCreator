@@ -3,6 +3,7 @@ package com.ascending.games.id1.edit.board.action.content
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.id1.model.mechanics.Battle
 import com.ascending.games.lib.edit.action.ComposedTimedAction
+import com.ascending.games.lib.edit.action.EmptyTimedAction
 import com.ascending.games.lib.edit.action.ITimedAction
 import com.ascending.games.lib.edit.action.ITimedActionProvider
 import com.ascending.games.lib.model.pathfinding.Pathfinder
@@ -46,14 +47,16 @@ class HeroActionProvider(val board : Board) : ITimedActionProvider {
         return ComposedTimedAction(path.map { MoveContentAction(hero, it) })
     }
 
-    private fun clearRoom() : ITimedAction? {
-        val roomContent = hero.roomElement.roomContents[0]
-        if (roomContent is Monster) {
-            return BattleAction(Battle(hero, roomContent))
-        } else if (roomContent is Crystal){
-            return ConsumeCrystalAction(hero, roomContent)
+    private fun clearRoom() : ITimedAction {
+        if (hero.roomElement.clearables.isEmpty()) {
+            return moveToRoomElement(hero.roomElement.room.allRoomContents[0].roomElement)
         } else {
-            return null
+            val roomContent = hero.roomElement.clearables[0]
+            return when (roomContent) {
+                is Monster -> BattleAction(Battle(hero, roomContent))
+                is Crystal -> ConsumeCrystalAction(hero, roomContent)
+                else -> EmptyTimedAction()
+            }
         }
     }
 }

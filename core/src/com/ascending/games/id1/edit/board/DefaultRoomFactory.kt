@@ -59,12 +59,12 @@ class DefaultRoomFactory(private val factoryConfig: DefaultRoomFactoryConfig, va
         var remainingElements = shuffledElements.drop(numberMonsters)
 
         if (remainingElements.isNotEmpty() && hasCrystal()) {
-            Crystal(Crystal.Type.HEALING, remainingElements[0])
+            Crystal(Crystal.Type.HEALING).spawn(remainingElements[0])
             remainingElements = remainingElements.drop(0)
         }
 
         if (remainingElements.isNotEmpty() && hasStairsDown()) {
-            StairsDown(remainingElements[0])
+            StairsDown().spawn(remainingElements[0])
         }
 
         numCreatedRooms++

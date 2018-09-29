@@ -61,7 +61,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
         if (board.hero.spawned) {
             if (statService.isDead(board.hero)) {
                 failBoard()
-            } else if (board.hero.roomElement.roomContents.any { it is StairsDown }) {
+            } else if (board.hero.roomElement.clearables.any { it is StairsDown }) {
                 clearBoard()
             }
         }

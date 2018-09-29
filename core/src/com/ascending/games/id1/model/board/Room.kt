@@ -6,7 +6,7 @@ class Room(val roomElements : MutableList<RoomElement> = mutableListOf(), var po
     var isVisited = false
 
     val allRoomContents : List<ARoomContent>
-        get() = roomElements.flatMap { it.roomContents }
+        get() = roomElements.flatMap { it.clearables }
     val isCleared : Boolean
         get() = isVisited && allRoomContents.isEmpty()
 
