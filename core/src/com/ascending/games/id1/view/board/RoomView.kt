@@ -13,17 +13,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 
 class RoomView(val room : Room, private val shapeRenderer: ShapeRenderer, private val toolkit : Toolkit) : AView2(0) {
     override fun render(batch: SpriteBatch, camera: Camera) {
-        val isCleared = room.isCleared
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        for (roomElement in room.roomElements) {
-            if (isCleared) shapeRenderer.setColor(Color.BROWN) else shapeRenderer.setColor(Color.GOLD)
-            val roomElementPosition = BoardView.convertToScreenCoordinates(roomElement.boardCoord)
-            shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
-        }
-        shapeRenderer.end()
-
         batch.begin()
+        if (room.isCleared) batch.setColor(Color.GRAY) else batch.setColor(Color.WHITE)
+        for (roomElement in room.roomElements) {
+            val spriteView = SpriteView(BoardRectangle(roomElement), toolkit.textureManager.getTexture("roombg.png"), 0)
+            spriteView.render(batch, camera)
+        }
+
         for (aClearable in room.allRoomClearables) {
             val textureName = when (aClearable) {
                 is Monster -> "monster1.png"

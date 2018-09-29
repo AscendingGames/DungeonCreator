@@ -2,10 +2,11 @@ package com.ascending.games.id1.model.board
 
 import com.ascending.games.lib.model.geometry.Coord2
 import com.ascending.games.lib.model.geometry.Direction4
-import com.ascending.games.lib.model.geometry.IPosition2
+import com.ascending.games.lib.model.geometry.IRectangle2
 import com.badlogic.gdx.math.Vector2
 
-class RoomElement(var roomRelativePosition : Coord2) : IPosition2 {
+class RoomElement(var roomRelativePosition : Coord2) : IRectangle2{
+    override var size = Vector2(1f,1f)
     lateinit var room : Room
 
     val clearables = mutableListOf<AClearable>()
