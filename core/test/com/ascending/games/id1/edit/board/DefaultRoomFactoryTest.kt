@@ -5,11 +5,9 @@ import com.ascending.games.id1.model.board.Monster
 import com.ascending.games.id1.model.board.RoomShape
 import com.ascending.games.id1.model.board.StairsDown
 import com.ascending.games.lib.model.geometry.Coord2
-import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.*
-import org.junit.Test
-
 import org.junit.Assert.*
+import org.junit.Test
 
 class DefaultRoomFactoryTest {
 
@@ -24,7 +22,7 @@ class DefaultRoomFactoryTest {
         val room = defaultRoomFactory.createRoom()
         assertEquals(1, defaultRoomFactory.numCreatedRooms)
         assertEquals(1, room.roomElements.size)
-        assertThat(room.allRoomContents, not(hasItem(isA(Crystal::class.java))))
+        assertThat(room.allRoomClearables, not(hasItem(isA(Crystal::class.java))))
     }
 
     @Test
@@ -32,7 +30,7 @@ class DefaultRoomFactoryTest {
         val testRoomFactoryConfig = DefaultRoomFactoryConfig(listOf(testRoomShape), numberMonsters = 1..1)
         val defaultRoomFactory = DefaultRoomFactory(testRoomFactoryConfig, 1)
         val room = defaultRoomFactory.createRoom()
-        assertThat(room.allRoomContents, hasItem(isA(Monster::class.java)))
+        assertThat(room.allRoomClearables, hasItem(isA(Monster::class.java)))
     }
 
     @Test
@@ -48,7 +46,7 @@ class DefaultRoomFactoryTest {
         val testRoomFactoryConfig = DefaultRoomFactoryConfig(listOf(testRoomShape), probHealingCrystal = 1f)
         val defaultRoomFactory = DefaultRoomFactory(testRoomFactoryConfig, 1)
         val room = defaultRoomFactory.createRoom()
-        assertThat(room.allRoomContents, hasItem(isA(Crystal::class.java)))
+        assertThat(room.allRoomClearables, hasItem(isA(Crystal::class.java)))
     }
 
     @Test
@@ -56,8 +54,8 @@ class DefaultRoomFactoryTest {
         val testRoomFactoryConfig = DefaultRoomFactoryConfig(listOf(testRoomShape), probStairsDown = 1f, minRoomsTillStairsDown = 1)
         val defaultRoomFactory = DefaultRoomFactory(testRoomFactoryConfig, 1)
         val room0 = defaultRoomFactory.createRoom()
-        assertTrue(room0.allRoomContents.isEmpty())
+        assertTrue(room0.allRoomClearables.isEmpty())
         val room1 = defaultRoomFactory.createRoom()
-        assertThat(room1.allRoomContents, hasItem(isA(StairsDown::class.java)))
+        assertThat(room1.allRoomClearables, hasItem(isA(StairsDown::class.java)))
     }
 }

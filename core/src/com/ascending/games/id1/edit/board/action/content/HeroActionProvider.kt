@@ -16,7 +16,7 @@ class HeroActionProvider(val board : Board) : ITimedActionProvider {
 
     override fun getNextAction() : ITimedAction? {
         if (hero.spawned) {
-            if (hero.roomElement.room.allRoomContents.isEmpty()) {
+            if (hero.roomElement.room.allRoomClearables.isEmpty()) {
                 return moveToRandomNeighbourRoom()
             } else {
                 return clearRoom()
@@ -49,7 +49,7 @@ class HeroActionProvider(val board : Board) : ITimedActionProvider {
 
     private fun clearRoom() : ITimedAction {
         if (hero.roomElement.clearables.isEmpty()) {
-            return moveToRoomElement(hero.roomElement.room.allRoomContents[0].roomElement)
+            return moveToRoomElement(hero.roomElement.room.allRoomClearables[0].roomElement)
         } else {
             val roomContent = hero.roomElement.clearables[0]
             return when (roomContent) {
