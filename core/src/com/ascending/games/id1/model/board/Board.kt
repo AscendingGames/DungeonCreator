@@ -80,7 +80,7 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
         }
     }
 
-    fun getWallsToOpen(roomElement : RoomElement) : List<Wall> {
+    private fun getWallsToOpen(roomElement : RoomElement) : List<Wall> {
         val wallsToOpen = mutableListOf<Wall>()
         for (wall in roomElement.walls) {
             val coordOther = roomElement.boardCoord.add(wall.direction.toOffset())
