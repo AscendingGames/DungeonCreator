@@ -39,4 +39,18 @@ class StatServiceTest {
         gameObject.stats[StatType.EXP.name] = statService.getNextExp(gameObject.stats)
         assertTrue(statService.hasLevelUp(gameObject))
     }
+
+    @Test
+    fun consumePotion() {
+        gameObject.stats[StatType.COUNT_POTIONS.name] = 1f
+        gameObject.stats[StatType.HP_PER_POTION.name] = 1f
+        gameObject.stats[StatType.MAX_HP.name] = 1f
+        gameObject.stats[StatType.CURRENT_HP.name] = 0f
+        statService.consumePotion(gameObject)
+        assertEquals(0f, gameObject.stats[StatType.COUNT_POTIONS.name])
+        assertEquals(1f, gameObject.stats[StatType.CURRENT_HP.name])
+        gameObject.stats[StatType.COUNT_POTIONS.name] = 1f
+        statService.consumePotion(gameObject)
+        assertEquals(1f, gameObject.stats[StatType.CURRENT_HP.name])
+    }
 }
