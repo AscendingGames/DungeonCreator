@@ -25,7 +25,7 @@ class RoomView(val room : Room, private val toolkit : Toolkit) : AView2(0) {
             roomElementViews.add(createRoomElementView(roomElement))
         }
         room.roomElements.onRemove += { roomElement ->
-            roomElementViews.removeAll(roomElementViews.filter { it.rectangleProvider == roomElement })
+            roomElementViews.removeAll(roomElementViews.filter { (it.rectangleProvider as BoardRectangle).boardRectangle == roomElement })
         }
         roomElementViews.addAll(room.roomElements.map { createRoomElementView(it) })
     }
@@ -36,7 +36,7 @@ class RoomView(val room : Room, private val toolkit : Toolkit) : AView2(0) {
                 roomClearableViews.add(createRoomClearableView(clearable))
             }
             roomElement.clearables.onRemove += { clearable ->
-                roomClearableViews.removeAll(roomClearableViews.filter { it.rectangleProvider == clearable })
+                roomClearableViews.removeAll(roomClearableViews.filter { (it.rectangleProvider as BoardRectangle).boardRectangle == clearable })
             }
         }
         roomClearableViews.addAll(room.allRoomClearables.map { createRoomClearableView(it) })
@@ -45,7 +45,7 @@ class RoomView(val room : Room, private val toolkit : Toolkit) : AView2(0) {
     private fun initRoomWalls() {
         for (roomElement in room.roomElements) {
             roomElement.walls.onRemove += { wall ->
-                roomWallViews.removeAll(roomWallViews.filter { it.rectangleProvider == wall })
+                roomWallViews.removeAll(roomWallViews.filter { (it.rectangleProvider as BoardRectangle).boardRectangle == wall })
             }
         }
         roomWallViews.addAll(room.allWalls.map { createWallView(it) })

@@ -7,11 +7,11 @@ import com.ascending.games.lib.model.geometry.IRectangle2
 import com.badlogic.gdx.math.Vector2
 
 class RoomElement(var roomRelativePosition : Coord2) : IRectangle2{
-    override var size = Vector2(1f,1f)
+    override val size = Vector2(1f,1f)
     lateinit var room : Room
 
     val clearables = ObservableList<AClearable>(mutableListOf())
-    var walls  = ObservableList<Wall>(mutableListOf())
+    val walls  = ObservableList<Wall>(mutableListOf())
     val boardX  : Int
         get() = Math.ceil(room.position.x.toDouble() + roomRelativePosition.x).toInt()
     val boardY  : Int
