@@ -2,9 +2,9 @@ package com.ascending.games.id1.edit.board.action.content
 
 import com.ascending.games.id1.edit.mechanics.BattleDomain
 import com.ascending.games.id1.model.mechanics.Battle
-import com.ascending.games.lib.edit.action.ITimedAction
+import com.ascending.games.engine.edit.action.ITimedAction
 
-class BattleAction(private val battle : Battle) : ITimedAction {
+class BattleAction(private val battle : Battle) : com.ascending.games.engine.edit.action.ITimedAction {
     private val battleDomain = BattleDomain(battle)
 
     override val canExecute : Boolean

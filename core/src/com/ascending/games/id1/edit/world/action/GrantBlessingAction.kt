@@ -4,9 +4,9 @@ import com.ascending.games.id1.model.mechanics.Blessing
 import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.model.world.Player
 import com.ascending.games.id1.model.world.PlayerService
-import com.ascending.games.lib.edit.action.IAction
+import com.ascending.games.engine.edit.action.IAction
 
-class GrantBlessingAction(private val player : Player, private val blessing : Blessing) : IAction {
+class GrantBlessingAction(private val player : Player, private val blessing : Blessing) : com.ascending.games.engine.edit.action.IAction {
     private val playerService =  PlayerService()
 
     override val canExecute: Boolean

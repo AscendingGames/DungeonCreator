@@ -5,7 +5,7 @@ import com.ascending.games.id1.edit.board.MockRoomFactory
 import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.model.board.Board
 import com.ascending.games.id1.model.world.Player
-import com.ascending.games.lib.model.geometry.Coord2
+import com.ascending.games.engine.model.geometry.Coord2
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

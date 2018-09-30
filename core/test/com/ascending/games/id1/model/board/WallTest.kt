@@ -1,7 +1,7 @@
 package com.ascending.games.id1.model.board
 
-import com.ascending.games.lib.model.geometry.Coord2
-import com.ascending.games.lib.model.geometry.Direction4
+import com.ascending.games.engine.model.geometry.Coord2
+import com.ascending.games.engine.model.geometry.Direction4
 import com.badlogic.gdx.math.Rectangle
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

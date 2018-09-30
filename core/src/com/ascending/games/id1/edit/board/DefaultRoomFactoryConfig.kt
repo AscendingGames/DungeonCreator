@@ -2,7 +2,7 @@ package com.ascending.games.id1.edit.board
 
 import com.ascending.games.id1.model.board.RoomShape
 import com.ascending.games.id1.model.board.RoomType
-import com.ascending.games.lib.model.geometry.Coord2
+import com.ascending.games.engine.model.geometry.Coord2
 
 data class DefaultRoomFactoryConfig(
         val roomShapes : List<RoomShape>,

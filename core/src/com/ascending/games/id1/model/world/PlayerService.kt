@@ -4,7 +4,7 @@ import com.ascending.games.id1.model.board.Hero
 import com.ascending.games.id1.model.mechanics.Blessing
 import com.ascending.games.id1.model.mechanics.Ritual
 import com.ascending.games.id1.model.mechanics.StatType
-import com.ascending.games.lib.edit.resource.IResource
+import com.ascending.games.engine.edit.resource.IResource
 
 class PlayerService {
 

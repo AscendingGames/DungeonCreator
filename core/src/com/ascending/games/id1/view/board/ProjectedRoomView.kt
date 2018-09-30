@@ -1,7 +1,7 @@
 package com.ascending.games.id1.view.board
 
 import com.ascending.games.id1.model.board.Room
-import com.ascending.games.lib.view.AView2
+import com.ascending.games.engine.view.AView2
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch

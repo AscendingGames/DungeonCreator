@@ -1,6 +1,6 @@
 package com.ascending.games.id1.view
 
-import com.ascending.games.lib.view.texture.TextureManager
+import com.ascending.games.engine.view.texture.TextureManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture

@@ -1,7 +1,7 @@
 package com.ascending.games.id1.model.mechanics
 
 import com.ascending.games.id1.model.board.RoomType
-import com.ascending.games.lib.model.game.IStats
+import com.ascending.games.engine.model.game.IStats
 
 class StatService {
 

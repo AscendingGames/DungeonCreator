@@ -2,11 +2,11 @@ package com.ascending.games.id1;
 
 import com.ascending.games.id1.view.SkinService;
 import com.ascending.games.id1.view.title.TitleScreen;
-import com.ascending.games.lib.edit.resource.IResource;
-import com.ascending.games.lib.edit.resource.ResourceFactory;
-import com.ascending.games.lib.model.geometry.Rectangle2;
-import com.ascending.games.lib.view.SpriteView;
-import com.ascending.games.lib.view.Toolkit;
+import com.ascending.games.engine.edit.resource.IResource;
+import com.ascending.games.engine.edit.resource.ResourceFactory;
+import com.ascending.games.engine.model.geometry.Rectangle2;
+import com.ascending.games.engine.view.SpriteView;
+import com.ascending.games.engine.view.Toolkit;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

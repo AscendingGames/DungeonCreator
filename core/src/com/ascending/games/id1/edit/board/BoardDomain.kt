@@ -8,10 +8,10 @@ import com.ascending.games.id1.model.mechanics.StatService
 import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.model.world.Player
 import com.ascending.games.id1.model.world.PlayerService
-import com.ascending.games.lib.edit.action.ITimedAction
-import com.ascending.games.lib.edit.action.ITimedActionProvider
-import com.ascending.games.lib.model.data.ObservableList
-import com.ascending.games.lib.model.geometry.Coord2
+import com.ascending.games.engine.edit.action.ITimedAction
+import com.ascending.games.engine.edit.action.ITimedActionProvider
+import com.ascending.games.engine.model.data.ObservableList
+import com.ascending.games.engine.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
@@ -32,7 +32,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
     val roomPool = RoomPool(roomFactory, roomPoolPosY.toFloat())
 
     private val heroActionProvider = HeroActionProvider(board)
-    private val mapRoomContentToActionList = mutableMapOf<ARoomContent, ITimedAction>()
+    private val mapRoomContentToActionList = mutableMapOf<ARoomContent, com.ascending.games.engine.edit.action.ITimedAction>()
     private val statService = StatService()
     private val playerService = PlayerService()
 
@@ -110,7 +110,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
         }
     }
 
-    private fun getAction(aRoomContent: ARoomContent, timedActionProvider : ITimedActionProvider) : ITimedAction? {
+    private fun getAction(aRoomContent: ARoomContent, timedActionProvider : com.ascending.games.engine.edit.action.ITimedActionProvider) : com.ascending.games.engine.edit.action.ITimedAction? {
         val existingAction = mapRoomContentToActionList[aRoomContent]
         if (existingAction != null)  return existingAction
 

@@ -3,9 +3,9 @@ package com.ascending.games.id1.edit.world.action
 import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.model.world.Player
 import com.ascending.games.id1.model.world.PlayerService
-import com.ascending.games.lib.edit.action.IAction
+import com.ascending.games.engine.edit.action.IAction
 
-class EnhanceAction(private val player : Player, val enhancedStat : StatType, val enhancementLevelStat : StatType, val costsPerLevel : Float, val enchancement : Float = 1.0f) : IAction {
+class EnhanceAction(private val player : Player, val enhancedStat : StatType, val enhancementLevelStat : StatType, val costsPerLevel : Float, val enchancement : Float = 1.0f) : com.ascending.games.engine.edit.action.IAction {
     companion object {
         fun createEnhanceWeaponAction(player : Player) : EnhanceAction {
             return EnhanceAction(player, StatType.ATTACK, StatType.WEAPON_LEVEL, PlayerService.COST_PER_WEAPON_LEVEL)

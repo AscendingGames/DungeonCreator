@@ -3,9 +3,9 @@ package com.ascending.games.id1.edit.world.action
 import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.model.world.Player
 import com.ascending.games.id1.model.world.PlayerService
-import com.ascending.games.lib.edit.action.IAction
+import com.ascending.games.engine.edit.action.IAction
 
-class StockPotionAction(private val player : Player) : IAction {
+class StockPotionAction(private val player : Player) : com.ascending.games.engine.edit.action.IAction {
     private val playerService = PlayerService()
 
     override val canExecute: Boolean

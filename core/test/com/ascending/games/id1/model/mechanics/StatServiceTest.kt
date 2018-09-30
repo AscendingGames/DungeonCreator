@@ -1,6 +1,6 @@
 package com.ascending.games.id1.model.mechanics
 
-import com.ascending.games.lib.model.game.AGameObject
+import com.ascending.games.engine.model.game.AGameObject
 import org.junit.Assert.*
 import org.junit.Test
 

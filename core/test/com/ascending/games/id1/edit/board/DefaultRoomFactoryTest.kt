@@ -1,7 +1,7 @@
 package com.ascending.games.id1.edit.board
 
 import com.ascending.games.id1.model.board.*
-import com.ascending.games.lib.model.geometry.Coord2
+import com.ascending.games.engine.model.geometry.Coord2
 import org.hamcrest.CoreMatchers.*
 import org.junit.Assert.*
 import org.junit.Test

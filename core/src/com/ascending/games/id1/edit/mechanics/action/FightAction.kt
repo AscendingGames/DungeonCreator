@@ -2,9 +2,9 @@ package com.ascending.games.id1.edit.mechanics.action
 
 import com.ascending.games.id1.model.mechanics.Battle
 import com.ascending.games.id1.model.mechanics.StatService
-import com.ascending.games.lib.edit.action.IAction
+import com.ascending.games.engine.edit.action.IAction
 
-class FightAction(private val battle : Battle) : IAction {
+class FightAction(private val battle : Battle) : com.ascending.games.engine.edit.action.IAction {
     private val statService = StatService()
 
     override val canExecute: Boolean

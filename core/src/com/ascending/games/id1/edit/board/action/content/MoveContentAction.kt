@@ -3,10 +3,10 @@ package com.ascending.games.id1.edit.board.action.content
 import com.ascending.games.id1.model.board.ARoomContent
 import com.ascending.games.id1.model.board.RoomElement
 import com.ascending.games.id1.model.mechanics.StatType
-import com.ascending.games.lib.edit.action.ITimedAction
+import com.ascending.games.engine.edit.action.ITimedAction
 import com.badlogic.gdx.math.Vector2
 
-class MoveContentAction(val aRoomContent: ARoomContent, val targetRoomElement : RoomElement) : ITimedAction {
+class MoveContentAction(val aRoomContent: ARoomContent, val targetRoomElement : RoomElement) : com.ascending.games.engine.edit.action.ITimedAction {
     override val canExecute : Boolean
         get() = targetRoomElement.room.roomElements.contains(targetRoomElement)
 

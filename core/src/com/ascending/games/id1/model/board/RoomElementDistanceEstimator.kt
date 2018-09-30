@@ -1,6 +1,6 @@
 package com.ascending.games.id1.model.board
 
-import com.ascending.games.lib.model.pathfinding.IDistanceEstimator
+import com.ascending.games.engine.model.pathfinding.IDistanceEstimator
 
 class RoomElementDistanceEstimator() : IDistanceEstimator<RoomElement> {
     override fun estimateDistance(node1: RoomElement, node2: RoomElement): Float {

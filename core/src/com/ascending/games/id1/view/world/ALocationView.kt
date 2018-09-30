@@ -2,8 +2,8 @@ package com.ascending.games.id1.view.world
 
 import com.ascending.games.id1.model.world.Location
 import com.ascending.games.id1.model.world.PlayerService
-import com.ascending.games.lib.view.IVisible
-import com.ascending.games.lib.view.ui.ChangeListenerService
+import com.ascending.games.engine.view.IVisible
+import com.ascending.games.engine.view.ui.ChangeListenerService
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton

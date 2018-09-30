@@ -1,6 +1,6 @@
 package com.ascending.games.id1.model.world
 
-import com.ascending.games.lib.model.data.ObservableMap
+import com.ascending.games.engine.model.data.ObservableMap
 
 class Player {
     val stats = ObservableMap<String, Float>()

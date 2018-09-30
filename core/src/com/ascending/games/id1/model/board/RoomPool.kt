@@ -2,7 +2,7 @@ package com.ascending.games.id1.model.board
 
 import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.edit.board.IRoomFactory
-import com.ascending.games.lib.model.data.ObservableList
+import com.ascending.games.engine.model.data.ObservableList
 import com.badlogic.gdx.math.Vector2
 import java.util.*
 

@@ -2,8 +2,8 @@ package com.ascending.games.id1.view.board
 
 import com.ascending.games.id1.edit.board.BoardDomain
 import com.ascending.games.id1.model.board.RoomPool
-import com.ascending.games.lib.view.AView2
-import com.ascending.games.lib.view.Toolkit
+import com.ascending.games.engine.view.AView2
+import com.ascending.games.engine.view.Toolkit
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch

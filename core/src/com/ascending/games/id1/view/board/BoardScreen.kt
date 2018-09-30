@@ -9,7 +9,7 @@ import com.ascending.games.id1.model.world.Location
 import com.ascending.games.id1.model.world.Player
 import com.ascending.games.id1.view.mechanics.StatsView
 import com.ascending.games.id1.view.world.WorldScreen
-import com.ascending.games.lib.model.geometry.Coord2
+import com.ascending.games.engine.model.geometry.Coord2
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.input.GestureDetector

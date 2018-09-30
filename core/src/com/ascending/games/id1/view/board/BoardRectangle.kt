@@ -1,6 +1,6 @@
 package com.ascending.games.id1.view.board
 
-import com.ascending.games.lib.model.geometry.IRectangle2
+import com.ascending.games.engine.model.geometry.IRectangle2
 import com.badlogic.gdx.math.Vector2
 
 class BoardRectangle(val boardRectangle : IRectangle2) : IRectangle2 {

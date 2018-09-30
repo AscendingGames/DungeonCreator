@@ -1,10 +1,10 @@
 package com.ascending.games.id1.view.board
 
 import com.ascending.games.id1.model.board.Board
-import com.ascending.games.lib.model.geometry.Coord2
-import com.ascending.games.lib.view.AView2
-import com.ascending.games.lib.view.SpriteView
-import com.ascending.games.lib.view.Toolkit
+import com.ascending.games.engine.model.geometry.Coord2
+import com.ascending.games.engine.view.AView2
+import com.ascending.games.engine.view.SpriteView
+import com.ascending.games.engine.view.Toolkit
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color

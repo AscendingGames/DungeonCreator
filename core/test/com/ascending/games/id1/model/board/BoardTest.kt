@@ -1,8 +1,8 @@
 package com.ascending.games.id1.model.board
 
-import com.ascending.games.lib.model.data.ObservableList
-import com.ascending.games.lib.model.geometry.Coord2
-import com.ascending.games.lib.model.geometry.Direction4
+import com.ascending.games.engine.model.data.ObservableList
+import com.ascending.games.engine.model.geometry.Coord2
+import com.ascending.games.engine.model.geometry.Direction4
 import com.badlogic.gdx.math.Vector2
 import org.junit.Assert.*
 import org.junit.Test

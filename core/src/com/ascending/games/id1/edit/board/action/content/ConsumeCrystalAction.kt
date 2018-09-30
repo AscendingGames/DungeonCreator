@@ -2,10 +2,10 @@ package com.ascending.games.id1.edit.board.action.content
 
 import com.ascending.games.id1.model.board.Crystal
 import com.ascending.games.id1.model.mechanics.StatType
-import com.ascending.games.lib.edit.action.ITimedAction
-import com.ascending.games.lib.model.game.AGameObject
+import com.ascending.games.engine.edit.action.ITimedAction
+import com.ascending.games.engine.model.game.AGameObject
 
-class ConsumeCrystalAction(private val gameObject : AGameObject, private val crystal : Crystal) : ITimedAction {
+class ConsumeCrystalAction(private val gameObject : AGameObject, private val crystal : Crystal) : com.ascending.games.engine.edit.action.ITimedAction {
     override val canExecute : Boolean
         get() = crystal.roomElement.clearables.contains(crystal)
 

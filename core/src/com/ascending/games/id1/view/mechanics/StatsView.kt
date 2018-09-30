@@ -2,7 +2,7 @@ package com.ascending.games.id1.view.mechanics
 
 import com.ascending.games.id1.model.mechanics.StatService
 import com.ascending.games.id1.model.mechanics.StatType
-import com.ascending.games.lib.model.data.ObservableMap
+import com.ascending.games.engine.model.data.ObservableMap
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
