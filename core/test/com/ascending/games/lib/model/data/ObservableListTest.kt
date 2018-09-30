@@ -1,12 +1,13 @@
 package com.ascending.games.lib.model.data
 
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class ObservableListTest {
 
-    private val list = ObservableList(mutableListOf(1,2,3))
+    private val data = mutableListOf(1,2,3)
+    private val list = ObservableList(data)
 
     @Test
     fun add() {
@@ -86,5 +87,25 @@ class ObservableListTest {
             assertEquals(2, element)
         }
         list[1] = 3
+    }
+
+    @Test
+    fun size() {
+        assertEquals(data.size, list.size)
+    }
+
+    @Test
+    fun containsAll() {
+        assertTrue(list.containsAll(data))
+    }
+
+    @Test
+    fun lastIndexOf() {
+        assertEquals(data.lastIndexOf(1), list.lastIndexOf(1))
+    }
+
+    @Test
+    fun subList() {
+        assertEquals(data.subList(0, 2), list.subList(0, 2))
     }
 }
