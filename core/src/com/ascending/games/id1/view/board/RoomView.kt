@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
-class RoomView(val room : Room, private val toolkit : Toolkit) : AView2(0) {
+class RoomView(val room : Room, private val toolkit : Toolkit) : AView2() {
 
     private val roomElementViews = mutableListOf<SpriteView>()
     private val roomClearableViews = mutableListOf<SpriteView>()

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 
-class ProjectedRoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
+class ProjectedRoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2() {
 
     companion object {
         const val TILE_SIZE_SCALE = 0.8f

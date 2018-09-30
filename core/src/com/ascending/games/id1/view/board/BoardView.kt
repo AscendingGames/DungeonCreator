@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 
-class BoardView(val board : Board, val toolkit : Toolkit) : AView2(0) {
+class BoardView(val board : Board, val toolkit : Toolkit) : AView2() {
 
     companion object  {
         val OFFSET : Coord2 = Coord2(1, 2)

@@ -7,7 +7,7 @@ import com.ascending.games.lib.view.Toolkit
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
-class RoomPoolView (val roomPool : RoomPool, toolkit : Toolkit) : AView2(0) {
+class RoomPoolView (val roomPool : RoomPool, toolkit : Toolkit) : AView2() {
 
     private val roomViews = MutableList(BoardDomain.COUNT_WAITING_ROOMS) { RoomView(roomPool.waitingRooms[it], toolkit) }
 
