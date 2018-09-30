@@ -21,10 +21,6 @@ class BoardView(val board : Board, val toolkit : Toolkit) : AView2() {
         val BOARD_COLOR : Color = Color.GRAY
         const val BOARD_LINE_SIZE = 10f
 
-        fun convertToScreenCoordinates(coord : Coord2) : Vector2 {
-            return Vector2((OFFSET.x + coord.x) * TILE_SIZE, (OFFSET.y + coord.y) * TILE_SIZE)
-        }
-
         fun convertToScreenCoordinates(vector : Vector2) : Vector2 {
             return Vector2((OFFSET.x + vector.x) * TILE_SIZE, (OFFSET.y + vector.y) * TILE_SIZE)
         }
@@ -41,7 +37,10 @@ class BoardView(val board : Board, val toolkit : Toolkit) : AView2() {
     }
 
     override fun render(batch: SpriteBatch, camera : Camera) {
-        roomViews.forEach { it.render(batch, camera) }
+        roomViews.forEach { it.renderRoomElements(batch, camera) }
+        roomViews.forEach { it.renderClearables(batch, camera) }
+        roomViews.forEach { it.renderWalls(batch, camera) }
+        batch.color = Color.WHITE
 
         if (board.hero.spawned) {
             heroView.render(batch, camera)

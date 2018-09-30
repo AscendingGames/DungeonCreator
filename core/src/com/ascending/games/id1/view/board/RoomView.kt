@@ -1,18 +1,17 @@
 package com.ascending.games.id1.view.board
 
 import com.ascending.games.id1.model.board.*
-import com.ascending.games.lib.view.AView2
 import com.ascending.games.lib.view.SpriteView
 import com.ascending.games.lib.view.Toolkit
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
-class RoomView(val room : Room, private val toolkit : Toolkit) : AView2() {
+class RoomView(val room : Room, private val toolkit : Toolkit) {
 
-    private val roomElementViews = mutableListOf<SpriteView>()
-    private val roomClearableViews = mutableListOf<SpriteView>()
-    private val roomWallViews = mutableListOf<SpriteView>()
+    private val roomElementViews = room.roomElements.map { createRoomElementView(it) }.toMutableList()
+    private val roomClearableViews = room.allRoomClearables.map { createRoomClearableView(it) }.toMutableList()
+    private val roomWallViews = room.allWalls.map { createWallView(it) }.toMutableList()
 
     init {
         initRoomElements()
@@ -28,7 +27,6 @@ class RoomView(val room : Room, private val toolkit : Toolkit) : AView2() {
             roomElementViews.removeAll(roomElementViews.filter { (it.rectangleProvider as BoardRectangle).boardRectangle == roomElement })
             roomWallViews.removeAll(roomWallViews.filter { ((it.rectangleProvider as BoardRectangle).boardRectangle as Wall).roomElement == roomElement })
         }
-        roomElementViews.addAll(room.roomElements.map { createRoomElementView(it) })
     }
 
     private fun initRoomClearables() {
@@ -40,7 +38,6 @@ class RoomView(val room : Room, private val toolkit : Toolkit) : AView2() {
                 roomClearableViews.removeAll(roomClearableViews.filter { (it.rectangleProvider as BoardRectangle).boardRectangle == clearable })
             }
         }
-        roomClearableViews.addAll(room.allRoomClearables.map { createRoomClearableView(it) })
     }
 
     private fun initRoomWalls() {
@@ -49,7 +46,6 @@ class RoomView(val room : Room, private val toolkit : Toolkit) : AView2() {
                 roomWallViews.removeAll(roomWallViews.filter { (it.rectangleProvider as BoardRectangle).boardRectangle == wall })
             }
         }
-        roomWallViews.addAll(room.allWalls.map { createWallView(it) })
     }
 
     private fun createRoomElementView(roomElement : RoomElement) : SpriteView {
@@ -71,11 +67,16 @@ class RoomView(val room : Room, private val toolkit : Toolkit) : AView2() {
         return SpriteView(BoardRectangle(wall), toolkit.textureManager.getTexture("wall.png"))
     }
 
-    override fun render(batch: SpriteBatch, camera: Camera) {
+    fun renderRoomElements(batch: SpriteBatch, camera: Camera) {
         if (room.isCleared) batch.color = Color.GRAY else batch.color = Color.WHITE
         roomElementViews.forEach { it.render(batch, camera) }
-        roomClearableViews.forEach { it.render(batch, camera) }
+    }
 
+    fun renderClearables(batch: SpriteBatch, camera: Camera) {
+        roomClearableViews.forEach { it.render(batch, camera) }
+    }
+
+    fun renderWalls(batch: SpriteBatch, camera: Camera) {
         for (wallView in roomWallViews) {
             val wall = (wallView.rectangleProvider as BoardRectangle).boardRectangle as Wall
             when (wall.wallState) {
@@ -84,7 +85,5 @@ class RoomView(val room : Room, private val toolkit : Toolkit) : AView2() {
             }
             wallView.render(batch, camera)
         }
-
-        batch.color = Color.WHITE
     }
 }

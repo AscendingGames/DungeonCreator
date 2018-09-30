@@ -5,6 +5,7 @@ import com.ascending.games.id1.model.board.RoomPool
 import com.ascending.games.lib.view.AView2
 import com.ascending.games.lib.view.Toolkit
 import com.badlogic.gdx.graphics.Camera
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
 class RoomPoolView (val roomPool : RoomPool, toolkit : Toolkit) : AView2() {
@@ -19,6 +20,9 @@ class RoomPoolView (val roomPool : RoomPool, toolkit : Toolkit) : AView2() {
     }
 
     override fun render(batch: SpriteBatch, camera: Camera) {
-        roomViews.forEach { it.render(batch, camera) }
+        roomViews.forEach { it.renderRoomElements(batch, camera) }
+        roomViews.forEach { it.renderClearables(batch, camera) }
+        roomViews.forEach { it.renderWalls(batch, camera) }
+        batch.color = Color.WHITE
     }
 }
