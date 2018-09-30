@@ -26,6 +26,7 @@ class RoomView(val room : Room, private val toolkit : Toolkit) : AView2() {
         }
         room.roomElements.onRemove += { roomElement ->
             roomElementViews.removeAll(roomElementViews.filter { (it.rectangleProvider as BoardRectangle).boardRectangle == roomElement })
+            roomWallViews.removeAll(roomWallViews.filter { ((it.rectangleProvider as BoardRectangle).boardRectangle as Wall).roomElement == roomElement })
         }
         roomElementViews.addAll(room.roomElements.map { createRoomElementView(it) })
     }

@@ -79,17 +79,20 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
 
     private fun updateFallingRooms() {
         var positionChanged = false
+        val fallenRooms = mutableListOf<Room>()
         for (room in board.rooms) {
             if (!board.hasRoomFallen(room)) {
                 room.position.y -= 1
                 positionChanged = true
             } else {
+                fallenRooms.add(room)
                 room.position.y = room.position.y.roundToInt().toFloat()
-                board.openWallsNeighbouringDoors(room)
             }
         }
 
         if (!positionChanged) {
+            fallenRooms.forEach { board.openWallsNeighbouringDoors(it) }
+
             if (!board.hero.spawned) {
                 board.hero.spawn(board)
                 heroActionProvider.lastRoom = board.hero.roomElement.room
