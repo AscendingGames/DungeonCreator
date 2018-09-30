@@ -29,7 +29,7 @@ after_success:
 before_deploy:
 - ./gradlew desktop:dist
 - ./gradlew android:assembleRelease
-- mv desktop/build/libs/desktop-0.1.0.jar desktop/build/libs/DungeonCreator-$TRAVIS_TAG.jar
+- mv desktop/build/libs/desktop-0.3.0.jar desktop/build/libs/DungeonCreator-$TRAVIS_TAG.jar
 - mv android/build/outputs/apk/release/android-release-unsigned.apk android/build/outputs/apk/release/DungeonCreator-$TRAVIS_TAG.apk
 - if [[ $TRAVIS_TAG =~ ^\[v\] ]];
     then export GITHUB_DEPLOY_PRERELEASE=false;

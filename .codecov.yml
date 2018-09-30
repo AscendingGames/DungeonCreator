@@ -2,6 +2,9 @@ codecov:
   notify:
     require_ci_to_pass: no
 
+codecov:
+  token: b29a5a8a-8423-47b5-b2cb-c1e89b24c996
+
 ignore:
   - "**/view/*"         # Ignore View level code
   - "**/*.java"         # Ignore Java code, all application code is written in Kotlin
