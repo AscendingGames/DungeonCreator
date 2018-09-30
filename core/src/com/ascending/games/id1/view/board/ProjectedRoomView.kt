@@ -20,7 +20,7 @@ class ProjectedRoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AVi
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         shapeRenderer.setColor(Color.LIGHT_GRAY)
         for (roomElement in room.roomElements) {
-            val roomElementPosition = BoardView.convertToScreenCoordinates(roomElement.boardCoord)
+            val roomElementPosition = BoardView.convertToScreenCoordinates(roomElement.position)
             shapeRenderer.rect(roomElementPosition.x + PROJECTED_TILE_OFFSET, roomElementPosition.y + PROJECTED_TILE_OFFSET, PROJECTED_TILE_SIZE, PROJECTED_TILE_SIZE)
         }
         shapeRenderer.end()

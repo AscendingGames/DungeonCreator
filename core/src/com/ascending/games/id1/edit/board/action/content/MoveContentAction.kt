@@ -11,8 +11,8 @@ class MoveContentAction(val aRoomContent: ARoomContent, val targetRoomElement : 
         get() = targetRoomElement.room.roomElements.contains(targetRoomElement)
 
     override fun execute(delta: Float) : Boolean {
-        val targetCoord = targetRoomElement.boardCoord
-        val movementVector = Vector2(targetCoord.x.toFloat(), targetCoord.y.toFloat()).sub(aRoomContent.position)
+        val targetPosition = targetRoomElement.position
+        val movementVector = targetPosition.sub(aRoomContent.position)
         val distance = movementVector.len()
         val speed = aRoomContent.stats[StatType.SPEED.name] ?: 1f
         val movedDistance = delta * speed

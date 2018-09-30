@@ -23,6 +23,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
 
     companion object {
         const val COUNT_WAITING_ROOMS = 3
+        const val FALL_STEP = 1f
     }
 
     var currentRoom by Delegates.notNull<Room>()
@@ -34,6 +35,8 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
     private val mapRoomContentToActionList = mutableMapOf<ARoomContent, ITimedAction>()
     private val statService = StatService()
     private val playerService = PlayerService()
+
+    private var fallTime = 0f
 
     init {
         board.hero.stats.putAll(player.stats)
@@ -51,10 +54,16 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
     }
 
     fun update(time : Float) {
-        updateFallingRooms(time)
+        fallTime += time
 
-        for (row in 0 until board.height) {
-            clearRowIfFull(row)
+        if (fallTime >= FALL_STEP) {
+            fallTime = 0f
+
+            updateFallingRooms()
+
+            for (row in 0 until board.height) {
+                clearRowIfFull(row)
+            }
         }
 
         updateRoomContentActions(time)
@@ -68,11 +77,11 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
         }
     }
 
-    private fun updateFallingRooms(time : Float) {
+    private fun updateFallingRooms() {
         var positionChanged = false
         for (room in board.rooms) {
             if (!board.hasRoomFallen(room)) {
-                room.position.y -= time
+                room.position.y -= 1
                 positionChanged = true
             } else {
                 room.position.y = room.position.y.roundToInt().toFloat()
@@ -109,6 +118,11 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
 
     fun execute(action : IBoardAction) {
         action.execute(currentRoom,board)
+
+        if (action is DropAction) {
+            fallTime = FALL_STEP
+        }
+
         updateProjectedRoom()
     }
 
