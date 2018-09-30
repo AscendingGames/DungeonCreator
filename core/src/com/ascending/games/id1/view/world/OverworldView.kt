@@ -9,15 +9,24 @@ class OverworldView(worldScreen: WorldScreen) : ALocationView(worldScreen, OVERW
                 "unfolding before you..."
     }
 
-    private val dungeonButton = createTextButton("Dungeon", "overworld" ) { it.setLocation(Location.DUNGEON) }
-    private val shrineButton = createTextButton("Shrine", "overworld" ) { it.setLocation(Location.SHRINE) }
-    private val cityButton = createTextButton("City", "overworld" ) { it.setLocation(Location.CITY) }
+    private val dungeonButton = createTextButton("Dungeon", "dungeon" ) { it.setLocation(Location.DUNGEON) }
+    private val shrineButton = createTextButton("Shrine", "shrine" ) { it.setLocation(Location.SHRINE) }
+    private val cityButton = createTextButton("City", "city" ) { it.setLocation(Location.CITY) }
+    private val buttons = listOf(dungeonButton, shrineButton, cityButton)
 
     init {
-        locationTable.add(dungeonButton)
-        locationTable.row().pad(100f)
-        locationTable.add(shrineButton)
-        locationTable.row().pad(100f)
-        locationTable.add(cityButton)
+        dungeonButton.setPosition(worldScreen.uiStage.width * 0.6f, worldScreen.uiStage.height * 0.65f)
+        shrineButton.setPosition(worldScreen.uiStage.width * 0.15f, worldScreen.uiStage.height * 0.55f)
+        cityButton.setPosition(worldScreen.uiStage.width * 0.4f, worldScreen.uiStage.height * 0.2f)
+    }
+
+    override fun show() {
+        super.show()
+        buttons.forEach { worldScreen.uiStage.addActor(it) }
+    }
+
+    override fun hide() {
+        super.hide()
+        buttons.forEach { it.remove() }
     }
 }

@@ -21,6 +21,7 @@ class PlayerServiceTest {
         assertEquals(1f, player.stats[StatType.MAX_HP.name])
         assertTrue(player.enabledRituals.contains(Ritual.RitualOfBlessings.name))
         assertEquals(1, player.enabledRituals.size)
+        assertEquals(PlayerService.REWARD_BOARD_CLEAR + PlayerService.INIT_GOLD, player.stats[StatType.GOLD.name])
         playerService.clearLevel(player, hero, 1)
         assertEquals(2, player.depth)
     }

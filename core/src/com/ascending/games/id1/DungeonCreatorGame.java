@@ -4,7 +4,9 @@ import com.ascending.games.id1.view.SkinService;
 import com.ascending.games.id1.view.title.TitleScreen;
 import com.ascending.games.lib.edit.resource.IResource;
 import com.ascending.games.lib.edit.resource.ResourceFactory;
-import com.ascending.games.lib.view.SceneManager2;
+import com.ascending.games.lib.model.geometry.Rectangle2;
+import com.ascending.games.lib.view.SpriteView;
+import com.ascending.games.lib.view.Toolkit;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,8 +19,7 @@ public class DungeonCreatorGame extends Game {
 
 	private static final String SAVE_FILE = "./DungeonCreator/data/save/save.json";
 
-	private SceneManager2 sceneManager;
-	private Texture img;
+	private Toolkit toolkit;
 	private Skin skin;
 	private IResource saveResource;
 
@@ -26,16 +27,20 @@ public class DungeonCreatorGame extends Game {
 	public void create () {
 		System.out.println("Starting game Dungeon Creator");
 
-		sceneManager = new SceneManager2(new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-		img = new Texture("badlogic.jpg");
+		toolkit = new Toolkit((new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 		saveResource = new ResourceFactory().createResource(SAVE_FILE);
-		skin = new SkinService().createSkin();
+		skin = new SkinService().createSkin(toolkit.getTextureManager());
+
+		Texture bgTexture = toolkit.getTextureManager().getTexture("bg.jpg");
+        SpriteView bgView = new SpriteView(new Rectangle2(new Vector2(0,0), new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())), bgTexture, 0);
+		toolkit.getSceneManager().getViews().add(bgView);
+
 		setScreen(new TitleScreen(this));
 	}
 
 	@Override
 	public void render () {
-		sceneManager.render();
+		toolkit.getSceneManager().render();
 		super.render();
 	}
 	
@@ -45,13 +50,12 @@ public class DungeonCreatorGame extends Game {
 			saveResource.save();
 		}
 
-		sceneManager.dispose();
-		img.dispose();
+		toolkit.dispose();
 	}
 
 	@NotNull
-	public SceneManager2 getSceneManager() {
-		return sceneManager;
+	public Toolkit getToolkit() {
+		return toolkit;
 	}
 
 	@NotNull

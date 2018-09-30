@@ -14,7 +14,7 @@ class PlayerService {
         const val INIT_DEFENSE = 0f
         const val INIT_SPEED = 2f
         const val INIT_LEVEL = 1f
-        const val INIT_GOLD = 100f
+        const val INIT_GOLD = 0f
         const val INIT_HP_PER_POTION = 20f
         const val COST_PER_POTION = 100f
         const val COST_INCREASE_PER_POTION_LEVEL = 50f
@@ -22,6 +22,7 @@ class PlayerService {
         const val COST_PER_ARMOR_LEVEL = 1000f
         const val COST_PER_POTION_LEVEL = 500f
         const val COST_PER_MEDICINE_POUCH_LEVEL = 1000f
+        const val REWARD_BOARD_CLEAR = 200f
     }
 
     fun createInitialPlayer() : Player {
@@ -38,8 +39,9 @@ class PlayerService {
     }
 
     fun clearLevel(player : Player, hero : Hero, depth : Int) {
-        hero.stats.forEach { statType, value -> if (StatType.valueOf(statType).isPermanentStat) player.stats.put(statType, value) }
+        player.stats.putAll(hero.stats.filterKeys { StatType.valueOf(it).isPermanentStat } )
         player.stats[StatType.CURRENT_HP.name] = player.stats[StatType.MAX_HP.name] ?: 0f
+        player.stats[StatType.GOLD.name] = (player.stats[StatType.GOLD.name] ?: 0f) + REWARD_BOARD_CLEAR
         if (depth == player.depth) {
             advanceDepth(player)
         }

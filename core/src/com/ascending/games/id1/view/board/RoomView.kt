@@ -1,57 +1,64 @@
 package com.ascending.games.id1.view.board
 
 import com.ascending.games.id1.model.board.*
-import com.ascending.games.lib.model.geometry.Direction4
-import com.ascending.games.lib.view.AView2
-import com.badlogic.gdx.Gdx
+import com.ascending.games.lib.view.SpriteView
+import com.ascending.games.lib.view.Toolkit
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 
-class RoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
-    override fun render(batch: SpriteBatch, camera: Camera) {
-        val isCleared = room.isCleared
+class RoomView(val room : Room, private val toolkit : Toolkit) {
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        for (roomElement in room.roomElements) {
-            if (isCleared) shapeRenderer.setColor(Color.BROWN) else shapeRenderer.setColor(Color.GOLD)
-            val roomElementPosition = BoardView.convertToScreenCoordinates(roomElement.boardCoord)
-            shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
-
-            for (aRoomContent in roomElement.roomContents) {
-                if (aRoomContent is Monster) {
-                    shapeRenderer.setColor(Color.RED)
-                }  else if (aRoomContent is Crystal) {
-                    shapeRenderer.setColor(Color.VIOLET)
-                } else if (aRoomContent is StairsDown) {
-                    shapeRenderer.setColor(Color.WHITE)
-                }
-                shapeRenderer.rect(roomElementPosition.x, roomElementPosition.y, BoardView.TILE_SIZE, BoardView.TILE_SIZE)
-            }
-        }
-        shapeRenderer.end()
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
-        Gdx.gl.glLineWidth(BoardView.BOARD_LINE_SIZE)
-        for (roomElement in room.roomElements) {
-            val roomElementPosition = BoardView.convertToScreenCoordinates(roomElement.boardCoord)
-            for (wall in roomElement.walls) {
-                when (wall.wallState) {
-                    WallState.CLOSED -> shapeRenderer.setColor(Color.GRAY)
-                    WallState.DOOR -> shapeRenderer.setColor(Color.RED)
-                }
-
-                when (wall.direction) {
-                    Direction4.LEFT -> shapeRenderer.line(roomElementPosition.x, roomElementPosition.y, roomElementPosition.x, roomElementPosition.y + BoardView.TILE_SIZE)
-                    Direction4.RIGHT -> shapeRenderer.line(roomElementPosition.x + BoardView.TILE_SIZE, roomElementPosition.y, roomElementPosition.x + BoardView.TILE_SIZE, roomElementPosition.y + BoardView.TILE_SIZE)
-                    Direction4.DOWN -> shapeRenderer.line(roomElementPosition.x, roomElementPosition.y, roomElementPosition.x + BoardView.TILE_SIZE, roomElementPosition.y)
-                    Direction4.UP -> shapeRenderer.line(roomElementPosition.x, roomElementPosition.y + BoardView.TILE_SIZE, roomElementPosition.x + BoardView.TILE_SIZE, roomElementPosition.y + BoardView.TILE_SIZE)
-                }
-            }
-        }
-        shapeRenderer.end()
+    private fun createRoomElementView(roomElement : RoomElement) : SpriteView {
+        return SpriteView(BoardRectangle(roomElement), toolkit.textureManager.getTexture("roombg.png"))
     }
 
-    override fun dispose() = Unit
+    private fun createRoomClearableView(aClearable: AClearable) : SpriteView {
+        val textureName = when (aClearable) {
+            is Monster -> "monster1.png"
+            is Crystal -> "heal.png"
+            is StairsDown -> "stairsdown.png"
+            else -> "UNDEFINED"
+        }
+
+        return SpriteView(BoardRectangle(aClearable), toolkit.textureManager.getTexture(textureName))
+    }
+
+    private fun createWallView(wall : Wall) : SpriteView {
+        return SpriteView(BoardRectangle(wall), toolkit.textureManager.getTexture("wall.png"))
+    }
+
+    fun renderRoomElements(batch: SpriteBatch, camera: Camera) {
+        val roomElementViews = room.roomElements.map { createRoomElementView(it) }
+        val baseColor = if (room.isCleared) Color.GRAY.cpy() else Color.WHITE.cpy()
+        val typeColor = when (room.type) {
+            RoomType.NORMAL -> Color.WHITE
+            RoomType.DANGER_HIGH -> Color.FIREBRICK
+            RoomType.DANGER -> Color.PINK
+            RoomType.TREASURY_HIGH ->  Color.GOLD
+            RoomType.TREASURY -> Color.GOLDENROD
+            RoomType.BOSS ->  Color.VIOLET
+        }
+        batch.color = baseColor.mul(typeColor)
+
+        roomElementViews.forEach { it.render(batch, camera) }
+        batch.color = Color.WHITE
+    }
+
+    fun renderClearables(batch: SpriteBatch, camera: Camera) {
+        val roomClearableViews = room.allRoomClearables.map { createRoomClearableView(it) }
+        roomClearableViews.forEach { it.render(batch, camera) }
+    }
+
+    fun renderWalls(batch: SpriteBatch, camera: Camera) {
+        val roomWallViews = room.allWalls.map { createWallView(it) }
+        for (wallView in roomWallViews) {
+            val wall = (wallView.rectangleProvider as BoardRectangle).boardRectangle as Wall
+            when (wall.wallState) {
+                WallState.CLOSED -> batch.color = Color.GRAY
+                WallState.DOOR -> batch.color = Color.RED
+            }
+            wallView.render(batch, camera)
+        }
+    }
 }

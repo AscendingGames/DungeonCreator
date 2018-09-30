@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 
-class ProjectedRoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2(0) {
+class ProjectedRoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AView2() {
 
     companion object {
         const val TILE_SIZE_SCALE = 0.8f
@@ -16,16 +16,14 @@ class ProjectedRoomView(val room : Room, val shapeRenderer: ShapeRenderer) : AVi
     }
 
     override fun render(batch: SpriteBatch, camera: Camera) {
+        batch.end()
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         shapeRenderer.setColor(Color.LIGHT_GRAY)
         for (roomElement in room.roomElements) {
-            val roomElementPosition = BoardView.convertToScreenCoordinates(roomElement.boardCoord)
+            val roomElementPosition = BoardView.convertToScreenCoordinates(roomElement.position)
             shapeRenderer.rect(roomElementPosition.x + PROJECTED_TILE_OFFSET, roomElementPosition.y + PROJECTED_TILE_OFFSET, PROJECTED_TILE_SIZE, PROJECTED_TILE_SIZE)
         }
         shapeRenderer.end()
-    }
-
-    override fun dispose() {
-
+        batch.begin()
     }
 }

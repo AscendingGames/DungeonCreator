@@ -1,12 +1,12 @@
 package com.ascending.games.lib.model.data
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class ObservableMapTest {
 
-    private val map = ObservableMap(mutableMapOf(Pair(1,1), Pair(2,2), Pair(3,3)))
+    private val data = mutableMapOf(Pair(1,1), Pair(2,2), Pair(3,3))
+    private val map = ObservableMap(data)
 
     @Test
     fun put() {
@@ -58,5 +58,25 @@ class ObservableMapTest {
             assertEquals(2, value)
         }
         map.remove(2)
+    }
+
+    @Test
+    fun size() {
+        assertEquals(data.size, map.size)
+    }
+
+    @Test
+    fun keys() {
+        assertEquals(data.keys, map.keys)
+    }
+
+    @Test
+    fun values() {
+        assertEquals(data.values, map.values)
+    }
+
+    @Test
+    fun isEmpty() {
+        assertEquals(data.isEmpty(), map.isEmpty())
     }
 }

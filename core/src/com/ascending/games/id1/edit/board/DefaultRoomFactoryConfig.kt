@@ -11,7 +11,7 @@ data class DefaultRoomFactoryConfig(
         val probHealingCrystal : Float = 0f,
         val minRoomsTillStairsDown : Int = 0,
         val probStairsDown : Float = 0f,
-        val roomTypePriorites : Map<RoomType, Int> = emptyMap(),
+        val roomTypePriorities : Map<RoomType, Int> = emptyMap(),
         val roomTypeMinLevels : Map<RoomType, Int> = emptyMap()) {
 
     companion object {

@@ -10,6 +10,7 @@ import com.ascending.games.id1.model.world.Player
 import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.lib.edit.action.ITimedAction
 import com.ascending.games.lib.edit.action.ITimedActionProvider
+import com.ascending.games.lib.model.data.ObservableList
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
@@ -22,20 +23,23 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
 
     companion object {
         const val COUNT_WAITING_ROOMS = 3
+        const val FALL_STEP = 1f
     }
 
     var currentRoom by Delegates.notNull<Room>()
     var projectedRoom by Delegates.notNull<Room>()
-    val roomPool = RoomPool(roomFactory, (board.height + 2).toFloat())
+    private val roomPoolPosY = board.height + 2
+    val roomPool = RoomPool(roomFactory, roomPoolPosY.toFloat())
 
-    private var time = 0f
     private val heroActionProvider = HeroActionProvider(board)
     private val mapRoomContentToActionList = mutableMapOf<ARoomContent, ITimedAction>()
     private val statService = StatService()
     private val playerService = PlayerService()
 
+    private var fallTime = 0f
+
     init {
-        player.stats.forEach { statType, value -> board.hero.stats.put(statType, value) }
+        board.hero.stats.putAll(player.stats)
         nextRoom()
     }
 
@@ -50,10 +54,16 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
     }
 
     fun update(time : Float) {
-        updateFallingRooms(time)
+        fallTime += time
 
-        for (row in 0 until board.height) {
-            clearRowIfFull(row)
+        if (fallTime >= FALL_STEP) {
+            fallTime = 0f
+
+            updateFallingRooms()
+
+            for (row in 0 until board.height) {
+                clearRowIfFull(row)
+            }
         }
 
         updateRoomContentActions(time)
@@ -61,25 +71,28 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
         if (board.hero.spawned) {
             if (statService.isDead(board.hero)) {
                 failBoard()
-            } else if (board.hero.roomElement.roomContents.any { it is StairsDown }) {
+            } else if (board.hero.roomElement.clearables.any { it is StairsDown }) {
                 clearBoard()
             }
         }
     }
 
-    private fun updateFallingRooms(time : Float) {
+    private fun updateFallingRooms() {
         var positionChanged = false
+        val fallenRooms = mutableListOf<Room>()
         for (room in board.rooms) {
             if (!board.hasRoomFallen(room)) {
-                room.position.y -= time
+                room.position.y -= 1
                 positionChanged = true
             } else {
+                fallenRooms.add(room)
                 room.position.y = room.position.y.roundToInt().toFloat()
-                board.openWallsNeighbouringDoors(room)
             }
         }
 
         if (!positionChanged) {
+            fallenRooms.forEach { board.openWallsNeighbouringDoors(it) }
+
             if (!board.hero.spawned) {
                 board.hero.spawn(board)
                 heroActionProvider.lastRoom = board.hero.roomElement.room
@@ -101,13 +114,18 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
         val existingAction = mapRoomContentToActionList[aRoomContent]
         if (existingAction != null)  return existingAction
 
-        val newAction = timedActionProvider.getNextActions()
+        val newAction = timedActionProvider.getNextAction()
         if (newAction != null) mapRoomContentToActionList[board.hero] = newAction
         return newAction
     }
 
     fun execute(action : IBoardAction) {
         action.execute(currentRoom,board)
+
+        if (action is DropAction) {
+            fallTime = FALL_STEP
+        }
+
         updateProjectedRoom()
     }
 
@@ -158,7 +176,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
     private fun updateProjectedRoom() {
         val positionY = currentRoom.position.y
         DropAction().execute(currentRoom, board)
-        projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() }.toMutableList(), currentRoom.position.cpy())
+        projectedRoom = Room(ObservableList(currentRoom.roomElements.map { it -> it.copy() }.toMutableList()), currentRoom.position.cpy())
         currentRoom.position.y = positionY
         onProjectedRoomChanged.forEach { it.invoke() }
     }

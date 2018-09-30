@@ -13,7 +13,7 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
        return rooms.flatMap { it.roomElements }
     }
 
-    override fun getNeighbours(node  : RoomElement): List<RoomElement> {
+    override fun getNeighbours(node : RoomElement): List<RoomElement> {
         val neighbouringRoomElements = mutableListOf<RoomElement>()
         for (direction in Direction4.values().filter { node.isOpen(it) }) {
             val offset = direction.toOffset()
@@ -37,7 +37,7 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
     }
 
     fun hasRoomFallen(room : Room) : Boolean {
-        return room.roomElements.any { it.boardY <= 0 || existsRoomBelow(it) }
+        return room.roomElements.any { it.position.y <= 0 || existsRoomBelow(it) }
     }
 
     fun existsRoomBelow(roomElement : RoomElement) : Boolean {
@@ -66,7 +66,7 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
     }
 
     fun isRoomInBounds(room : Room) : Boolean {
-        return room.roomElements.none { it.boardX < 0 || it.boardY < 0 || it.boardX >= width || it.boardY >= height }
+        return room.roomElements.none { it.position.x < 0 || it.position.y < 0 || it.position.x >= width || it.position.y >= height }
     }
 
     fun openWallsNeighbouringDoors(room : Room) {
@@ -75,12 +75,12 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
             val wallsToOpen = getWallsToOpen(roomElement)
             wallsToOpen.forEach {
                 connectedRooms.add(it.roomElement.room)
-                it.roomElement.walls -= it
+                it.roomElement.walls.remove(it)
             }
         }
     }
 
-    fun getWallsToOpen(roomElement : RoomElement) : List<Wall> {
+    private fun getWallsToOpen(roomElement : RoomElement) : List<Wall> {
         val wallsToOpen = mutableListOf<Wall>()
         for (wall in roomElement.walls) {
             val coordOther = roomElement.boardCoord.add(wall.direction.toOffset())

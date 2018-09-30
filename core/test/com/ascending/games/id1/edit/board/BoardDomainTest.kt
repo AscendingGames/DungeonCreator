@@ -4,6 +4,7 @@ import com.ascending.games.id1.edit.board.action.room.DropAction
 import com.ascending.games.id1.model.board.*
 import com.ascending.games.id1.model.mechanics.StatType
 import com.ascending.games.id1.model.world.PlayerService
+import com.ascending.games.lib.model.data.ObservableList
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
 import org.hamcrest.CoreMatchers.hasItem
@@ -46,10 +47,10 @@ class BoardDomainTest {
 
         Monster(1).spawn(boardDomain.board.rooms[1].roomElements[0])
         boardDomain.update(1f)
-        assertTrue("Hero has cleared room", boardDomain.board.rooms[1].roomElements[0].roomContents.isEmpty())
+        assertTrue("Hero has cleared room", boardDomain.board.rooms[1].roomElements[0].clearables.isEmpty())
         assertTrue("Hero has been hurt", boardDomain.board.hero.stats[StatType.CURRENT_HP.name]!! < boardDomain.board.hero.stats[StatType.MAX_HP.name]!!)
 
-        Crystal(Crystal.Type.HEALING, boardDomain.board.rooms[1].roomElements[0])
+        Crystal(Crystal.Type.HEALING).spawn(boardDomain.board.rooms[1].roomElements[0])
         boardDomain.update(1f)
         assertTrue("Hero has been healed", boardDomain.board.hero.stats[StatType.CURRENT_HP.name]!! == boardDomain.board.hero.stats[StatType.MAX_HP.name]!!)
     }
@@ -76,10 +77,10 @@ class BoardDomainTest {
     fun clearRowIfFull() {
         boardDomain.board.rooms.clear()
         assertFalse(boardDomain.clearRowIfFull(0))
-        board.rooms += Room(mutableListOf(RoomElement(Coord2.ZERO)))
+        board.rooms += Room(ObservableList(mutableListOf(RoomElement(Coord2.ZERO))))
         board.rooms[0].isVisited = true
         assertFalse(boardDomain.clearRowIfFull(0))
-        board.rooms.add(Room(mutableListOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0))), Vector2(1f, 0f)))
+        board.rooms.add(Room(ObservableList(mutableListOf(RoomElement(Coord2.ZERO), RoomElement(Coord2(1,0)))), Vector2(1f, 0f)))
         board.rooms[1].isVisited = true
         assertTrue(boardDomain.clearRowIfFull(0))
         assertTrue(boardDomain.board.rooms.isEmpty())

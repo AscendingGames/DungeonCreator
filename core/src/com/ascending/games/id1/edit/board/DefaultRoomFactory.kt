@@ -29,11 +29,12 @@ class DefaultRoomFactory(private val factoryConfig: DefaultRoomFactoryConfig, va
     }
 
     private fun getRoomType() : RoomType {
-        val totalPriorityCount = factoryConfig.roomTypePriorites.filter { level <= (factoryConfig.roomTypeMinLevels[it.key] ?: 0) }.values.sum()
+        val totalPriorityCount = factoryConfig.roomTypePriorities.filter { (factoryConfig.roomTypeMinLevels[it.key] ?: 0) <= level }.values.sum()
+
         val random = Math.random() * totalPriorityCount
         var res = 0
-        for ((roomType, priority) in factoryConfig.roomTypePriorites.entries) {
-            if (level <= (factoryConfig.roomTypeMinLevels[roomType] ?: 0)) {
+        for ((roomType, priority) in factoryConfig.roomTypePriorities.entries) {
+            if ((factoryConfig.roomTypeMinLevels[roomType] ?: 0) <= level) {
                 res += priority
                 if (res >= random) return roomType
             }
@@ -59,12 +60,12 @@ class DefaultRoomFactory(private val factoryConfig: DefaultRoomFactoryConfig, va
         var remainingElements = shuffledElements.drop(numberMonsters)
 
         if (remainingElements.isNotEmpty() && hasCrystal()) {
-            Crystal(Crystal.Type.HEALING, remainingElements[0])
+            Crystal(Crystal.Type.HEALING).spawn(remainingElements[0])
             remainingElements = remainingElements.drop(0)
         }
 
         if (remainingElements.isNotEmpty() && hasStairsDown()) {
-            StairsDown(remainingElements[0])
+            StairsDown().spawn(remainingElements[0])
         }
 
         numCreatedRooms++

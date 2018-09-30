@@ -7,10 +7,10 @@ import com.ascending.games.lib.model.game.AGameObject
 
 class ConsumeCrystalAction(private val gameObject : AGameObject, private val crystal : Crystal) : ITimedAction {
     override val canExecute : Boolean
-        get() = crystal.roomElement.roomContents.contains(crystal)
+        get() = crystal.roomElement.clearables.contains(crystal)
 
     override fun execute(delta: Float): Boolean {
-        crystal.roomElement.roomContents.remove(crystal)
+        crystal.roomElement.clearables.remove(crystal)
         when (crystal.type) {
             Crystal.Type.HEALING -> gameObject.stats[StatType.CURRENT_HP.name] = gameObject.stats[StatType.MAX_HP.name] ?: 0f
             Crystal.Type.ATTACK -> gameObject.stats[StatType.ATTACK.name] = (gameObject.stats[StatType.ATTACK.name] ?: 0f) + 1f

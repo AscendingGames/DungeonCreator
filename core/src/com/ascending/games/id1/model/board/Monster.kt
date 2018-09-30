@@ -2,7 +2,7 @@ package com.ascending.games.id1.model.board
 
 import com.ascending.games.id1.model.mechanics.StatType
 
-class Monster(level : Int) : ARoomContent() {
+class Monster(level : Int) : AClearable() {
     init {
         initStats(level)
     }
@@ -12,10 +12,4 @@ class Monster(level : Int) : ARoomContent() {
         stats[StatType.MAX_HP.name] = level.toFloat()
         stats[StatType.ATTACK.name] = (level % 2).toFloat()
     }
-
-    fun spawn(roomElement: RoomElement) {
-        this.roomElement = roomElement
-        this.roomElement.roomContents.add(this)
-    }
-
 }

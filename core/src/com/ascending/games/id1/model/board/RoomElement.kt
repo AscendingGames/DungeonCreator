@@ -1,36 +1,35 @@
 package com.ascending.games.id1.model.board
 
-import com.ascending.games.lib.model.game.IPosition2
+import com.ascending.games.lib.model.data.ObservableList
 import com.ascending.games.lib.model.geometry.Coord2
 import com.ascending.games.lib.model.geometry.Direction4
+import com.ascending.games.lib.model.geometry.IHierarchical2
+import com.ascending.games.lib.model.geometry.IRectangle2
 import com.badlogic.gdx.math.Vector2
 
-class RoomElement(var position : Coord2) : IPosition2 {
-    lateinit var room : Room
+class RoomElement(var roomRelativeCoord : Coord2) : IRectangle2, IHierarchical2{
+    override val relativePosition: Vector2
+        get() = Vector2(roomRelativeCoord.x.toFloat(), roomRelativeCoord.y.toFloat())
+    override val parent: Any?
+        get() = room
+    override val size = Vector2(1f,1f)
 
-    val roomContents = mutableListOf<ARoomContent>()
-    var walls  = emptyList<Wall>()
-    val boardX  : Int
-        get() = Math.ceil(room.position.x.toDouble() + position.x).toInt()
-    val boardY  : Int
-        get() = Math.ceil(room.position.y.toDouble() + position.y).toInt()
-    val boardCoord : Coord2
-        get() = Coord2(boardX, boardY)
-    override var relativePosition: Vector2
-        get() = Vector2(position.x.toFloat(), position.y.toFloat())
-        set(value) { position = Coord2(value.x.toInt(), value.y.toInt())}
-    override val absolutePosition: Vector2
-        get() = Vector2(boardX.toFloat(), boardY.toFloat())
+    lateinit var room : Room
+    val clearables = ObservableList<AClearable>(mutableListOf())
+    val walls  = ObservableList<Wall>(mutableListOf())
+
     val closedWalls : List<Wall>
         get() =  walls.filter { it.wallState == WallState.CLOSED }
+    val boardCoord : Coord2
+        get() = Coord2(position.x.toInt(), position.y.toInt())
 
     fun copy() : RoomElement {
-        return RoomElement(position.copy())
+        return RoomElement(roomRelativeCoord.copy())
     }
 
     fun rotate() {
-        position.rotate()
-        walls = walls.map { Wall(this, it.direction.rotateRight(), it.wallState)}
+        roomRelativeCoord.rotate()
+        walls.forEach { it.direction = it.direction.rotateRight() }
     }
 
     fun isOpen(direction : Direction4) : Boolean {
