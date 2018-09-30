@@ -2,7 +2,7 @@ package com.ascending.games.lib.model.pathfinding
 
 class Pathfinder<Node>(val graph : IGraph<Node>, val distanceEstimator : IDistanceEstimator<Node>) {
     fun getPath(startNode : Node, targetNode : Node) : List<Node> {
-        val openList = mutableListOf<Pair<Node, Float>>(Pair(startNode, distanceEstimator.estimateDistance(startNode, targetNode)))
+        val openList = mutableListOf(startNode to distanceEstimator.estimateDistance(startNode, targetNode))
         val closedList = mutableSetOf<Node>()
         val mapNodeToPredecessor = mutableMapOf<Node, Node>()
 
@@ -10,14 +10,18 @@ class Pathfinder<Node>(val graph : IGraph<Node>, val distanceEstimator : IDistan
             val rankedNode = openList.removeAt(0)
             closedList.add(rankedNode.first)
 
-            val neighbours = graph.getNeighbours(rankedNode.first)
-                    .filter { !closedList.contains(it) }
-                    .map { it to distanceEstimator.estimateDistance(rankedNode.first, it) + distanceEstimator.estimateDistance(it, targetNode) }
+            val neighbours = getUnexploredNeighbours(closedList, rankedNode, targetNode)
             expandNeighbours(neighbours, openList)
             neighbours.forEach { mapNodeToPredecessor[it.first] = rankedNode.first }
         }
 
         return extractPath(startNode, targetNode, mapNodeToPredecessor)
+    }
+
+    fun getUnexploredNeighbours(closedList: MutableSet<Node>, rankedNode: Pair<Node, Float>, targetNode: Node) : List<Pair<Node, Float>> {
+        return  graph.getNeighbours(rankedNode.first)
+                .filter { !closedList.contains(it) }
+                .map { it to distanceEstimator.estimateDistance(rankedNode.first, it) + distanceEstimator.estimateDistance(it, targetNode) }
     }
 
     private fun expandNeighbours(neighbours : List<Pair<Node, Float>>, openList : MutableList<Pair<Node, Float>>) {
@@ -39,7 +43,7 @@ class Pathfinder<Node>(val graph : IGraph<Node>, val distanceEstimator : IDistan
     }
 
     private fun extractPath(startNode : Node, targetNode : Node, mapNodeToPredecessor : MutableMap<Node, Node>) : List<Node> {
-        val path = mutableListOf<Node>(targetNode)
+        val path = mutableListOf(targetNode)
         var currentNode = mapNodeToPredecessor[targetNode]
 
         while (currentNode != null && currentNode != startNode) {
