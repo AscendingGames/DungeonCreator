@@ -29,14 +29,10 @@ class BoardView(val board : Board, val toolkit : Toolkit) : AView2() {
     val shapeRenderer = ShapeRenderer()
     private val boardArea = Rectangle(OFFSET.x * TILE_SIZE, OFFSET.y * TILE_SIZE, board.width * TILE_SIZE, board.height * TILE_SIZE)
     private val heroView = SpriteView(BoardRectangle(board.hero), toolkit.textureManager.getTexture("hero.png"), 0)
-    private val roomViews = board.rooms.asSequence().map { RoomView(it, toolkit) }.toMutableList()
-
-    init {
-        board.rooms.onAdd += { _, room -> roomViews.add(RoomView(room, toolkit)) }
-        board.rooms.onRemove += { room -> roomViews.removeAt(roomViews.indexOfFirst { it.room == room }) }
-    }
 
     override fun render(batch: SpriteBatch, camera : Camera) {
+        val roomViews = board.rooms.map { RoomView(it, toolkit) }
+
         roomViews.forEach { it.renderRoomElements(batch, camera) }
         roomViews.forEach { it.renderClearables(batch, camera) }
         roomViews.forEach { it.renderWalls(batch, camera) }

@@ -9,45 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
 class RoomView(val room : Room, private val toolkit : Toolkit) {
 
-    private val roomElementViews = room.roomElements.map { createRoomElementView(it) }.toMutableList()
-    private val roomClearableViews = room.allRoomClearables.map { createRoomClearableView(it) }.toMutableList()
-    private val roomWallViews = room.allWalls.map { createWallView(it) }.toMutableList()
-
-    init {
-        initRoomElements()
-        initRoomClearables()
-        initRoomWalls()
-    }
-
-    private fun initRoomElements() {
-        room.roomElements.onAdd += { _, roomElement ->
-            roomElementViews.add(createRoomElementView(roomElement))
-        }
-        room.roomElements.onRemove += { roomElement ->
-            roomElementViews.removeAll(roomElementViews.filter { (it.rectangleProvider as BoardRectangle).boardRectangle == roomElement })
-            roomWallViews.removeAll(roomWallViews.filter { ((it.rectangleProvider as BoardRectangle).boardRectangle as Wall).roomElement == roomElement })
-        }
-    }
-
-    private fun initRoomClearables() {
-        for (roomElement in room.roomElements) {
-            roomElement.clearables.onAdd += { _, clearable ->
-                roomClearableViews.add(createRoomClearableView(clearable))
-            }
-            roomElement.clearables.onRemove += { clearable ->
-                roomClearableViews.removeAll(roomClearableViews.filter { (it.rectangleProvider as BoardRectangle).boardRectangle == clearable })
-            }
-        }
-    }
-
-    private fun initRoomWalls() {
-        for (roomElement in room.roomElements) {
-            roomElement.walls.onRemove += { wall ->
-                roomWallViews.removeAll(roomWallViews.filter { (it.rectangleProvider as BoardRectangle).boardRectangle == wall })
-            }
-        }
-    }
-
     private fun createRoomElementView(roomElement : RoomElement) : SpriteView {
         return SpriteView(BoardRectangle(roomElement), toolkit.textureManager.getTexture("roombg.png"))
     }
@@ -68,15 +29,29 @@ class RoomView(val room : Room, private val toolkit : Toolkit) {
     }
 
     fun renderRoomElements(batch: SpriteBatch, camera: Camera) {
-        if (room.isCleared) batch.color = Color.GRAY else batch.color = Color.WHITE
+        val roomElementViews = room.roomElements.map { createRoomElementView(it) }
+        val baseColor = if (room.isCleared) Color.GRAY.cpy() else Color.WHITE.cpy()
+        val typeColor = when (room.type) {
+            RoomType.NORMAL -> Color.WHITE
+            RoomType.DANGER_HIGH -> Color.FIREBRICK
+            RoomType.DANGER -> Color.PINK
+            RoomType.TREASURY_HIGH ->  Color.GOLD
+            RoomType.TREASURY -> Color.GOLDENROD
+            RoomType.BOSS ->  Color.VIOLET
+        }
+        batch.color = baseColor.mul(typeColor)
+
         roomElementViews.forEach { it.render(batch, camera) }
+        batch.color = Color.WHITE
     }
 
     fun renderClearables(batch: SpriteBatch, camera: Camera) {
+        val roomClearableViews = room.allRoomClearables.map { createRoomClearableView(it) }
         roomClearableViews.forEach { it.render(batch, camera) }
     }
 
     fun renderWalls(batch: SpriteBatch, camera: Camera) {
+        val roomWallViews = room.allWalls.map { createWallView(it) }
         for (wallView in roomWallViews) {
             val wall = (wallView.rectangleProvider as BoardRectangle).boardRectangle as Wall
             when (wall.wallState) {
