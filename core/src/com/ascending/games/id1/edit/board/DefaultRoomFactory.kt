@@ -29,11 +29,11 @@ class DefaultRoomFactory(private val factoryConfig: DefaultRoomFactoryConfig, va
     }
 
     private fun getRoomType() : RoomType {
-        val totalPriorityCount = factoryConfig.roomTypePriorites.filter { (factoryConfig.roomTypeMinLevels[it.key] ?: 0) <= level }.values.sum()
+        val totalPriorityCount = factoryConfig.roomTypePriorities.filter { (factoryConfig.roomTypeMinLevels[it.key] ?: 0) <= level }.values.sum()
 
         val random = Math.random() * totalPriorityCount
         var res = 0
-        for ((roomType, priority) in factoryConfig.roomTypePriorites.entries) {
+        for ((roomType, priority) in factoryConfig.roomTypePriorities.entries) {
             if ((factoryConfig.roomTypeMinLevels[roomType] ?: 0) <= level) {
                 res += priority
                 if (res >= random) return roomType
