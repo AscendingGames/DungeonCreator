@@ -1,9 +1,6 @@
 package com.ascending.games.id1.edit.board
 
-import com.ascending.games.id1.model.board.Crystal
-import com.ascending.games.id1.model.board.Monster
-import com.ascending.games.id1.model.board.RoomShape
-import com.ascending.games.id1.model.board.StairsDown
+import com.ascending.games.id1.model.board.*
 import com.ascending.games.lib.model.geometry.Coord2
 import org.hamcrest.CoreMatchers.*
 import org.junit.Assert.*
@@ -57,5 +54,13 @@ class DefaultRoomFactoryTest {
         assertTrue(room0.allRoomClearables.isEmpty())
         val room1 = defaultRoomFactory.createRoom()
         assertThat(room1.allRoomClearables, hasItem(isA(StairsDown::class.java)))
+    }
+
+    @Test
+    fun createRoomWithType() {
+        val testRoomFactoryConfig = DefaultRoomFactoryConfig(listOf(testRoomShape), roomTypeMinLevels = mutableMapOf(RoomType.DANGER_HIGH to 1), roomTypePriorities = mutableMapOf(RoomType.DANGER_HIGH to 1))
+        val defaultRoomFactory = DefaultRoomFactory(testRoomFactoryConfig, 1)
+        val room = defaultRoomFactory.createRoom()
+        assertEquals(RoomType.DANGER_HIGH, room.type)
     }
 }
