@@ -28,7 +28,7 @@ class BoardScreen(private val game : DungeonCreatorGame, level : Int) : Screen {
     private val board = Board(BOARD_SIZE.x, BOARD_SIZE.y)
     private val boardDomain = BoardDomain(board, player, level, DefaultRoomFactory.createDefaultRoomFactory(level))
     private val boardView = BoardView(board, game.toolkit)
-    private val roomPoolView = RoomPoolView(boardDomain.roomPool, boardView.shapeRenderer, game.toolkit)
+    private val roomPoolView = RoomPoolView(boardDomain.roomPool, game.toolkit)
     private val gestureActionProvider = GestureActionProvider()
     private var currentRoomView = ProjectedRoomView(boardDomain.projectedRoom, boardView.shapeRenderer)
 

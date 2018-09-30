@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
-class SpriteView(private val rectangleProvider : IRectangle2, var texture : Texture, batchID : Int) : AView2(batchID) {
+class SpriteView(val rectangleProvider : IRectangle2, var texture : Texture, batchID : Int = 0) : AView2(batchID) {
 
     override fun render(batch: SpriteBatch, camera: Camera) {
         val rect = rectangleProvider.rectangle

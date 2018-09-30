@@ -1,5 +1,6 @@
 package com.ascending.games.id1.model.board
 
+import com.ascending.games.lib.model.data.ObservableList
 import com.ascending.games.lib.model.geometry.Coord2
 import com.ascending.games.lib.model.geometry.Direction4
 import com.ascending.games.lib.model.geometry.IRectangle2
@@ -9,8 +10,8 @@ class RoomElement(var roomRelativePosition : Coord2) : IRectangle2{
     override var size = Vector2(1f,1f)
     lateinit var room : Room
 
-    val clearables = mutableListOf<AClearable>()
-    var walls  = emptyList<Wall>()
+    val clearables = ObservableList<AClearable>(mutableListOf())
+    var walls  = ObservableList<Wall>(mutableListOf())
     val boardX  : Int
         get() = Math.ceil(room.position.x.toDouble() + roomRelativePosition.x).toInt()
     val boardY  : Int
@@ -28,7 +29,7 @@ class RoomElement(var roomRelativePosition : Coord2) : IRectangle2{
 
     fun rotate() {
         roomRelativePosition.rotate()
-        walls = walls.map { Wall(this, it.direction.rotateRight(), it.wallState)}
+        walls.forEach { it.direction = it.direction.rotateRight() }
     }
 
     fun isOpen(direction : Direction4) : Boolean {

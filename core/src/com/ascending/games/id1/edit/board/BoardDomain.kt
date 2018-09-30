@@ -10,6 +10,7 @@ import com.ascending.games.id1.model.world.Player
 import com.ascending.games.id1.model.world.PlayerService
 import com.ascending.games.lib.edit.action.ITimedAction
 import com.ascending.games.lib.edit.action.ITimedActionProvider
+import com.ascending.games.lib.model.data.ObservableList
 import com.ascending.games.lib.model.geometry.Coord2
 import com.badlogic.gdx.math.Vector2
 import kotlin.math.roundToInt
@@ -158,7 +159,7 @@ class BoardDomain(val board: Board, val player : Player, val level : Int, roomFa
     private fun updateProjectedRoom() {
         val positionY = currentRoom.position.y
         DropAction().execute(currentRoom, board)
-        projectedRoom = Room(currentRoom.roomElements.map { it -> it.copy() }.toMutableList(), currentRoom.position.cpy())
+        projectedRoom = Room(ObservableList(currentRoom.roomElements.map { it -> it.copy() }.toMutableList()), currentRoom.position.cpy())
         currentRoom.position.y = positionY
         onProjectedRoomChanged.forEach { it.invoke() }
     }

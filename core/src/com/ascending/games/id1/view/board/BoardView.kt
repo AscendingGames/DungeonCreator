@@ -33,31 +33,28 @@ class BoardView(val board : Board, val toolkit : Toolkit) : AView2(0) {
     val shapeRenderer = ShapeRenderer()
     private val boardArea = Rectangle(OFFSET.x * TILE_SIZE, OFFSET.y * TILE_SIZE, board.width * TILE_SIZE, board.height * TILE_SIZE)
     private val heroView = SpriteView(BoardRectangle(board.hero), toolkit.textureManager.getTexture("hero.png"), 0)
-    private val roomViews = board.rooms.asSequence().map { RoomView(it, shapeRenderer, toolkit) }.toMutableList()
+    private val roomViews = board.rooms.asSequence().map { RoomView(it, toolkit) }.toMutableList()
 
     init {
-        board.rooms.onAdd += { _, room -> roomViews.add(RoomView(room, shapeRenderer, toolkit)) }
+        board.rooms.onAdd += { _, room -> roomViews.add(RoomView(room, toolkit)) }
         board.rooms.onRemove += { room -> roomViews.removeAt(roomViews.indexOfFirst { it.room == room }) }
     }
 
     override fun render(batch: SpriteBatch, camera : Camera) {
-        batch.end()
-        shapeRenderer.projectionMatrix = camera.combined
-        Gdx.gl.glLineWidth(BOARD_LINE_SIZE)
-
         roomViews.forEach { it.render(batch, camera) }
+
         if (board.hero.spawned) {
-            batch.begin()
             heroView.render(batch, camera)
-            batch.end()
         }
 
+        batch.end()
+        shapeRenderer.projectionMatrix = camera.combined
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+        Gdx.gl.glLineWidth(BOARD_LINE_SIZE)
         shapeRenderer.setColor(BOARD_COLOR.r, BOARD_COLOR.g, BOARD_COLOR.b, BOARD_COLOR.a)
         shapeRenderer.rect(boardArea.x, boardArea.y, boardArea.width, boardArea.height)
+        batch.color = Color.WHITE
         shapeRenderer.end()
-
-        Gdx.gl.glLineWidth(1f)
         batch.begin()
     }
 

@@ -75,7 +75,7 @@ class Board(val width : Int, val height : Int) : IGraph<RoomElement> {
             val wallsToOpen = getWallsToOpen(roomElement)
             wallsToOpen.forEach {
                 connectedRooms.add(it.roomElement.room)
-                it.roomElement.walls -= it
+                it.roomElement.walls.remove(it)
             }
         }
     }
