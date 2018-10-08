@@ -1,6 +1,7 @@
 package com.ascending.games.id1.view
 
 import com.ascending.games.engine.view.texture.TextureManager
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -10,7 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 
 class SkinService {
-    fun createSkin(textureManager : TextureManager) : Skin {
+    fun createUISkin(textureManager: TextureManager) : Skin {
+
+    }
+
+    fun createUISkin(textureManager : TextureManager) : Skin {
+        /*
         val skin = Skin()
         // Generate a 1x1 white texture and store it in the skin named "white".
         val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
@@ -77,5 +83,8 @@ class SkinService {
         defaultTextButtonStyle.fontColor = skin.getColor("default")
         skin.add("default", defaultTextButtonStyle)
         return skin
+        */
+
+        return Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"))
     }
 }
