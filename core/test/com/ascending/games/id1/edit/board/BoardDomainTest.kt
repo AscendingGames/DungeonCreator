@@ -69,6 +69,7 @@ class BoardDomainTest {
     fun projectedRoom() {
         assertEquals(Vector2(1f,0f), boardDomain.projectedRoom.position)
         boardDomain.execute(DropAction())
+        boardDomain.execute(DropAction())
         boardDomain.update(0f)
         assertEquals(Vector2(1f,1f), boardDomain.projectedRoom.position)
     }

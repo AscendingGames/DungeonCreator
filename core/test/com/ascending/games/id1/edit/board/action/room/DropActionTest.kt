@@ -19,11 +19,15 @@ class DropActionTest {
 
         assertNull(boardDomain.board.getRoomAt(Coord2(1, 0)))
         boardDomain.execute(dropAction)
+        assertEquals(boardDomain.currentRoom, boardDomain.board.getRoomAt(Coord2(1, 1)))
+        boardDomain.execute(dropAction)
         assertEquals(boardDomain.currentRoom, boardDomain.board.getRoomAt(Coord2(1, 0)))
 
         boardDomain.nextRoom()
 
         assertNull(boardDomain.board.getRoomAt(Coord2(1, 1)))
+        boardDomain.execute(dropAction)
+        assertEquals(boardDomain.currentRoom, boardDomain.board.getRoomAt(Coord2(1, 1)))
         boardDomain.execute(dropAction)
         assertEquals(boardDomain.currentRoom, boardDomain.board.getRoomAt(Coord2(1, 1)))
     }

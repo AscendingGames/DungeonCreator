@@ -6,12 +6,11 @@ import com.ascending.games.id1.model.board.Room
 
 class DropAction : IBoardAction {
     override fun execute(room : Room, board : Board) {
-        while (room.position.y > 0) {
+        if (room.position.y > 0) {
             room.position.y--
 
             if(board.isRoomOverlapping(room) || !board.isRoomInBounds(room)) {
                 room.position.y++
-                break
             }
         }
 
