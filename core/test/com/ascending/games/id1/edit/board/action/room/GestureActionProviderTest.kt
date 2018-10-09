@@ -28,10 +28,10 @@ class GestureActionProviderTest {
         assertTrue(gestureActionProvider.panStop(0f, 0f, 0, 0))
 
         gestureActionProvider.pan(0f, 0f, GestureActionProvider.PAN_THRESHOLD_X / 2, 0f)
-        assertEquals(1, gestureActionProvider.actionBuffer.size)
+        assertEquals(2, gestureActionProvider.actionBuffer.size)
         gestureActionProvider.pan(0f, 0f, GestureActionProvider.PAN_THRESHOLD_X / 2, 0f)
         assertThat(gestureActionProvider.actionBuffer, hasItem(isA(SlideAction::class.java)))
-        assertEquals(2, gestureActionProvider.actionBuffer.size)
+        assertEquals(3, gestureActionProvider.actionBuffer.size)
     }
 
     @Test
