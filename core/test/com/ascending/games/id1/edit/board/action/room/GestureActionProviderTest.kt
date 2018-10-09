@@ -23,7 +23,7 @@ class GestureActionProviderTest {
         gestureActionProvider.pan(0f, 0f, 0f, GestureActionProvider.PAN_THRESHOLD_Y)
         assertThat(gestureActionProvider.actionBuffer, hasItem(isA(DropAction::class.java)))
         gestureActionProvider.pan(0f, 0f, 0f, GestureActionProvider.PAN_THRESHOLD_Y)
-        assertEquals(1, gestureActionProvider.actionBuffer.size)
+        assertEquals(2, gestureActionProvider.actionBuffer.size)
 
         assertTrue(gestureActionProvider.panStop(0f, 0f, 0, 0))
 
